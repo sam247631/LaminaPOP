@@ -1,0 +1,95 @@
+---
+interface Props {
+  class?: string;
+  inverted?: boolean;
+}
+const { class: cls = '', inverted = false } = Astro.props;
+
+const FILL   = inverted ? 'none'                  : '#FFD600';
+const STROKE = inverted ? 'rgba(255,255,255,0.88)' : '#0A0A0A';
+const SW     = 12; // stroke-width (relative to 500×500 viewBox)
+
+// Panel boundary
+const LX = 58, RX = 442;   // left / right x
+const TY = 90, BY = 412;   // top / bottom wave baseline y
+const CYCLES = 5, AMP = 36;
+
+// Cubic-bezier sine approximation
+// top wave: left→right, peaks UP
+function waveR(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
+  const W = (x1 - x0) / cycles;
+  const k = (4 / 3) * amp;
+  const f = (n: number) => +n.toFixed(1);
+  let d = `M${x0},${baseY}`;
+  for (let i = 0; i < cycles; i++) {
+    const x = x0 + i * W;
+    d += ` C${f(x+W/6)},${f(baseY-k)} ${f(x+W/3)},${f(baseY-k)} ${f(x+W/2)},${baseY}`;
+    d += ` C${f(x+2*W/3)},${f(baseY+k)} ${f(x+5*W/6)},${f(baseY+k)} ${f(x+W)},${baseY}`;
+  }
+  return d;
+}
+
+// bottom wave: right→left (x0 > x1), peaks DOWN
+function waveL(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
+  const W = (x0 - x1) / cycles;
+  const k = (4 / 3) * amp;
+  const f = (n: number) => +n.toFixed(1);
+  let d = '';
+  for (let i = 0; i < cycles; i++) {
+    const x = x0 - i * W;
+    d += ` C${f(x-W/6)},${f(baseY+k)} ${f(x-W/3)},${f(baseY+k)} ${f(x-W/2)},${baseY}`;
+    d += ` C${f(x-2*W/3)},${f(baseY-k)} ${f(x-5*W/6)},${f(baseY-k)} ${f(x-W)},${baseY}`;
+  }
+  return d;
+}
+
+// Full closed shape:
+//  top wave (left→right) → right side down → bottom wave (right→left) → Z closes left side
+const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
+  + ` L${RX},${BY}`
+  + waveL(BY, RX, LX, CYCLES, AMP)
+  + ' Z';
+
+// Circle (porthole window)
+const CX = 188, CY = 218, CR = 60;
+
+// Door — U-shape (no bottom line, open at base)
+const DL = 283, DR = 363, DT = 248;
+const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
+---
+
+<svg
+  class={cls}
+  viewBox="0 0 500 500"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  aria-label="Lamina POP"
+>
+  <!-- Corrugated panel shape -->
+  <path
+    d={shapePath}
+    fill={FILL}
+    stroke={STROKE}
+    stroke-width={SW}
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- Circle window / porthole -->
+  <circle
+    cx={CX} cy={CY} r={CR}
+    stroke={STROKE}
+    stroke-width={SW}
+    fill={inverted ? 'none' : '#FFD600'}
+  />
+
+  <!-- Door (U-shape, open at base) -->
+  <path
+    d={doorPath}
+    stroke={STROKE}
+    stroke-width={SW}
+    stroke-linecap="square"
+    stroke-linejoin="miter"
+    fill="none"
+  />
+</svg>

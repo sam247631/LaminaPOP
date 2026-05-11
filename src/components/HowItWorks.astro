@@ -1,0 +1,142 @@
+---
+const steps = [
+  {
+    n: '01',
+    es: { title: 'Diseña',      body: 'Dibuja el plano de tu casa en nuestra calculadora. Obtén la lista exacta de materiales y el costo total en minutos.' },
+    en: { title: 'Design',      body: 'Draw your floor plan in our calculator. Get the exact materials list and total cost in minutes.' },
+    cta: { es: 'Abrir calculadora', en: 'Open calculator', href: '/calculator' },
+    icon: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="10" width="32" height="36" rx="2" stroke="currentColor" stroke-width="2"/>
+      <line x1="14" y1="20" x2="34" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="27" x2="34" y2="27" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="34" x2="26" y2="34" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="40" cy="40" r="8" fill="#FFD600"/>
+      <line x1="40" y1="36" x2="40" y2="44" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"/>
+      <line x1="36" y1="40" x2="44" y2="40" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+  },
+  {
+    n: '02',
+    es: { title: 'Consigue',    body: 'Compra lámina corrugada y remaches POP en cualquier ferretería local. Sin cadenas de suministro especializadas.' },
+    en: { title: 'Source',      body: 'Buy corrugated sheets and POP rivets at any local hardware store. No specialist supply chains.' },
+    cta: null,
+    icon: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="22" width="44" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+      <path d="M14 22V18a14 14 0 0 1 28 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="32" x2="50" y2="32" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="21" cy="38" r="3.5" fill="#FFD600"/>
+      <circle cx="35" cy="38" r="3.5" fill="#FFD600"/>
+    </svg>`,
+  },
+  {
+    n: '03',
+    es: { title: 'Construye',   body: 'Sin soldadura. Sin mano de obra especializada. Desliza los paneles en los bloques U, remachalos y levanta las paredes en horas.' },
+    en: { title: 'Build',       body: 'No welding. No skilled labour. Slide panels into U-blocks, rivet them together, and raise walls in hours.' },
+    cta: null,
+    icon: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="12" width="16" height="32" rx="1" stroke="currentColor" stroke-width="2"/>
+      <line x1="12" y1="12" x2="12" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="16" y1="12" x2="16" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="20" y1="12" x2="20" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <rect x="32" y="12" width="16" height="32" rx="1" stroke="currentColor" stroke-width="2"/>
+      <line x1="36" y1="12" x2="36" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="40" y1="12" x2="40" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="44" y1="12" x2="44" y2="44" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <circle cx="28" cy="22" r="4" fill="#FFD600"/>
+      <circle cx="28" cy="34" r="4" fill="#FFD600"/>
+    </svg>`,
+  },
+  {
+    n: '04',
+    es: { title: 'Habita',      body: 'Tu casa está lista en días, no meses. Estructuralmente sólida, resistente a sismos y ampliable en cualquier momento.' },
+    en: { title: 'Move in',     body: 'Your house is ready in days, not months. Structurally sound, seismic-resistant, and expandable any time.' },
+    cta: null,
+    icon: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="28,8 50,28 44,28 44,48 12,48 12,28 6,28" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+      <rect x="22" y="34" width="12" height="14" rx="1" stroke="currentColor" stroke-width="1.8"/>
+      <rect x="32" y="18" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="27" cy="42" r="1.5" fill="#FFD600"/>
+    </svg>`,
+  },
+];
+---
+
+<section
+  id="how-it-works"
+  class="relative z-20 w-full bg-ink py-32 md:py-48"
+>
+  <div class="mx-auto max-w-[1400px] px-6">
+
+    <!-- Header -->
+    <div class="mb-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="eyebrow mb-4 text-white/40" data-i18n="t">
+          <span data-lang="es">Cómo funciona</span>
+          <span data-lang="en" class="hidden">How it works</span>
+        </p>
+        <h2 class="h-display text-[clamp(2.4rem,6vw,5.5rem)] leading-[0.93] text-white" data-i18n="t">
+          <span data-lang="es">De lámina a hogar<br><span class="text-pop">en cuatro pasos.</span></span>
+          <span data-lang="en" class="hidden">From sheet to home<br><span class="text-pop">in four steps.</span></span>
+        </h2>
+      </div>
+      <p class="max-w-xs text-sm text-white/50" data-i18n="t">
+        <span data-lang="es">Cualquier familia puede construir su propia casa. Sin arquitectos. Sin grúas. Sin esperas.</span>
+        <span data-lang="en" class="hidden">Any family can build their own house. No architects. No cranes. No waiting.</span>
+      </p>
+    </div>
+
+    <!-- Steps grid -->
+    <div class="grid grid-cols-1 gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((s) => (
+        <div class="hiw-card group relative flex flex-col gap-8 bg-ink p-8 md:p-10">
+
+          <!-- Step number -->
+          <span class="text-[11px] font-semibold tracking-[0.22em] text-pop">{s.n}</span>
+
+          <!-- Icon -->
+          <div class="h-14 w-14 text-white/70 transition-colors duration-300 group-hover:text-white" set:html={s.icon} />
+
+          <!-- Text -->
+          <div class="flex flex-col gap-3">
+            <h3 class="h-display text-2xl text-white md:text-3xl" data-i18n="t">
+              <span data-lang="es">{s.es.title}</span>
+              <span data-lang="en" class="hidden">{s.en.title}</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-white/50" data-i18n="t">
+              <span data-lang="es">{s.es.body}</span>
+              <span data-lang="en" class="hidden">{s.en.body}</span>
+            </p>
+          </div>
+
+          <!-- Optional CTA -->
+          {s.cta && (
+            <a
+              href={s.cta.href}
+              class="mt-auto inline-flex items-center gap-2 self-start rounded-full bg-pop px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ink transition-opacity duration-200 hover:opacity-80"
+              data-i18n="t"
+            >
+              <span data-lang="es">{s.cta.es}</span>
+              <span data-lang="en" class="hidden">{s.cta.en}</span>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          )}
+
+          <!-- Connecting arrow (desktop only, not on last card) -->
+          {s.n !== '04' && (
+            <div class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:block" aria-hidden="true">
+              <div class="flex h-7 w-7 items-center justify-center rounded-full bg-ink ring-1 ring-white/10">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5h6M5 2l3 3-3 3" stroke="#FFD600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          )}
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

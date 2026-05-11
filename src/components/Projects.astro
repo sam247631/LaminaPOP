@@ -1,0 +1,133 @@
+---
+const images = [
+  'p01.jpg','p03.jpg','p04.jpg','p05.jpg','p06.jpg','p07.jpg','p09.jpg',
+  'p10.jpg','p11.jpg','p12.jpg','p13.jpg','p14.jpg','p15.jpg','p16.jpg','p17.jpg',
+  'p18.jpg','p19.jpg','p20.jpg',
+];
+---
+<section
+  id="projects"
+  data-section="projects"
+  data-dots="scatter"
+  class="relative z-20 w-full py-32 md:py-48"
+>
+  <div class="mx-auto max-w-[1400px] px-6">
+    <div class="mb-16 grid grid-cols-1 gap-10 md:grid-cols-12">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-6" data-i18n="t">
+          <span data-lang="es">04 — Construido</span>
+          <span data-lang="en" class="hidden">04 — Built</span>
+        </p>
+        <h2 class="h-display text-[clamp(2.25rem,5vw,4.5rem)]">
+          <span data-i18n="t">
+            <span data-lang="es">Más de dos décadas <span class="bg-pop px-2">levantando techos</span>.</span>
+            <span data-lang="en" class="hidden">Over two decades <span class="bg-pop px-2">raising roofs</span>.</span>
+          </span>
+        </h2>
+      </div>
+      <p class="md:col-span-5 md:pt-2 text-muted md:text-lg" data-i18n="t">
+        <span data-lang="es">Desde 2004 hemos construido viviendas, escuelas y espacios comunitarios — la mayoría en Guatemala, resistiendo clima tropical y movimientos sísmicos.</span>
+        <span data-lang="en" class="hidden">Since 2004 we've built homes, schools and community spaces — most in Guatemala, weathering tropical climate and seismic activity.</span>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+      {images.map((src, i) => (
+        <figure
+          class={`project-card group relative overflow-hidden bg-line/40 cursor-zoom-in ${
+            i % 7 === 0 ? 'col-span-2 row-span-2 aspect-square' : 'aspect-[4/5]'
+          }`}
+          data-lightbox={`/projects/${src}`}
+        >
+          <img
+            src={`/projects/${src}`}
+            alt={`Lamina POP project ${i + 1}`}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
+          />
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-paper opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <span data-i18n="t">
+              <span data-lang="es">Guatemala</span>
+              <span data-lang="en" class="hidden">Guatemala</span>
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <!-- Lightbox overlay -->
+    <div
+      id="lb-overlay"
+      class="fixed inset-0 z-[999] flex items-center justify-center bg-black/90 opacity-0 pointer-events-none transition-opacity duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <button
+        id="lb-close"
+        class="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+        aria-label="Close"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <img
+        id="lb-img"
+        src=""
+        alt=""
+        class="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl"
+      />
+    </div>
+
+    <div class="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-line pt-10">
+      <div>
+        <div class="h-display text-5xl md:text-6xl">15+</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">años de durabilidad probada</span>
+          <span data-lang="en" class="hidden">years of proven durability</span>
+        </p>
+      </div>
+      <div>
+        <div class="h-display text-5xl md:text-6xl">2004</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">año de fundación</span>
+          <span data-lang="en" class="hidden">year founded</span>
+        </p>
+      </div>
+      <div>
+        <div class="h-display text-5xl md:text-6xl">∞</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">comunidades que pueden replicarlo</span>
+          <span data-lang="en" class="hidden">communities that can replicate it</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const overlay = document.getElementById('lb-overlay')!;
+  const img     = document.getElementById('lb-img') as HTMLImageElement;
+  const closeBtn = document.getElementById('lb-close')!;
+
+  function open(src: string) {
+    img.src = src;
+    overlay.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    overlay.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = '';
+    img.src = '';
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach(el => {
+    el.addEventListener('click', () => open(el.dataset.lightbox!));
+  });
+
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>

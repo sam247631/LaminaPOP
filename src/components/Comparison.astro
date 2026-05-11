@@ -1,0 +1,156 @@
+---
+const rows = [
+  {
+    metric: { es: 'Costo por m²',               en: 'Cost per m²'              },
+    lp:     { es: '$150 – $200',                 en: '$150 – $200'              },
+    tr:     { es: '$400 – $600',                 en: '$400 – $600'              },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Tiempo de construcción',      en: 'Build time'               },
+    lp:     { es: '72 horas',                    en: '72 hours'                 },
+    tr:     { es: '4 – 8 semanas',               en: '4 – 8 weeks'              },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Mano de obra especializada',  en: 'Skilled labour'           },
+    lp:     { es: 'No requerida',                en: 'Not required'             },
+    tr:     { es: 'Requerida',                   en: 'Required'                 },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Materiales',                  en: 'Materials'                },
+    lp:     { es: 'Ferretería local',            en: 'Local hardware store'     },
+    tr:     { es: 'Cadena especializada',        en: 'Specialist supply chain'  },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Emisiones CO₂',              en: 'CO₂ emissions'            },
+    lp:     { es: 'Bajas',                       en: 'Low'                      },
+    tr:     { es: 'Altas',                       en: 'High'                     },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Durabilidad',                 en: 'Durability'               },
+    lp:     { es: '25+ años',                    en: '25+ years'                },
+    tr:     { es: '25 – 30 años',               en: '25 – 30 years'            },
+    win: 'tie',
+  },
+  {
+    metric: { es: 'Resistencia sísmica',         en: 'Seismic resistance'       },
+    lp:     { es: 'Alta (acero flexible)',       en: 'High (flexible steel)'    },
+    tr:     { es: 'Media (mampostería rígida)',  en: 'Medium (rigid masonry)'   },
+    win: 'lp',
+  },
+  {
+    metric: { es: 'Transportabilidad',           en: 'Transportability'         },
+    lp:     { es: 'Flat-pack — cualquier lugar', en: 'Flat-pack — anywhere'     },
+    tr:     { es: 'Solo in situ',                en: 'On-site only'             },
+    win: 'lp',
+  },
+];
+---
+
+<section
+  id="comparison"
+  class="relative z-20 w-full overflow-hidden bg-paper py-32 md:py-48"
+>
+  <div class="mx-auto max-w-[1400px] px-6">
+
+    <!-- Header -->
+    <div class="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="eyebrow mb-4" data-i18n="t">
+          <span data-lang="es">La ventaja</span>
+          <span data-lang="en" class="hidden">The advantage</span>
+        </p>
+        <h2 class="h-display text-[clamp(2.4rem,6vw,5.5rem)] leading-[0.93]" data-i18n="t">
+          <span data-lang="es">¿Por qué<br><span class="text-pop">Lamina POP</span>?</span>
+          <span data-lang="en" class="hidden">Why<br><span class="text-pop">Lamina POP</span>?</span>
+        </h2>
+      </div>
+      <p class="max-w-sm text-sm text-muted" data-i18n="t">
+        <span data-lang="es">Comparado con la construcción convencional de ladrillo y concreto en Centroamérica.</span>
+        <span data-lang="en" class="hidden">Compared against conventional brick-and-concrete construction in Central America.</span>
+      </p>
+    </div>
+
+    <!-- Table wrapper (horizontal scroll on small screens) -->
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[540px] border-collapse">
+
+        <!-- Column headers -->
+        <thead>
+          <tr>
+            <th class="w-[34%] pb-5 text-left"></th>
+            <!-- Lamina POP column — yellow accent -->
+            <th class="w-[33%] pb-5 text-left">
+              <span class="inline-flex items-center gap-2 rounded-full bg-pop px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-ink">
+                Lamina POP
+              </span>
+            </th>
+            <!-- Traditional column — muted -->
+            <th class="w-[33%] pb-5 text-left" data-i18n="t">
+              <span class="inline-flex items-center gap-2 rounded-full border border-line px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+                <span data-lang="es">Construcción tradicional</span>
+                <span data-lang="en" class="hidden">Traditional construction</span>
+              </span>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {rows.map((row, i) => (
+            <tr class="compare-row border-t border-line">
+              <!-- Metric label -->
+              <td class="py-5 pr-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted" data-i18n="t">
+                <span data-lang="es">{row.metric.es}</span>
+                <span data-lang="en" class="hidden">{row.metric.en}</span>
+              </td>
+
+              <!-- Lamina POP value -->
+              <td class={`py-5 pr-6 ${row.win === 'lp' ? 'bg-pop/[0.06]' : ''}`}>
+                <span class="flex items-center gap-2.5">
+                  {row.win === 'lp' && (
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pop text-[10px] font-bold text-ink">✓</span>
+                  )}
+                  {row.win === 'tie' && (
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-muted">—</span>
+                  )}
+                  <span class={`text-sm font-semibold ${row.win === 'lp' ? 'text-ink' : 'text-muted'}`} data-i18n="t">
+                    <span data-lang="es">{row.lp.es}</span>
+                    <span data-lang="en" class="hidden">{row.lp.en}</span>
+                  </span>
+                </span>
+              </td>
+
+              <!-- Traditional value -->
+              <td class="py-5">
+                <span class="flex items-center gap-2.5">
+                  {row.win === 'lp' && (
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-muted/40">✕</span>
+                  )}
+                  {row.win === 'tie' && (
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-muted">—</span>
+                  )}
+                  <span class="text-sm text-muted" data-i18n="t">
+                    <span data-lang="es">{row.tr.es}</span>
+                    <span data-lang="en" class="hidden">{row.tr.en}</span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- Source note -->
+    <p class="mt-8 text-[11px] text-muted/50" data-i18n="t">
+      <span data-lang="es">* Estimaciones basadas en proyectos realizados en Guatemala y Centroamérica, 2004–2024.</span>
+      <span data-lang="en" class="hidden">* Estimates based on projects completed in Guatemala and Central America, 2004–2024.</span>
+    </p>
+
+  </div>
+</section>

@@ -1,0 +1,147 @@
+---
+import T from './T.astro';
+
+function wave(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
+  const W = (x1 - x0) / cycles;
+  const k = (4 / 3) * amp;
+  const f = (n: number) => +n.toFixed(1);
+  let d = `M${x0},${baseY}`;
+  for (let i = 0; i < cycles; i++) {
+    const x = x0 + i * W;
+    d += ` C${f(x+W/6)},${f(baseY-k)} ${f(x+W/3)},${f(baseY-k)} ${f(x+W/2)},${baseY}`;
+    d += ` C${f(x+2*W/3)},${f(baseY+k)} ${f(x+5*W/6)},${f(baseY+k)} ${f(x+W)},${baseY}`;
+  }
+  return d;
+}
+
+// House geometry (SVG overlay — 520×520 viewBox)
+const HLX = 60, HRX = 460, HPEAK_X = 260;
+const HPEAK_Y = 80, HEAVE_Y = 190, HBASE_Y = 430;
+
+// Rivet x positions (for the SVG overlay only)
+const STRIPS = 22, STEP = 22;
+const stripXs = Array.from({ length: STRIPS }, (_, i) => 20 + i * STEP);
+const innerXs = stripXs.filter(x => x > HLX && x < HRX);
+---
+
+<section
+  id="hero"
+  class="relative z-20 min-h-[100svh] w-full overflow-hidden"
+  data-section="hero"
+>
+  <!-- Mobile corrugated panel accent — full-width strip of yellow bars at top -->
+  <div class="md:hidden absolute top-0 inset-x-0 flex gap-[5px] overflow-hidden h-28 items-end pb-3 px-4" aria-hidden="true">
+    {Array.from({ length: 44 }, (_, i) => (
+      <div class="flex-shrink-0 bg-pop rounded-sm" style={`width:9px; height:${48 + ((i * 17 + i * i * 3) % 40)}px;`}></div>
+    ))}
+  </div>
+
+  <!--
+    Hero accent.
+    Scroll story:
+      0%   → yellow vertical strips (flat sheet metal)
+     35%   → alternate strips rotate 75° in 3D — channels open up, ridges face forward
+     45%   → house outline draws on
+     65%   → rivets pop in
+     80%   → door appears
+     85%   → corrugation wave lines
+  -->
+  <div
+    id="hero-accent"
+    aria-hidden="true"
+    class="hero-accent pointer-events-none absolute right-[-4rem] top-1/2 hidden -translate-y-1/2 md:block"
+    style="width:520px; height:520px;"
+  >
+    <!-- 3D strip layer ─────────────────────────────────────────────────────── -->
+    <!-- perspective on this wrapper makes child rotateY look genuinely 3D   -->
+    <div
+      class="absolute inset-0 flex items-center justify-center"
+      style="perspective:600px;"
+    >
+      <div class="flex gap-[7px]" style="height:440px; align-items:stretch;">
+        {Array.from({ length: STRIPS }, (_, i) => {
+          const outer = i < 2 || i >= 20;
+          return (
+            <div
+              class={`accent-strip ${outer ? 'accent-strip-outer' : 'accent-strip-inner'}`}
+              style="width:13px; background:#FFD600; flex-shrink:0; transform-origin:center center;"
+            ></div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- SVG overlay: house silhouette, rivets, door, waves ─────────────────── -->
+    <svg
+      class="absolute inset-0"
+      width="520" height="520" viewBox="0 0 520 520"
+      fill="none" aria-hidden="true"
+    >
+      <!-- House outline (draws on with scroll) -->
+      <g id="accent-house" opacity="0">
+        <path
+          d={`M ${HPEAK_X},${HPEAK_Y} L ${HLX},${HEAVE_Y} L ${HLX},${HBASE_Y}`}
+          stroke="#0A0A0A" stroke-width="4.5" stroke-linejoin="miter" stroke-linecap="square" fill="none"
+        />
+        <path
+          d={`M ${HPEAK_X},${HPEAK_Y} L ${HRX},${HEAVE_Y} L ${HRX},${HBASE_Y}`}
+          stroke="#0A0A0A" stroke-width="4.5" stroke-linejoin="miter" stroke-linecap="square" fill="none"
+        />
+        <rect x={HLX} y={HBASE_Y} width={HRX - HLX} height="18" fill="#0A0A0A" />
+      </g>
+
+      <!-- Door + knob -->
+      <rect id="accent-door" x="230" y="305" width="60" height={HBASE_Y - 305} fill="#FFD600" opacity="0" />
+      <circle id="accent-doorknob" cx="282" cy="366" r="3.5" fill="#0A0A0A" opacity="0" />
+
+      <!-- Rivets -->
+      <g id="accent-rivets" opacity="0">
+        {innerXs.map(x => <circle cx={x} cy={HEAVE_Y + 4} r="4" fill="#FFD600" />)}
+        {innerXs.map(x => <circle cx={x} cy={HBASE_Y - 4} r="4" fill="#FFD600" />)}
+      </g>
+
+      <!-- Wavy corrugation profiles -->
+      <g id="accent-waves" opacity="0">
+        <path d={wave(310, HLX, HRX, 8, 13)} stroke="#0A0A0A" stroke-width="2.5" fill="none" />
+        <path d={wave(372, HLX, HRX, 8, 13)} stroke="#0A0A0A" stroke-width="2.5" fill="none" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1400px] flex-col justify-end px-6 pb-20 pt-32 md:pb-24 md:pt-40">
+    <p class="hero-eyebrow eyebrow mb-8" data-i18n="t">
+      <span data-lang="es">Desde 2004 · Guatemala · Mundo</span>
+      <span data-lang="en" class="hidden">Since 2004 · Guatemala · World</span>
+    </p>
+
+    <h1 class="hero-title h-display text-[clamp(3.5rem,14vw,17rem)]">
+      <span class="hero-word block">LAMINA</span>
+      <span class="hero-word block">
+        <span class="relative">
+          POP
+          <span class="absolute -bottom-2 left-0 right-0 h-3 bg-pop -z-10"></span>
+        </span>
+      </span>
+    </h1>
+
+    <div class="mt-10 grid max-w-3xl grid-cols-1 gap-3 md:mt-12">
+      <p class="hero-tagline text-2xl font-semibold md:text-4xl" data-i18n="t">
+        <span data-lang="es">Una nueva ola de construcción.</span>
+        <span data-lang="en" class="hidden">A new wave of construction.</span>
+      </p>
+      <p class="hero-lede max-w-xl text-base text-muted md:text-lg" data-i18n="t">
+        <span data-lang="es">Vivienda digna, asequible y rápida de construir — diseñada para escalar a las comunidades que más la necesitan.</span>
+        <span data-lang="en" class="hidden">Dignified, affordable, fast-to-build housing — engineered to scale to the communities that need it most.</span>
+      </p>
+      <p class="hero-desc max-w-xl text-sm text-muted/70 md:text-base" data-i18n="t">
+        <span data-lang="es">LaminaPOP es una empresa de vivienda social con una misión: acabar con la desigualdad habitacional en el mundo. Creemos que un techo digno no es un lujo — es un derecho.</span>
+        <span data-lang="en" class="hidden">LaminaPOP is a social housing company on a mission to end housing inequality worldwide. We believe a dignified roof isn't a luxury — it's a right.</span>
+      </p>
+    </div>
+
+    <div class="hero-scroll mt-16 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] md:mt-20">
+      <span class="block h-px w-10 bg-ink"></span>
+      <T es="Desliza" en="Scroll" />
+    </div>
+  </div>
+</section>

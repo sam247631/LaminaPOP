@@ -1,0 +1,97 @@
+---
+interface Props {
+  class?: string;
+  showText?: boolean;
+  inverted?: boolean;
+}
+const { class: cls = '', showText = true, inverted = false } = Astro.props;
+
+const INK  = inverted ? 'rgba(255,255,255,0.9)' : '#0A0A0A';
+const POP  = '#FFD600';
+const GRAY = inverted ? 'rgba(255,255,255,0.35)' : '#B8B8B8';
+const TEXT = '#9CA3AF';
+
+// Geometry
+const LX = 80, RX = 420, PEAK_X = 250;
+const PEAK_Y = 24, EAVE_Y = 136, BASE_Y = 326, FOUND_Y2 = 362;
+
+// Sine wave via cubic-bezier approximation
+function wave(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
+  const W = (x1 - x0) / cycles;
+  const k = (4 / 3) * amp;
+  const f = (n: number) => +n.toFixed(1);
+  let d = `M${x0},${baseY}`;
+  for (let i = 0; i < cycles; i++) {
+    const x = x0 + i * W;
+    d += ` C${f(x+W/6)},${f(baseY-k)} ${f(x+W/3)},${f(baseY-k)} ${f(x+W/2)},${baseY}`;
+    d += ` C${f(x+2*W/3)},${f(baseY+k)} ${f(x+5*W/6)},${f(baseY+k)} ${f(x+W)},${baseY}`;
+  }
+  return d;
+}
+
+// Panel dividers & dot positions
+const DIVS = 18;
+const step = (RX - LX) / DIVS;
+const panelLines = Array.from({ length: DIVS - 1 }, (_, i) => +(LX + (i + 1) * step).toFixed(1));
+const dotXs = Array.from({ length: DIVS + 1 }, (_, i) => +(LX + i * step).toFixed(1));
+const outerL = [1, 2, 3].map(n => +(LX - n * step).toFixed(1));
+const outerR = [1, 2, 3].map(n => +(RX + n * step).toFixed(1));
+---
+
+<svg
+  class={cls}
+  viewBox="0 0 500 420"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  aria-label="Lamina POP"
+>
+  <!-- Vertical corrugated panel lines -->
+  {panelLines.map(x => (
+    <line x1={x} y1={EAVE_Y} x2={x} y2={BASE_Y} stroke={GRAY} stroke-width="1.2" />
+  ))}
+
+  <!-- Wavy corrugation profile -->
+  <path d={wave(255, LX, RX, 8, 15)} stroke={INK} stroke-width="2.5" />
+
+  <!-- Dot row 1 — just below eave (extends outside walls) -->
+  {[...outerL, ...dotXs, ...outerR].map(x => (
+    <circle cx={x} cy={EAVE_Y + 18} r="5.5" fill={POP} />
+  ))}
+
+  <!-- Dot row 2 — just above foundation -->
+  {dotXs.map(x => (
+    <circle cx={x} cy={BASE_Y - 18} r="5.5" fill={POP} />
+  ))}
+
+  <!-- Foundation bar -->
+  <rect x={LX} y={BASE_Y} width={RX - LX} height={FOUND_Y2 - BASE_Y} fill={INK} />
+
+  <!-- Window -->
+  <rect x="112" y="184" width="66" height="67" fill={inverted ? 'transparent' : 'white'} stroke={INK} stroke-width="2.5" />
+  <line x1="145" y1="184" x2="145" y2="251" stroke={INK} stroke-width="2" />
+  <line x1="112" y1="217" x2="178" y2="217" stroke={INK} stroke-width="2" />
+
+  <!-- Door -->
+  <rect x="219" y="228" width="62" height={BASE_Y - 228} fill={POP} />
+  <circle cx="269" cy="284" r="3.5" fill={INK} />
+
+  <!-- Walls -->
+  <line x1={LX} y1={EAVE_Y} x2={LX} y2={BASE_Y} stroke={INK} stroke-width="5" />
+  <line x1={RX} y1={EAVE_Y} x2={RX} y2={BASE_Y} stroke={INK} stroke-width="5" />
+
+  <!-- Roof -->
+  <line x1={LX - 2} y1={EAVE_Y} x2={PEAK_X} y2={PEAK_Y} stroke={INK} stroke-width="5.5" stroke-linecap="square" />
+  <line x1={RX + 2} y1={EAVE_Y} x2={PEAK_X} y2={PEAK_Y} stroke={INK} stroke-width="5.5" stroke-linecap="square" />
+
+  <!-- Wordmark -->
+  {showText && (
+    <text
+      x="250" y="400"
+      text-anchor="middle"
+      font-family="system-ui, sans-serif"
+      font-size="17"
+      letter-spacing="8"
+      fill={TEXT}
+    >LAMINA POP</text>
+  )}
+</svg>

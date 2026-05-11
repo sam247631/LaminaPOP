@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import LangToggle from '../components/LangToggle.astro';
+import Nav from '../components/Nav.astro';
+import Dots from '../components/Dots.astro';
+import Hero from '../components/Hero.astro';
+import Crisis from '../components/Crisis.astro';
+import Effects from '../components/Effects.astro';
+import Solution from '../components/Solution.astro';
+import Stats from '../components/Stats.astro';
+import Comparison from '../components/Comparison.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Video from '../components/Video.astro';
+import Projects from '../components/Projects.astro';
+import Contact from '../components/Contact.astro';
+---
+<Base>
+  <Nav />
+  <LangToggle />
+  <Dots />
+  <main class="relative">
+    <Hero />
+    <Crisis />
+    <Effects />
+    <Solution />
+    <HowItWorks />
+    <Video />
+    <Stats />
+    <Comparison />
+    <Projects />
+    <Contact />
+  </main>
+
+  <script>
+    import '../scripts/main.ts';
+  </script>
+</Base>

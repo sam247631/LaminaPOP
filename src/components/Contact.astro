@@ -1,0 +1,208 @@
+---
+import BrandLogo from './BrandLogo.astro';
+---
+
+<section
+  id="contact"
+  data-section="contact"
+  data-dots="fade"
+  class="relative z-20 w-full overflow-hidden bg-ink py-32 text-paper md:py-48"
+>
+  <div class="absolute inset-x-0 top-0 h-[3px] bg-pop"></div>
+
+  <div class="relative mx-auto max-w-[1400px] px-6">
+
+    <!-- Investment / partnership ask -->
+    <div class="mb-20 border-b border-paper/15 pb-16">
+      <p class="eyebrow mb-6 text-paper/40" data-i18n="t">
+        <span data-lang="es">06 — Contacto</span>
+        <span data-lang="en" class="hidden">06 — Contact</span>
+      </p>
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-20">
+        <h2 class="h-display text-[clamp(2.2rem,5vw,4.5rem)] leading-[0.95]" data-i18n="t">
+          <span data-lang="es">¿Construimos<br><span class="text-pop">algo juntos</span>?</span>
+          <span data-lang="en" class="hidden">Shall we<br><span class="text-pop">build together</span>?</span>
+        </h2>
+        <div class="flex flex-col justify-center gap-6">
+          <p class="text-paper/70 md:text-lg" data-i18n="t">
+            <span data-lang="es">Buscamos inversores de impacto y socios estratégicos para llevar Lamina POP a nuevas regiones. Si compartes la visión de vivienda digna y asequible a escala, hablemos.</span>
+            <span data-lang="en" class="hidden">We're looking for impact investors and strategic partners to bring Lamina POP to new regions. If you share the vision of dignified, affordable housing at scale, let's talk.</span>
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="rounded-full border border-pop/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-pop" data-i18n="t">
+              <span data-lang="es">Inversión de impacto</span>
+              <span data-lang="en" class="hidden">Impact investment</span>
+            </span>
+            <span class="rounded-full border border-paper/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-paper/50" data-i18n="t">
+              <span data-lang="es">Alianzas estratégicas</span>
+              <span data-lang="en" class="hidden">Strategic partnerships</span>
+            </span>
+            <span class="rounded-full border border-paper/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-paper/50" data-i18n="t">
+              <span data-lang="es">Proyectos comunitarios</span>
+              <span data-lang="en" class="hidden">Community projects</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact form + logo watermark -->
+    <div class="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-20">
+
+      <!-- Form -->
+      <div class="md:col-span-7">
+        <!--
+          To activate this form, create a free account at formspree.io,
+          create a new form, and replace YOUR_FORM_ID below with your form's ID.
+          Alternatively, remove the action attribute to use the mailto: fallback.
+        -->
+        <form
+          id="contact-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          class="space-y-6"
+          novalidate
+        >
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="name" data-i18n="t">
+                <span data-lang="es">Nombre</span>
+                <span data-lang="en" class="hidden">Name</span>
+              </label>
+              <input
+                id="name" name="name" type="text" required
+                class="w-full border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
+                placeholder="—"
+              />
+            </div>
+            <div>
+              <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="email" data-i18n="t">
+                <span data-lang="es">Correo electrónico</span>
+                <span data-lang="en" class="hidden">Email</span>
+              </label>
+              <input
+                id="email" name="email" type="email" required
+                class="w-full border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
+                placeholder="—"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="message" data-i18n="t">
+              <span data-lang="es">Mensaje</span>
+              <span data-lang="en" class="hidden">Message</span>
+            </label>
+            <textarea
+              id="message" name="message" rows="5" required
+              class="w-full resize-none border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
+              placeholder="—"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <button
+              type="submit"
+              id="submit-btn"
+              class="group inline-flex items-center gap-3 border-b-2 border-pop pb-1 text-sm font-semibold uppercase tracking-widest transition-all duration-300 hover:gap-5"
+            >
+              <span data-lang="es" data-i18n="t">Enviar</span>
+              <span data-lang="en" class="hidden" data-i18n="t">Send</span>
+              <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </button>
+            <p id="form-status" class="hidden text-sm text-pop"></p>
+          </div>
+        </form>
+
+        <p class="mt-8 text-sm text-paper/35" data-i18n="t">
+          <span data-lang="es">O escríbenos directamente a</span>
+          <span data-lang="en" class="hidden">Or email us directly at</span>
+          <a href="mailto:info@laminapop.com" class="ml-1 text-paper/60 underline-offset-4 hover:text-pop hover:underline transition-colors">
+            info@laminapop.com
+          </a>
+        </p>
+      </div>
+
+      <!-- Logo watermark -->
+      <div class="hidden md:col-span-5 md:flex md:items-center md:justify-end">
+        <img
+          src="/projects/p02.png"
+          alt=""
+          aria-hidden="true"
+          class="w-full max-w-[300px] opacity-[0.13]"
+          style="filter: invert(1);"
+        />
+      </div>
+    </div>
+
+    <!-- Footer row -->
+    <div class="mt-24 grid grid-cols-1 gap-8 border-t border-paper/15 pt-10 md:grid-cols-3">
+      <div>
+        <p class="eyebrow mb-3 text-paper/35" data-i18n="t">
+          <span data-lang="es">Sigue</span>
+          <span data-lang="en" class="hidden">Follow</span>
+        </p>
+        <ul class="space-y-1.5 text-sm text-paper/70">
+          <li><a class="transition-colors hover:text-pop" href="https://www.instagram.com/lamina__pop/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a class="transition-colors hover:text-pop" href="https://uk.linkedin.com/company/lamina-pop" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a class="transition-colors hover:text-pop" href="https://www.facebook.com/Lamina-POP-198683856812157" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow mb-3 text-paper/35" data-i18n="t">
+          <span data-lang="es">Conoce más</span>
+          <span data-lang="en" class="hidden">Learn more</span>
+        </p>
+        <ul class="space-y-1.5 text-sm text-paper/70">
+          <li><a class="transition-colors hover:text-pop" href="#solution" data-i18n="t"><span data-lang="es">El sistema</span><span data-lang="en" class="hidden">The system</span></a></li>
+          <li><a class="transition-colors hover:text-pop" href="#projects" data-i18n="t"><span data-lang="es">Proyectos</span><span data-lang="en" class="hidden">Projects</span></a></li>
+          <li><a class="transition-colors hover:text-pop" href="#team" data-i18n="t"><span data-lang="es">Equipo</span><span data-lang="en" class="hidden">Team</span></a></li>
+        </ul>
+      </div>
+      <div class="md:text-right">
+        <p class="eyebrow mb-3 text-paper/35" data-i18n="t">
+          <span data-lang="es">Una nueva ola de construcción</span>
+          <span data-lang="en" class="hidden">A new wave of construction</span>
+        </p>
+        <p class="text-sm text-paper/40">
+          © 2004–<span id="year-now">2026</span> Lamina POP
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.getElementById('year-now').textContent = String(new Date().getFullYear());
+
+    // Form submission handler
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    const btn = document.getElementById('submit-btn');
+    if (form && status && btn) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        btn.setAttribute('disabled', 'true');
+        btn.style.opacity = '0.5';
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          if (res.ok) {
+            status.textContent = '✓ Enviado';
+            status.classList.remove('hidden');
+            form.reset();
+          } else {
+            throw new Error();
+          }
+        } catch {
+          status.textContent = 'Error — intenta de nuevo';
+          status.classList.remove('hidden');
+          btn.removeAttribute('disabled');
+          btn.style.opacity = '1';
+        }
+      });
+    }
+  </script>
+</section>

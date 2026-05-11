@@ -1,0 +1,42 @@
+---
+// Client-side EN/ES toggle. Persists choice in localStorage and toggles `lang` on <html>.
+---
+<button
+  id="lang-toggle"
+  type="button"
+  class="fixed top-5 right-5 z-50 inline-flex items-center gap-1 rounded-full border border-ink/15 bg-paper/80 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-widest text-ink backdrop-blur transition hover:border-ink hover:bg-pop"
+  aria-label="Cambiar idioma / Change language"
+>
+  <span data-lang="es" class="opacity-100">ES</span>
+  <span class="opacity-30">/</span>
+  <span data-lang="en" class="opacity-30">EN</span>
+</button>
+
+<script is:inline>
+  (function () {
+    const KEY = 'lp-lang';
+    const html = document.documentElement;
+    const btn = document.getElementById('lang-toggle');
+    const setLang = (lang) => {
+      html.lang = lang;
+      try { localStorage.setItem(KEY, lang); } catch {}
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const k = el.getAttribute('data-i18n');
+        const v = el.querySelector(`[data-lang="${lang}"]`);
+        if (v) {
+          el.querySelectorAll('[data-lang]').forEach((s) => s.classList.add('hidden'));
+          v.classList.remove('hidden');
+        } else if (k && el.dataset[lang]) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+      btn?.querySelectorAll('[data-lang]').forEach((s) => {
+        s.classList.toggle('opacity-100', s.getAttribute('data-lang') === lang);
+        s.classList.toggle('opacity-30', s.getAttribute('data-lang') !== lang);
+      });
+    };
+    const stored = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
+    setLang(stored === 'es' ? 'es' : 'en');
+    btn?.addEventListener('click', () => setLang(html.lang === 'es' ? 'en' : 'es'));
+  })();
+</script>

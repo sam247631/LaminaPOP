@@ -1,0 +1,60 @@
+---
+import T from './T.astro';
+---
+<section
+  id="crisis"
+  data-section="crisis"
+  data-dots="grid"
+  class="relative z-20 w-full py-32 md:py-48"
+>
+  <div class="mx-auto max-w-[1400px] px-6">
+    <p class="eyebrow mb-6" data-i18n="t">
+      <span data-lang="es">01 — El problema</span>
+      <span data-lang="en" class="hidden">01 — The problem</span>
+    </p>
+    <h2 class="h-display max-w-4xl text-[clamp(2.25rem,5.5vw,5rem)]">
+      <span data-i18n="t">
+        <span data-lang="es"><span class="bg-pop px-2">1.6 mil millones</span> de personas viven en viviendas inadecuadas.</span>
+        <span data-lang="en" class="hidden"><span class="bg-pop px-2">1.6 billion</span> people live in inadequate housing.</span>
+      </span>
+    </h2>
+
+    <p class="mt-6 max-w-2xl text-base text-muted md:text-lg" data-i18n="t">
+      <span data-lang="es">Cada punto representa, aproximadamente, 1.6 millones de personas sin un techo digno. La crisis es invisible cuando se mide en cifras; deja de serlo cuando la ves repetida 1,000 veces.</span>
+      <span data-lang="en" class="hidden">Each dot represents roughly 1.6 million people without a dignified roof. The crisis is invisible when measured in numbers; it stops being invisible when you see it repeated 1,000 times.</span>
+    </p>
+
+    <!-- Spacer where the dot grid lives (canvas is fixed; we just need vertical room) -->
+    <div class="my-16 h-[60vh] md:my-24 md:h-[70vh]" data-section="crisis-grid" data-dots="grid"></div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-1 gap-10 border-t border-line pt-10 md:grid-cols-3">
+      <div>
+        <div class="h-display text-5xl md:text-6xl">1.6B</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">sin vivienda digna</span>
+          <span data-lang="en" class="hidden">without dignified housing</span>
+        </p>
+      </div>
+      <div>
+        <div class="h-display text-5xl md:text-6xl">300M</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">niños sin un techo seguro</span>
+          <span data-lang="en" class="hidden">children without safe shelter</span>
+        </p>
+      </div>
+      <div>
+        <div class="h-display text-5xl md:text-6xl">3B</div>
+        <p class="mt-2 text-sm text-muted" data-i18n="t">
+          <span data-lang="es">necesitarán vivienda asequible para 2030</span>
+          <span data-lang="en" class="hidden">will need affordable housing by 2030</span>
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-8 text-[11px] uppercase tracking-[0.18em] text-muted" data-i18n="t">
+      <span data-lang="es">Fuentes: ONU-Hábitat, Banco Mundial. [Cifras aproximadas]</span>
+      <span data-lang="en" class="hidden">Sources: UN-Habitat, World Bank. [Approximate figures]</span>
+    </p>
+  </div>
+</section>

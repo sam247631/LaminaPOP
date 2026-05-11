@@ -1,0 +1,483 @@
+---
+// Persistent, highly-interactive dot canvas.
+// Driven by:
+//  - per-section ScrollTrigger progress (set globally)
+//  - mouse position (repulsion)
+//  - idle breathing per-dot
+//  - section-specific shape (set by main.ts)
+---
+<canvas
+  id="dots-canvas"
+  class="pointer-events-none fixed inset-0 z-10 h-full w-full"
+  aria-hidden="true"
+></canvas>
+
+<script>
+  type Shape = 'fade' | 'grid' | 'stat' | 'line' | 'scatter' | 'house' | 'logo' | 'effects';
+
+  const N = window.innerWidth < 768 ? 900 : 2200;
+  const POP = '#FFD600';
+  const INK = '#0A0A0A';
+
+  type Dot = {
+    x: number; y: number;
+    tx: number; ty: number;
+    color: string; tcolor: string;
+    alpha: number; talpha: number;
+    size: number; tsize: number;
+    phase: number;       // for breathing
+    drift: number;       // 0..1 controls breathing amplitude
+    role: 'fill' | 'pop'; // visual role hint
+  };
+
+  const dots: Dot[] = [];
+  const canvas = document.getElementById('dots-canvas') as HTMLCanvasElement | null;
+  if (!canvas) {
+    // canvas missing; abort gracefully
+  } else {
+    const ctx = canvas.getContext('2d', { alpha: true })!;
+    let dpr = 1, W = 0, H = 0;
+    let mouseX = -9999, mouseY = -9999;
+    let mouseActive = false;
+
+    // Section scroll progress (0..1 within the active section)
+    const progress: Record<Shape, number> = {
+      fade: 0, grid: 0, stat: 0, line: 0, scatter: 0, house: 0, logo: 0, effects: 0,
+    };
+    let activeShape: Shape = 'fade';
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      computeShape(activeShape, progress[activeShape]);
+    };
+
+    // Initial scattered placement
+    for (let i = 0; i < N; i++) {
+      dots.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        tx: 0, ty: 0,
+        color: INK, tcolor: INK,
+        alpha: 0, talpha: 0,
+        size: 1.2, tsize: 1.4,
+        phase: Math.random() * Math.PI * 2,
+        drift: 0.5 + Math.random() * 0.6,
+        role: 'fill',
+      });
+    }
+
+    // ------- Shape generators (writes to dot.tx, ty, tcolor, talpha, tsize) -------
+
+    // Smoothly interpolated grid that compresses/expands with progress p (0..1)
+    const gridShape = (p: number, statHighlight = false) => {
+      const COLS = 36;
+      const ROWS = Math.ceil(N / COLS);
+      // Box expands from small to full as p goes 0..1
+      const boxW = lerp(W * 0.45, Math.min(W * 0.78, 1100), easeOutCubic(p));
+      const boxH = lerp(H * 0.42, Math.min(H * 0.7, 740), easeOutCubic(p));
+      const startX = (W - boxW) / 2;
+      const startY = (H - boxH) / 2 + 40;
+      const stepX = boxW / (COLS - 1);
+      const stepY = boxH / (ROWS - 1);
+
+      // 19% of dots get yellow "highlighted" treatment when statHighlight
+      const hlStart = Math.floor(N * 0.40);
+      const hlEnd = hlStart + Math.floor(N * 0.19);
+
+      // Travelling wave parameters (scroll progress drives wave phase)
+      const wavePhase = p * Math.PI * 2 * 1.5;
+
+      for (let i = 0; i < N; i++) {
+        const r = Math.floor(i / COLS);
+        const c = i % COLS;
+        const d = dots[i];
+        // base grid position
+        let gx = startX + c * stepX;
+        let gy = startY + r * stepY;
+        // distance from center (normalized)
+        const ncx = (c - COLS / 2) / (COLS / 2);
+        const ncy = (r - ROWS / 2) / (ROWS / 2);
+        const dist = Math.sqrt(ncx * ncx + ncy * ncy);
+        // ripple offset that travels outward with progress
+        const ripple = Math.sin(dist * 6 - wavePhase) * 6 * (1 - p * 0.4);
+        gy += ripple;
+
+        d.tx = gx;
+        d.ty = gy;
+
+        const inHL = statHighlight && i >= hlStart && i < hlEnd;
+        d.tcolor = inHL ? POP : INK;
+        d.role = inHL ? 'pop' : 'fill';
+        d.talpha = lerp(0.08, 0.9, easeOutCubic(p));
+        // size pulse traveling with the wave
+        d.tsize = inHL ? 2.2 : 1.4 + Math.sin(dist * 8 - wavePhase) * 0.6;
+      }
+    };
+
+    const lineShape = (p: number) => {
+      // Vertical band on left side; dots flow downward as scroll progresses.
+      const colCount = 14;
+      const rowCount = Math.ceil(N / colCount);
+      const bandX = lerp(-40, 28, easeOutCubic(p));
+      const bandW = 96;
+      const bandH = Math.min(H * 0.85, 820);
+      const startY = (H - bandH) / 2;
+      const stepX = bandW / (colCount - 1);
+      const stepY = bandH / (rowCount - 1);
+      const flow = p * 60; // visual cascade
+
+      for (let i = 0; i < N; i++) {
+        const r = Math.floor(i / colCount);
+        const c = i % colCount;
+        const d = dots[i];
+        d.tx = bandX + c * stepX;
+        d.ty = startY + ((r * stepY + flow) % bandH);
+        // every ~12th dot pops yellow
+        const isPop = ((i + Math.floor(p * 8)) % 27) === 0;
+        d.tcolor = isPop ? POP : INK;
+        d.role = isPop ? 'pop' : 'fill';
+        d.talpha = 0.55 + p * 0.25;
+        d.tsize = isPop ? 2.4 : 1.2 + Math.sin(i * 0.3 + p * 6) * 0.4;
+      }
+    };
+
+    // House shape: dots converge along the silhouette of a corrugated-metal house.
+    // Progress 0 = scattered around the right viewport, 1 = locked into the house outline.
+    type Seg = { x1: number; y1: number; x2: number; y2: number; weight: number; pop?: boolean };
+    const houseSegments = (): Seg[] => {
+      // Right-side anchor
+      const cx = W * 0.74;
+      const cy = H * 0.5;
+      const w = Math.min(W * 0.34, 420);
+      const h = w * 0.78;
+      const half = w / 2;
+      return [
+        // ground line (longer, weighted higher)
+        { x1: cx - half - 60, y1: cy + h / 2, x2: cx + half + 60, y2: cy + h / 2, weight: 1.4 },
+        // left wall corrugation - vertical zigzag
+        { x1: cx - half, y1: cy + h / 2, x2: cx - half, y2: cy - h / 4, weight: 1.0 },
+        // right wall corrugation
+        { x1: cx + half, y1: cy + h / 2, x2: cx + half, y2: cy - h / 4, weight: 1.0 },
+        // roof left slope
+        { x1: cx - half, y1: cy - h / 4, x2: cx, y2: cy - h / 2 - 18, weight: 1.1 },
+        // roof right slope
+        { x1: cx + half, y1: cy - h / 4, x2: cx, y2: cy - h / 2 - 18, weight: 1.1 },
+        // door (yellow)
+        { x1: cx - 28, y1: cy + h / 2, x2: cx - 28, y2: cy + h / 7, weight: 0.55, pop: true },
+        { x1: cx + 28, y1: cy + h / 2, x2: cx + 28, y2: cy + h / 7, weight: 0.55, pop: true },
+        { x1: cx - 28, y1: cy + h / 7, x2: cx + 28, y2: cy + h / 7, weight: 0.35, pop: true },
+        // window left
+        { x1: cx - half + 30, y1: cy - h / 12, x2: cx - half + 90, y2: cy - h / 12, weight: 0.4 },
+        { x1: cx - half + 30, y1: cy + h / 7, x2: cx - half + 90, y2: cy + h / 7, weight: 0.4 },
+        { x1: cx - half + 30, y1: cy - h / 12, x2: cx - half + 30, y2: cy + h / 7, weight: 0.45 },
+        { x1: cx - half + 90, y1: cy - h / 12, x2: cx - half + 90, y2: cy + h / 7, weight: 0.45 },
+        // window right
+        { x1: cx + half - 90, y1: cy - h / 12, x2: cx + half - 30, y2: cy - h / 12, weight: 0.4 },
+        { x1: cx + half - 90, y1: cy + h / 7, x2: cx + half - 30, y2: cy + h / 7, weight: 0.4 },
+        { x1: cx + half - 90, y1: cy - h / 12, x2: cx + half - 90, y2: cy + h / 7, weight: 0.45 },
+        { x1: cx + half - 30, y1: cy - h / 12, x2: cx + half - 30, y2: cy + h / 7, weight: 0.45 },
+        // foundation strip
+        { x1: cx - half - 10, y1: cy + h / 2 + 14, x2: cx + half + 10, y2: cy + h / 2 + 14, weight: 0.7 },
+        // chimney
+        { x1: cx + 70, y1: cy - h / 2 - 8, x2: cx + 70, y2: cy - h / 2 - 50, weight: 0.3 },
+        { x1: cx + 96, y1: cy - h / 2 - 8, x2: cx + 96, y2: cy - h / 2 - 50, weight: 0.3 },
+        { x1: cx + 70, y1: cy - h / 2 - 50, x2: cx + 96, y2: cy - h / 2 - 50, weight: 0.25 },
+      ];
+    };
+
+    const houseShape = (p: number) => {
+      const segs = houseSegments();
+      const totalWeight = segs.reduce((a, s) => a + s.weight, 0);
+      // Stages reveal across progress 0..1
+      // Stage cutoffs: ground@0.05, walls@0.25, roof@0.45, door+window@0.65, foundation+chimney@0.85
+      const stageCutoffs = [0.05, 0.25, 0.25, 0.45, 0.45, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.85, 0.95, 0.95, 0.95];
+
+      let assignedDots = 0;
+      const counts = segs.map((s, i) => {
+        if (i === segs.length - 1) return N - assignedDots;
+        const c = Math.round((s.weight / totalWeight) * N);
+        assignedDots += c;
+        return c;
+      });
+
+      let idx = 0;
+      segs.forEach((s, si) => {
+        const cnt = counts[si];
+        const cut = stageCutoffs[si] ?? 0;
+        const segP = clamp((p - cut) / 0.18, 0, 1); // each segment fades in over ~18% of progress
+        for (let j = 0; j < cnt && idx < N; j++) {
+          const t = cnt > 1 ? j / (cnt - 1) : 0;
+          // small zigzag/corrugation offset for walls and roof
+          const corrugate = (si >= 1 && si <= 4) ? Math.sin(t * Math.PI * 14) * 4 : 0;
+          const dx = (s.x2 - s.x1);
+          const dy = (s.y2 - s.y1);
+          const len = Math.hypot(dx, dy) || 1;
+          const nx = -dy / len, ny = dx / len; // perpendicular
+          const d = dots[idx++];
+          // scattered position when segP near 0; settles to line as segP -> 1
+          const scatterRadius = lerp(160, 0, easeOutCubic(segP));
+          const sx = s.x1 + dx * t + nx * corrugate;
+          const sy = s.y1 + dy * t + ny * corrugate;
+          // add noise scatter when not yet placed
+          const noise = (Math.sin(d.phase + j) + Math.cos(d.phase * 1.3)) * scatterRadius * 0.5;
+          d.tx = sx + (1 - segP) * noise;
+          d.ty = sy + (1 - segP) * noise * 0.6;
+          d.tcolor = s.pop ? POP : INK;
+          d.role = s.pop ? 'pop' : 'fill';
+          d.talpha = lerp(0.18, 0.95, segP);
+          d.tsize = s.pop ? 2.5 : 1.6;
+        }
+      });
+      // Any leftover dots scatter in the background
+      while (idx < N) {
+        const d = dots[idx++];
+        d.tx = W * 0.35 + (Math.cos(d.phase * 2) + Math.sin(d.phase * 3)) * 80;
+        d.ty = H * 0.5 + (Math.sin(d.phase * 1.7) + Math.cos(d.phase * 2.3)) * 80;
+        d.tcolor = INK;
+        d.talpha = 0.06;
+        d.tsize = 1.0;
+      }
+    };
+
+    const scatterShape = (p: number) => {
+      // Constellation: dots float, occasionally connect, sparse yellow pulse.
+      for (let i = 0; i < N; i++) {
+        const d = dots[i];
+        const angle = d.phase + p * 0.6;
+        d.tx = (W * 0.5) + Math.cos(angle * 1.3) * (W * 0.45) * (0.4 + (i % 7) / 10);
+        d.ty = (H * 0.5) + Math.sin(angle * 1.1) * (H * 0.45) * (0.4 + (i % 11) / 14);
+        const pop = (i % 41) === 0;
+        d.tcolor = pop ? POP : INK;
+        d.role = pop ? 'pop' : 'fill';
+        d.talpha = pop ? 0.85 : 0.22;
+        d.tsize = pop ? 2.4 : 1.0;
+      }
+    };
+
+    const fadeShape = () => {
+      for (let i = 0; i < N; i++) {
+        const d = dots[i];
+        d.talpha = 0;
+        d.tsize = 1.0;
+      }
+    };
+
+    // Logo shape: dots converge onto sampled pixels from logo.png
+    let logoTargets: Array<{ nx: number; ny: number }> = [];
+    let logoLoaded = false;
+    (() => {
+      const img = new Image();
+      img.onload = () => {
+        const SIZE = 420;
+        const off = document.createElement('canvas');
+        off.width = SIZE; off.height = SIZE;
+        const octx = off.getContext('2d')!;
+        octx.drawImage(img, 0, 0, SIZE, SIZE);
+        const data = octx.getImageData(0, 0, SIZE, SIZE).data;
+        const dark: Array<{ nx: number; ny: number }> = [];
+        for (let py = 0; py < SIZE; py++) {
+          for (let px = 0; px < SIZE; px++) {
+            const i4 = (py * SIZE + px) * 4;
+            if (data[i4 + 3] > 128 && data[i4] < 90) {
+              dark.push({ nx: px / SIZE, ny: py / SIZE });
+            }
+          }
+        }
+        // Shuffle so dots spread across the whole logo, not top-to-bottom
+        for (let i = dark.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = dark[i]; dark[i] = dark[j]; dark[j] = tmp;
+        }
+        // Take N; tile if somehow fewer dark pixels than N
+        logoTargets = dark.slice(0, N);
+        while (logoTargets.length < N && dark.length > 0) {
+          logoTargets.push(...dark.slice(0, N - logoTargets.length));
+        }
+        logoLoaded = true;
+      };
+      img.src = '/projects/logo.png';
+    })();
+
+    const logoShape = (p: number) => {
+      if (!logoLoaded || logoTargets.length === 0) { fadeShape(); return; }
+      const isMobile = W < 768;
+      const logoSize = isMobile ? Math.min(W * 0.72, 400) : Math.min(W * 0.36, 400);
+      const cx = isMobile ? W * 0.5 : W * 0.72;
+      const cy = isMobile ? H * 0.42 : H * 0.5;
+      const originX = cx - logoSize / 2;
+      const originY = cy - logoSize / 2;
+      const ep = easeOutCubic(p);
+      for (let i = 0; i < N; i++) {
+        const d = dots[i];
+        const t = logoTargets[i] ?? logoTargets[i % logoTargets.length];
+        const targetX = originX + t.nx * logoSize;
+        const targetY = originY + t.ny * logoSize;
+        const scatterR = lerp(200, 0, ep);
+        d.tx = targetX + Math.sin(d.phase * 2.3 + i * 0.07) * scatterR * (1 - ep);
+        d.ty = targetY + Math.cos(d.phase * 1.7 + i * 0.05) * scatterR * (1 - ep);
+        d.talpha = lerp(0.08, 0.95, ep);
+        const isAccent = (i % 9 === 0);
+        d.tcolor = isAccent ? POP : INK;
+        d.role = isAccent ? 'pop' : 'fill';
+        d.tsize = isAccent ? 3.0 : 2.2;
+      }
+    };
+
+    // Effects shape: centered grid, 20% more opaque than the standard grid
+    const effectsShape = (p: number) => {
+      const COLS = 36;
+      const ROWS = Math.ceil(N / COLS);
+      const boxW = lerp(W * 0.45, Math.min(W * 0.78, 1100), easeOutCubic(p));
+      const boxH = lerp(H * 0.42, Math.min(H * 0.7, 740), easeOutCubic(p));
+      const startX = (W - boxW) / 2;
+      const startY = (H - boxH) / 2 + 40;
+      const stepX = boxW / (COLS - 1);
+      const stepY = boxH / (ROWS - 1);
+      const wavePhase = p * Math.PI * 2 * 1.5;
+      for (let i = 0; i < N; i++) {
+        const r = Math.floor(i / COLS);
+        const c = i % COLS;
+        const d = dots[i];
+        const ncx = (c - COLS / 2) / (COLS / 2);
+        const ncy = (r - ROWS / 2) / (ROWS / 2);
+        const dist = Math.sqrt(ncx * ncx + ncy * ncy);
+        const ripple = Math.sin(dist * 6 - wavePhase) * 6 * (1 - p * 0.4);
+        d.tx = startX + c * stepX;
+        d.ty = startY + r * stepY + ripple;
+        d.tcolor = INK;
+        d.role = 'fill';
+        // 20% more opaque: cap raised to 1.0, base raised proportionally
+        d.talpha = lerp(0.10, 1.0, easeOutCubic(p));
+        d.tsize = 1.4 + Math.sin(dist * 8 - wavePhase) * 0.6;
+      }
+    };
+
+    function computeShape(shape: Shape, p: number) {
+      switch (shape) {
+        case 'grid':    gridShape(p, false); break;
+        case 'stat':    gridShape(p, true);  break;
+        case 'line':    lineShape(p);        break;
+        case 'house':   houseShape(p);       break;
+        case 'logo':    logoShape(p);        break;
+        case 'effects': effectsShape(p);     break;
+        case 'scatter': scatterShape(p);     break;
+        case 'fade':
+        default:        fadeShape();         break;
+      }
+    }
+
+    // ------- Helpers -------
+    function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
+    function clamp(v: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, v)); }
+    function easeOutCubic(t: number) { return 1 - Math.pow(1 - t, 3); }
+    function hexToRgb(hex: string) {
+      const v = parseInt(hex.slice(1), 16);
+      return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
+    }
+    function lerpColor(a: string, b: string, t: number) {
+      const [ar, ag, ab] = hexToRgb(a.startsWith('#') ? a : INK);
+      const [br, bg, bb] = hexToRgb(b.startsWith('#') ? b : INK);
+      return `rgb(${Math.round(lerp(ar, br, t))},${Math.round(lerp(ag, bg, t))},${Math.round(lerp(ab, bb, t))})`;
+    }
+
+    // ------- Mouse + touch interaction -------
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      mouseActive = true;
+    });
+    window.addEventListener('mouseleave', () => { mouseActive = false; });
+    window.addEventListener('blur', () => { mouseActive = false; });
+    window.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (t) { mouseX = t.clientX; mouseY = t.clientY; mouseActive = true; }
+    }, { passive: true });
+    window.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      if (t) { mouseX = t.clientX; mouseY = t.clientY; mouseActive = true; }
+    }, { passive: true });
+    window.addEventListener('touchend', () => { mouseActive = false; });
+
+    // ------- Render loop -------
+    const REPEL_R = 130;     // px
+    const REPEL_STRENGTH = 28;
+    const breathe = 1.7;     // px amplitude
+
+    const render = (now: number) => {
+      ctx.clearRect(0, 0, W, H);
+      // Recompute target shape continuously (so progress changes flow into target)
+      computeShape(activeShape, progress[activeShape]);
+
+      const ease = 0.09;
+      for (let i = 0; i < N; i++) {
+        const d = dots[i];
+        // settle current toward target
+        d.x = lerp(d.x, d.tx, ease);
+        d.y = lerp(d.y, d.ty, ease);
+        d.alpha = lerp(d.alpha, d.talpha, ease);
+        d.size = lerp(d.size, d.tsize, ease);
+        d.color = lerpColor(d.color, d.tcolor, 0.08);
+
+        if (d.alpha < 0.005) continue;
+
+        // breathing offset
+        const bx = Math.cos(now * 0.0009 + d.phase) * breathe * d.drift;
+        const by = Math.sin(now * 0.0011 + d.phase * 1.4) * breathe * d.drift;
+
+        let rx = d.x + bx;
+        let ry = d.y + by;
+
+        // mouse repulsion
+        if (mouseActive) {
+          const ddx = rx - mouseX;
+          const ddy = ry - mouseY;
+          const dist2 = ddx * ddx + ddy * ddy;
+          if (dist2 < REPEL_R * REPEL_R && dist2 > 0.01) {
+            const dist = Math.sqrt(dist2);
+            const f = (1 - dist / REPEL_R);
+            rx += (ddx / dist) * f * REPEL_STRENGTH;
+            ry += (ddy / dist) * f * REPEL_STRENGTH;
+          }
+        }
+
+        // size pulse
+        const sizePulse = 1 + Math.sin(now * 0.002 + d.phase) * 0.18;
+
+        ctx.globalAlpha = d.alpha;
+        ctx.fillStyle = d.color;
+        ctx.beginPath();
+        ctx.arc(rx, ry, d.size * sizePulse, 0, Math.PI * 2);
+        ctx.fill();
+
+        // pop dots get a subtle halo
+        if (d.role === 'pop' && d.alpha > 0.4) {
+          ctx.globalAlpha = d.alpha * 0.18;
+          ctx.beginPath();
+          ctx.arc(rx, ry, d.size * sizePulse * 3.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(render);
+    };
+
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(render);
+
+    // Public API for ScrollTrigger
+    (window as any).__dots = {
+      setShape: (s: Shape) => { activeShape = s; },
+      setProgress: (s: Shape, p: number) => { progress[s] = clamp(p, 0, 1); },
+      // backwards-compat with earlier name
+      applyShape: (s: Shape) => { activeShape = s; if (progress[s] === 0) progress[s] = 1; },
+    };
+  }
+</script>
