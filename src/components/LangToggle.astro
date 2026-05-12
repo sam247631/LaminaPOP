@@ -35,8 +35,7 @@
         s.classList.toggle('opacity-30', s.getAttribute('data-lang') !== lang);
       });
     };
-    const stored = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
-    setLang(stored === 'es' ? 'es' : 'en');
+    setLang('en');
     btn?.addEventListener('click', () => setLang(html.lang === 'es' ? 'en' : 'es'));
   })();
 </script>
