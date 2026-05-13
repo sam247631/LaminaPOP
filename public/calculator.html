@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -500,7 +500,7 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
 <div class="page active" id="page-calc">
 <!-- Print header (hidden on screen) -->
 <div class="print-header" id="print-header">
-  <h2>PARED DE SHEET POP — COTIZACIÓN</h2>
+  <h2>SHEET POP WALL — QUOTE</h2>
   <p id="print-client-info">—</p>
 </div>
 <div class="calc-layout">
@@ -855,7 +855,7 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
       </div>
       <!-- Start height -->
       <div style="display:flex;align-items:center;gap:5px;background:var(--input);border:1px solid var(--border);border-radius:var(--radius);padding:4px 9px">
-        <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em">Height inicio</span>
+        <span style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em" data-i18n="ev-h1-lbl">Start height</span>
         <input type="number" id="ev-h1" value="12" min="1" max="30" step="1" oninput="drawElevNew()" style="background:transparent;border:none;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;outline:none;width:38px;-moz-appearance:textfield">
         <span style="font-size:10px;color:var(--text-dim)">ft</span>
       </div>
@@ -884,13 +884,13 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
 
   <!-- RIGHT: Results -->
   <div style="background:var(--panel);overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.65rem">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:.9rem;letter-spacing:.1em;color:var(--rust-light)">Materiales</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:.9rem;letter-spacing:.1em;color:var(--rust-light)" data-i18n="ev-materials-title">Materials</div>
 
     <!-- Key numbers -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-      <div class="metric"><div class="m-label">Height inicio</div><div class="m-val accent" id="ev-r-h1">12 ft</div></div>
-      <div class="metric"><div class="m-label">Height final</div><div class="m-val accent" id="ev-r-h2">—</div></div>
-      <div class="metric"><div class="m-label">Diferencia</div><div class="m-val" id="ev-r-drop">—</div></div>
+      <div class="metric"><div class="m-label" data-i18n="ev-r-h1-lbl">Start height</div><div class="m-val accent" id="ev-r-h1">12 ft</div></div>
+      <div class="metric"><div class="m-label" data-i18n="ev-r-h2-lbl">End height</div><div class="m-val accent" id="ev-r-h2">—</div></div>
+      <div class="metric"><div class="m-label" data-i18n="ev-r-drop-lbl">Drop</div><div class="m-val" id="ev-r-drop">—</div></div>
       <div class="metric"><div class="m-label">Angle</div><div class="m-val" id="ev-r-angle">—</div></div>
       <div class="metric"><div class="m-label">Length</div><div class="m-val" id="ev-r-len">—</div></div>
       <div class="metric"><div class="m-label">Total sheets</div><div class="m-val" id="ev-r-total-lam">—</div></div>
@@ -904,7 +904,7 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
 
     <!-- Prices -->
     <div style="background:var(--input);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);margin-bottom:.5rem">Precio por lámina</div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);margin-bottom:.5rem" data-i18n="ev-price-lbl">Price per sheet</div>
       <div style="display:flex;flex-direction:column;gap:4px">
         <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--text-dim);width:34px">8 ft</span><input type="number" id="evp-8" value="85" min="0" step="1" oninput="calcElevNew()" style="flex:1;font-size:12px;padding:4px 8px"></div>
         <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--text-dim);width:34px">9 ft</span><input type="number" id="evp-9" value="95" min="0" step="1" oninput="calcElevNew()" style="flex:1;font-size:12px;padding:4px 8px"></div>
@@ -1046,21 +1046,21 @@ function buildSummaryText(){
   const len=gv('wall-length'),pps=prices()[selH],rpp=gv('rpp'),rp=gv('rp'),ubp=gv('ubprice'),ubl=UBLOCK_L();
   const panels=Math.ceil(len/EFF),lam=panels*2,ub=Math.ceil(len/ubl),riv=panels*rpp;
   const lc=lam*pps,ubc=ub*ubp,rc=riv*rp,tot=lc+ubc+rc;
-  let msg=`🏗 *COTIZACIÓN PARED DE SHEET POP*\n`;
-  if(name) msg+=`👤 Cliente: ${name}\n`;
-  if(project) msg+=`📍 Proyecto: ${project}\n`;
+  let msg=`🏗 *SHEET POP WALL QUOTE*\n`;
+  if(name) msg+=`👤 Client: ${name}\n`;
+  if(project) msg+=`📍 Project: ${project}\n`;
   msg+=`\n📐 *Specifications*\n`;
   msg+=`• Length: ${len.toFixed(2)} m\n`;
   msg+=`• Height: ${selH} ft\n`;
-  msg+=`• Paneles: ${panels} (${lam} sheets × 2)\n`;
+  msg+=`• Panels: ${panels} (${lam} sheets × 2)\n`;
   msg+=`• U-Blocks: ${ub}\n`;
   msg+=`• Rivets: ${riv}\n\n`;
-  msg+=`💰 *Costos*\n`;
-  msg+=`• Láminas: ${fmtQ(lc)}\n`;
+  msg+=`💰 *Costs*\n`;
+  msg+=`• Sheets: ${fmtQ(lc)}\n`;
   msg+=`• U-Blocks: ${fmtQ(ubc)}\n`;
   msg+=`• Rivets: ${fmtQ(rc)}\n`;
   msg+=`• *TOTAL: ${fmtQ(tot)}*\n`;
-  if(notes) msg+=`\n📝 Notas: ${notes}`;
+  if(notes) msg+=`\n📝 Notes: ${notes}`;
   return msg;
 }
 
@@ -1454,8 +1454,8 @@ function doPrint(){
         ub=Math.ceil(netLen/ubl), riv=panels*rpp;
   const lc=lam*pps, ubc=ub*ubp, rc=riv*rp, tot=lc+ubc+rc;
   const stats=computeStats();
-  const date=new Date().toLocaleDateString('es-GT',{year:'numeric',month:'long',day:'numeric'});
-  const Q=n=>'Q '+n.toLocaleString('es-GT',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const Q=n=>'Q '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 
   // Capture 2D canvas — fit content then capture on white background
   let img2Durl='';
@@ -1517,17 +1517,17 @@ function doPrint(){
     +'</div>'
     // Info strip
     +'<div class="pinfo">'
-    +'<div><span class="lbl">Height l\u00e1mina</span><span class="val">'+selH+' ft</span></div>'
+    +'<div><span class="lbl">Sheet height</span><span class="val">'+selH+' ft</span></div>'
     +'<div><span class="lbl">Wall length</span><span class="val">'+totWallLen.toFixed(2)+' m</span></div>'
-    +'<div><span class="lbl">Vanos deducted</span><span class="val">'+(totDoorLen+totWinLen).toFixed(2)+' m</span></div>'
-    +'<div><span class="lbl">Length neta</span><span class="val">'+netLen.toFixed(2)+' m</span></div>'
+    +'<div><span class="lbl">Openings deducted</span><span class="val">'+(totDoorLen+totWinLen).toFixed(2)+' m</span></div>'
+    +'<div><span class="lbl">Net length</span><span class="val">'+netLen.toFixed(2)+' m</span></div>'
     +(stats.perim>0?'<div><span class="lbl">Perimeter</span><span class="val">'+stats.perim.toFixed(2)+' m</span></div>':'')
     +(stats.area>0.5?'<div><span class="lbl">Approx. area</span><span class="val">'+stats.area.toFixed(1)+' m\u00b2</span></div>':'')
-    +(notes?'<div style="flex:1"><span class="lbl">Notas</span><span class="val" style="font-weight:400;font-size:10px">'+notes+'</span></div>':'')
+    +(notes?'<div style="flex:1"><span class="lbl">Notes</span><span class="val" style="font-weight:400;font-size:10px">'+notes+'</span></div>':'')
     +'</div>'
     // Stat boxes
     +'<div class="pstats">'
-    +'<div class="pstat"><div class="sv">'+panels+'</div><div class="sl">Paneles</div></div>'
+    +'<div class="pstat"><div class="sv">'+panels+'</div><div class="sl">Panels</div></div>'
     +'<div class="pstat"><div class="sv">'+lam+'</div><div class="sl">Sheets \u00d72</div></div>'
     +'<div class="pstat"><div class="sv">'+ub+'</div><div class="sl">U-Blocks</div></div>'
     +'<div class="pstat"><div class="sv">'+riv+'</div><div class="sl">Rivets</div></div>'
@@ -1536,26 +1536,26 @@ function doPrint(){
     // Materials table
     +'<div class="psec">Materials List</div>'
     +'<table><thead><tr>'
-    +'<th>Material / Concepto</th><th>Specification</th><th class="r">Quantity</th><th class="r">Unit Price</th><th class="r">Subtotal</th>'
+    +'<th>Material</th><th>Specification</th><th class="r">Quantity</th><th class="r">Unit Price</th><th class="r">Subtotal</th>'
     +'</tr></thead><tbody>'
     +'<tr><td><strong>Corrugated Sheet '+selH+' ft</strong></td>'
     +'<td>Width 0.81 m · Overlap 10 cm · Effective 0.71 m</td>'
     +'<td class="r"><strong>'+lam+'</strong> sheets</td><td class="r">'+Q(pps)+'</td><td class="r"><strong>'+Q(lc)+'</strong></td></tr>'
     +'<tr class="trow-sub"><td colspan="2">&nbsp;&nbsp;&nbsp;'+panels+' panels \u00d7 2 sheets/panel</td><td colspan="3"></td></tr>'
     +'<tr><td><strong>U-Block</strong></td>'
-    +'<td>'+ubl+' m por bloque \u00b7 Al pie y cima de la l\u00e1mina</td>'
+    +'<td>'+ubl+' m per block \u00b7 At base and top of sheet</td>'
     +'<td class="r"><strong>'+ub+'</strong> blocks</td><td class="r">'+Q(ubp)+'</td><td class="r"><strong>'+Q(ubc)+'</strong></td></tr>'
     +'<tr><td><strong>Pop Rivets</strong></td>'
     +'<td>'+rpp+' per panel · '+panels+' panels</td>'
     +'<td class="r"><strong>'+riv+'</strong></td><td class="r">'+Q(rp)+'</td><td class="r"><strong>'+Q(rc)+'</strong></td></tr>'
-    +(doors2d.length?'<tr class="trow-deduct"><td>Openings/Doors ('+doors2d.length+')</td><td>Long. descontada de sheets</td><td class="r">'+totDoorLen.toFixed(2)+' m</td><td class="r">\u2014</td><td class="r">deducted</td></tr>':'')
+    +(doors2d.length?'<tr class="trow-deduct"><td>Openings/Doors ('+doors2d.length+')</td><td>Length deducted from sheets</td><td class="r">'+totDoorLen.toFixed(2)+' m</td><td class="r">\u2014</td><td class="r">deducted</td></tr>':'')
     +(wins2d.length?'<tr class="trow-deduct"><td>Windows ('+wins2d.length+')</td><td>Sill 0.8 m · Height 1 m</td><td class="r">'+totWinLen.toFixed(2)+' m</td><td class="r">\u2014</td><td class="r">deducted</td></tr>':'')
     +'<tr class="trow-total"><td colspan="4">ESTIMATED TOTAL</td><td class="r">'+Q(tot)+'</td></tr>'
     +'</tbody></table>'
     // Per-element breakdown
     +(allEls.length
-      ?'<div class="psec">Breakdown por Elemento</div>'
-      +'<table><thead><tr><th>#</th><th>Type</th><th class="r">Length</th><th class="r">Paneles</th><th class="r">Sheets</th><th class="r">Est. Cost</th></tr></thead>'
+      ?'<div class="psec">Breakdown by Element</div>'
+      +'<table><thead><tr><th>#</th><th>Type</th><th class="r">Length</th><th class="r">Panels</th><th class="r">Sheets</th><th class="r">Est. Cost</th></tr></thead>'
       +'<tbody>'+elRows+'</tbody></table>'
       :'')
     +'<div class="pfooter"><span>Lamina Pop Wall Calculator · 10cm overlap · Sheet 0.81m · Effective 0.71m</span><span>Pg. 1</span></div>'
@@ -1585,7 +1585,7 @@ function doPrint(){
     ;
 
   // Build a complete standalone HTML document and print it via a hidden iframe
-  const fullDoc = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+  const fullDoc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>Lamina Pop — Wall Quote</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -4033,7 +4033,7 @@ function applyProjectState(state){
 
 function saveProject(){
   const nameEl=document.getElementById('proj-name-input');
-  const name=(nameEl.value.trim())||('Proyecto '+new Date().toLocaleDateString('es-GT'));
+  const name=(nameEl.value.trim())||('Project '+new Date().toLocaleDateString('en-US'));
   const projects=getProjects();
   // Check if name exists — update it
   const existing=projects.findIndex(p=>p.name===name);
@@ -4051,7 +4051,7 @@ function loadProject(name){
   if(!entry){ showToast('Project not found'); return; }
   applyProjectState(entry.state);
   closeProjects();
-  showToast('Proyecto "'+name+'" cargado ✓');
+  showToast('Project "'+name+'" loaded ✓');
 }
 
 function deleteProject(name){
@@ -4399,6 +4399,7 @@ function checkUrlProject(){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
+applyLang('en');
 calc();
 checkUrlProject();
 </script>
