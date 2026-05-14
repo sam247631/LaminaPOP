@@ -647,7 +647,7 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
       <div class="br"><span class="brl">Rivets</span><span class="brv" id="bd-rv">—</span></div>
       <div class="br"><span class="brl">Rivet cost</span><span class="brv" id="bd-rc">—</span></div>
       <div class="br" id="bd-labor-row" style="display:none"><span class="brl" style="color:var(--green-light)">Labor</span><span class="brv" style="color:var(--green-light)" id="bd-labor-brv">—</span></div>
-      <div class="br btotal"><span class="brl">TOTAL</span><span class="brv" id="bd-tot">—</span></div>
+      <div class="br btotal"><span class="brl">TOTAL (walls)</span><span class="brv" id="bd-tot">—</span></div>
     </div>
 
   </div>
@@ -687,6 +687,7 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
         <circle cx="2" cy="11" r="1.2" fill="currentColor"/><circle cx="11" cy="2" r="1.2" fill="currentColor"/>
       </svg>Ref Line
     </button>
+
     <button class="tbtn" id="btn-select" onclick="setTool('select')">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2l3.5 9 2-3.5 3.5-2L2 2z" fill="currentColor"/></svg data-i18n="select-btn">Select
     </button>
@@ -766,11 +767,12 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
     <div class="label-input-wrap" id="label-input-wrap"><input type="text" id="label-input" placeholder="Type label…" onkeydown="labelKeyDown(event)"></div>
     <!-- Exact length input popup -->
     <div class="len-input-wrap" id="len-input-wrap">
-      <div class="len-title">Length exacta <span class="len-dir" id="len-dir-lbl">→</span></div>
+      <div class="len-title">Length <span class="len-dir" id="len-dir-lbl">→</span></div>
       <div class="len-input-row">
         <input type="number" id="len-input" min="0.01" step="0.01" placeholder="5.00" onkeydown="lenKeyDown(event)">
         <span class="len-unit">m</span>
       </div>
+
       <div class="len-input-btns">
         <button class="len-cancel" onclick="lenCancel()">Cancel</button>
         <button class="len-ok" onclick="lenCommit()">✓ Confirm</button>
@@ -1973,9 +1975,7 @@ function lenCommit(){
   // Push history and commit element
   pushHistory();
   if(elType==='line'){
-    const el={type:'line',x1:start.x,y1:start.y,x2:end.x,y2:end.y,height:zoneH};
-    
-    elements.push(el);
+    elements.push({type:'line',x1:start.x,y1:start.y,x2:end.x,y2:end.y,height:selH});
     drawStart={x:end.x,y:end.y};
   } else if(elType==='ublock'){
     elements.push({type:'ublock',x1:start.x,y1:start.y,x2:end.x,y2:end.y});
@@ -3275,7 +3275,7 @@ function build3D(){
   walls.forEach(w=>{sx+=w.x1+w.x2;sz+=w.y1+w.y2;nn+=2;});
   if(nn) tgt3.set(sx/nn,H/2,sz/nn);
 
-  // Build walls — route straight vs curved vs gradient, using per-element height
+  // Build walls
   walls.forEach(w=>{
     const H=ftToM(elHeight(w));
     if(w.type==='curve') addCurveWall(w,H,THICK,metalMat,seamMat,topMat);
