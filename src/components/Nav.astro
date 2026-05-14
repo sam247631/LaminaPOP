@@ -46,8 +46,8 @@ const links = [
             data-i18n="t"
             class="nav-link group relative py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted transition-colors duration-200 hover:text-ink [&.is-active]:text-ink"
           >
-            <span data-lang="es">{l.es}</span>
-            <span data-lang="en" class="hidden">{l.en}</span>
+            <span data-lang="es" class="hidden">{l.es}</span>
+            <span data-lang="en">{l.en}</span>
             <!-- underline indicator -->
             <span
               aria-hidden="true"
@@ -58,7 +58,17 @@ const links = [
       ))}
     </ol>
 
+    <!-- Build Your Own CTA -->
+    <a
+      href="/calculator"
+      data-i18n="t"
+      class="hidden items-center gap-1.5 rounded-full bg-pop px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink transition-opacity hover:opacity-80 md:flex"
+    >
+      <span data-lang="es" class="hidden">Construye la tuya</span>
+      <span data-lang="en">Build Your Own</span>
+    </a>
+
     <!-- Space reserved for the floating LangToggle pill (z-50, top-5 right-5) -->
-    <div class="hidden w-16 shrink-0 md:block" aria-hidden="true"></div>
+    <div class="hidden w-4 shrink-0 md:block" aria-hidden="true"></div>
   </div>
 </nav>
