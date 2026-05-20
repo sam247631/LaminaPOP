@@ -450,15 +450,16 @@
         // size pulse
         const sizePulse = 1 + Math.sin(now * 0.002 + d.phase) * 0.18;
 
-        ctx.globalAlpha = d.alpha;
-        ctx.fillStyle = d.color;
+        const mob = W < 768;
+        ctx.globalAlpha = mob ? d.alpha * 0.5 : d.alpha;
+        ctx.fillStyle = mob ? '#B38000' : d.color;
         ctx.beginPath();
         ctx.arc(rx, ry, d.size * sizePulse, 0, Math.PI * 2);
         ctx.fill();
 
         // pop dots get a subtle halo
         if (d.role === 'pop' && d.alpha > 0.4) {
-          ctx.globalAlpha = d.alpha * 0.18;
+          ctx.globalAlpha = (mob ? d.alpha * 0.5 : d.alpha) * 0.18;
           ctx.beginPath();
           ctx.arc(rx, ry, d.size * sizePulse * 3.2, 0, Math.PI * 2);
           ctx.fill();
