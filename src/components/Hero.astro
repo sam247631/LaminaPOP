@@ -23,20 +23,6 @@ const STRIPS = 22, STEP = 22;
 const stripXs = Array.from({ length: STRIPS }, (_, i) => 20 + i * STEP);
 const innerXs = stripXs.filter(x => x > HLX && x < HRX);
 
-// Mobile banner – skyline of corrugated houses (viewBox 0 0 420 110, base at y=108)
-const bannerHouses = [
-  { x: 0,   wH: 44, rH: 22 },
-  { x: 60,  wH: 52, rH: 26 },
-  { x: 120, wH: 38, rH: 19 },
-  { x: 180, wH: 56, rH: 28 },
-  { x: 240, wH: 46, rH: 23 },
-  { x: 300, wH: 40, rH: 20 },
-  { x: 360, wH: 50, rH: 25 },
-];
-const bPts = (x: number, wH: number, rH: number) => {
-  const eY = 108 - wH;
-  return `${x + 26},${eY - rH} ${x},${eY} ${x},108 ${x + 52},108 ${x + 52},${eY}`;
-};
 ---
 
 <section
@@ -44,37 +30,19 @@ const bPts = (x: number, wH: number, rH: number) => {
   class="relative z-20 min-h-[100svh] w-full overflow-hidden"
   data-section="hero"
 >
-  <!-- Mobile house-skyline banner -->
-  <div class="md:hidden absolute top-0 inset-x-0 overflow-hidden" aria-hidden="true">
-    <svg width="100%" height="110" viewBox="0 0 420 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="bsp" x="0" y="0" width="8" height="110" patternUnits="userSpaceOnUse">
-          <rect width="5" height="110" fill="#FFD600"/>
-          <rect x="5" width="3" height="110" fill="#D4A800"/>
-        </pattern>
-        <clipPath id="bhc">
-          {bannerHouses.map(({ x, wH, rH }) => <polygon points={bPts(x, wH, rH)}/>)}
-        </clipPath>
-      </defs>
-      <!-- Yellow corrugated stripe fill clipped to all house silhouettes -->
-      <rect width="420" height="110" fill="url(#bsp)" clip-path="url(#bhc)"/>
-      <!-- Per-house outlines, doors, windows -->
-      {bannerHouses.map(({ x, wH, rH }) => {
-        const eY = 108 - wH;
-        const doorH = Math.round(wH * 0.44);
-        const winY = eY + Math.round(wH * 0.22);
-        const winH = Math.round(wH * 0.30);
-        return (
-          <g>
-            <polygon points={bPts(x, wH, rH)} fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linejoin="miter"/>
-            <rect x={x + 21} y={108 - doorH} width="10" height={doorH} fill="none" stroke="#0A0A0A" stroke-width="1.5"/>
-            <rect x={x + 7} y={winY} width="11" height={winH} fill="white" stroke="#0A0A0A" stroke-width="1.2"/>
-          </g>
-        );
-      })}
-      <!-- Ground line -->
-      <line x1="0" y1="108" x2="420" y2="108" stroke="#0A0A0A" stroke-width="2.5"/>
-    </svg>
+  <!-- Mobile logo-house banner: PNG brightened to white so multiply-blend reveals yellow stripes -->
+  <div
+    class="md:hidden absolute top-0 inset-x-0 overflow-hidden flex"
+    style="height:112px; background:repeating-linear-gradient(90deg,#FFD600 0px,#FFD600 6px,#D4A800 6px,#D4A800 9px);"
+    aria-hidden="true"
+  >
+    {Array.from({ length: 5 }, () => (
+      <img
+        src="/projects/logo-house.png"
+        alt=""
+        style="height:112px; width:112px; object-fit:cover; flex-shrink:0; filter:brightness(10); mix-blend-mode:multiply;"
+      />
+    ))}
   </div>
 
   <!--
