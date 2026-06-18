@@ -1,85 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-
-// BrandLogo geometry — clip the PNG to the exact logo shape
-const LX = 58, RX = 442;
-const TY = 90, BY = 412;
-const CYCLES = 5, AMP = 36;
-
-function waveR(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
-  const W = (x1 - x0) / cycles;
-  const k = (4 / 3) * amp;
-  const f = (n: number) => +n.toFixed(1);
-  let d = `M${x0},${baseY}`;
-  for (let i = 0; i < cycles; i++) {
-    const x = x0 + i * W;
-    d += ` C${f(x+W/6)},${f(baseY-k)} ${f(x+W/3)},${f(baseY-k)} ${f(x+W/2)},${baseY}`;
-    d += ` C${f(x+2*W/3)},${f(baseY+k)} ${f(x+5*W/6)},${f(baseY+k)} ${f(x+W)},${baseY}`;
-  }
-  return d;
-}
-function waveL(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
-  const W = (x0 - x1) / cycles;
-  const k = (4 / 3) * amp;
-  const f = (n: number) => +n.toFixed(1);
-  let d = '';
-  for (let i = 0; i < cycles; i++) {
-    const x = x0 - i * W;
-    d += ` C${f(x-W/6)},${f(baseY+k)} ${f(x-W/3)},${f(baseY+k)} ${f(x-W/2)},${baseY}`;
-    d += ` C${f(x-2*W/3)},${f(baseY-k)} ${f(x-5*W/6)},${f(baseY-k)} ${f(x-W)},${baseY}`;
-  }
-  return d;
-}
-
-const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
-  + ` L${RX},${BY}`
-  + waveL(BY, RX, LX, CYCLES, AMP)
-  + ' Z';
 ---
 
 <Base title="404 — Lamina POP">
   <div class="page">
 
-    <!--
-      The PNG is clipped to the exact logo shape path.
-      An animated rect mask then reveals it from top to bottom,
-      creating the effect of the logo being "built".
-    -->
-    <svg class="logo-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-
-        <!-- Clips image to the exact logo boundary -->
-        <clipPath id="logo-clip">
-          <path d={shapePath} />
-        </clipPath>
-
-        <!-- Reveal mask: rect grows from top to bottom -->
-        <mask id="reveal-mask">
-          <rect id="reveal-rect" x="0" y="0" width="500" height="0" fill="white">
-            <animate
-              attributeName="height"
-              from="0" to="500"
-              dur="1.6s"
-              begin="0.15s"
-              fill="freeze"
-              calcMode="spline"
-              keyTimes="0;1"
-              keySplines="0.4 0 0.2 1"
-            />
-          </rect>
-        </mask>
-
-      </defs>
-
-      <!-- Logo image: clipped to shape, then revealed top-to-bottom -->
-      <g clip-path="url(#logo-clip)" mask="url(#reveal-mask)">
-        <image
-          href="/logo-404.png"
-          x="0" y="0" width="500" height="500"
-          preserveAspectRatio="xMidYMid meet"
-        />
-      </g>
-    </svg>
+    <img src="/logo-404.png" alt="Lamina POP" class="logo-img" />
 
     <p class="eyebrow">404</p>
     <h1 class="headline">This page hasn't<br>been built yet.</h1>
@@ -91,6 +17,7 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
       <a href="/" class="cta-primary">See the system →</a>
       <a href="/gallery" class="cta-secondary">View gallery</a>
     </div>
+
   </div>
 </Base>
 
@@ -105,13 +32,12 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     padding: 3rem 1.5rem 4rem;
   }
 
-  .logo-svg {
-    width: min(300px, 68vw);
+  .logo-img {
+    width: min(260px, 60vw);
     height: auto;
     margin-bottom: 2.5rem;
   }
 
-  /* Text fades in after logo finishes revealing */
   .eyebrow {
     font-size: 11px;
     font-weight: 600;
@@ -119,8 +45,6 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     text-transform: uppercase;
     color: #6B6B6B;
     margin-bottom: 1rem;
-    opacity: 0;
-    animation: fadeUp 0.4s 2.0s ease-out forwards;
   }
   .headline {
     font-family: 'Space Grotesk', sans-serif;
@@ -130,8 +54,6 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     letter-spacing: -0.04em;
     color: #0A0A0A;
     margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 0.45s 2.2s ease-out forwards;
   }
   .sub {
     font-size: clamp(0.88rem, 2vw, 1.05rem);
@@ -139,8 +61,6 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     line-height: 1.7;
     max-width: 36ch;
     margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.4s 2.4s ease-out forwards;
   }
   .sub em { color: #0A0A0A; font-style: normal; font-weight: 600; }
 
@@ -150,15 +70,7 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     gap: 2rem;
     flex-wrap: wrap;
     justify-content: center;
-    opacity: 0;
-    animation: fadeUp 0.4s 2.6s ease-out forwards;
   }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
   .cta-primary {
     font-size: 0.75rem;
     font-weight: 700;
@@ -171,7 +83,6 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
     transition: opacity 0.2s;
   }
   .cta-primary:hover { opacity: 0.55; }
-
   .cta-secondary {
     font-size: 0.75rem;
     font-weight: 600;
