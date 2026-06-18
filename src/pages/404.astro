@@ -1,0 +1,233 @@
+---
+import Base from '../layouts/Base.astro';
+
+const LX = 80, RX = 420, PEAK_X = 250;
+const PEAK_Y = 24, EAVE_Y = 136, BASE_Y = 326, FOUND_Y2 = 362;
+const DIVS = 18;
+const step = (RX - LX) / DIVS;
+
+function wave(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
+  const W = (x1 - x0) / cycles;
+  const k = (4 / 3) * amp;
+  const f = (n: number) => +n.toFixed(1);
+  let d = `M${x0},${baseY}`;
+  for (let i = 0; i < cycles; i++) {
+    const x = x0 + i * W;
+    d += ` C${f(x+W/6)},${f(baseY-k)} ${f(x+W/3)},${f(baseY-k)} ${f(x+W/2)},${baseY}`;
+    d += ` C${f(x+2*W/3)},${f(baseY+k)} ${f(x+5*W/6)},${f(baseY+k)} ${f(x+W)},${baseY}`;
+  }
+  return d;
+}
+
+const panelLines = Array.from({ length: DIVS - 1 }, (_, i) => +(LX + (i + 1) * step).toFixed(1));
+const dotXs      = Array.from({ length: DIVS + 1 }, (_, i) => +(LX + i * step).toFixed(1));
+const outerL     = [3, 2, 1].map(n => +(LX - n * step).toFixed(1));
+const outerR     = [1, 2, 3].map(n => +(RX + n * step).toFixed(1));
+const row1       = [...outerL, ...dotXs, ...outerR];
+const row2       = [...dotXs];
+---
+
+<Base title="404 — Lamina POP">
+  <div class="page">
+
+    <svg class="logo-svg" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+
+      <!-- Foundation -->
+      <rect class="foundation" x={LX} y={BASE_Y} width={RX - LX} height={FOUND_Y2 - BASE_Y} fill="#0A0A0A" />
+
+      <!-- Panel dividers -->
+      {panelLines.map((x, i) => (
+        <line class="panel" style={`--pi:${i}`} x1={x} y1={EAVE_Y} x2={x} y2={BASE_Y} stroke="#B8B8B8" stroke-width="1.2" />
+      ))}
+
+      <!-- Corrugation wave -->
+      <path class="wave-path" d={wave(255, LX, RX, 8, 15)} stroke="#0A0A0A" stroke-width="2.5" />
+
+      <!-- Walls -->
+      <line class="wall-l" x1={LX} y1={BASE_Y} x2={LX} y2={EAVE_Y} stroke="#0A0A0A" stroke-width="5" />
+      <line class="wall-r" x1={RX} y1={BASE_Y} x2={RX} y2={EAVE_Y} stroke="#0A0A0A" stroke-width="5" />
+
+      <!-- Roof -->
+      <line class="roof-l" x1={LX - 2} y1={EAVE_Y} x2={PEAK_X} y2={PEAK_Y} stroke="#0A0A0A" stroke-width="5.5" stroke-linecap="square" />
+      <line class="roof-r" x1={RX + 2} y1={EAVE_Y} x2={PEAK_X} y2={PEAK_Y} stroke="#0A0A0A" stroke-width="5.5" stroke-linecap="square" />
+
+      <!-- Window -->
+      <rect class="detail" x="112" y="184" width="66" height="67" fill="white" stroke="#0A0A0A" stroke-width="2.5" />
+      <line class="detail" x1="145" y1="184" x2="145" y2="251" stroke="#0A0A0A" stroke-width="2" />
+      <line class="detail" x1="112" y1="217" x2="178" y2="217" stroke="#0A0A0A" stroke-width="2" />
+
+      <!-- Door -->
+      <rect class="detail" x="219" y="228" width="62" height={BASE_Y - 228} fill="#FFD600" />
+      <circle class="detail" cx="269" cy="284" r="3.5" fill="#0A0A0A" />
+
+      <!-- Dots row 1 (left to right) -->
+      {row1.map((x, i) => (
+        <circle class="dot" style={`--di:${i}`} cx={x} cy={EAVE_Y + 18} r="5.5" fill="#FFD600" />
+      ))}
+
+      <!-- Dots row 2 (after row 1) -->
+      {row2.map((x, i) => (
+        <circle class="dot dot-r2" style={`--di:${i}`} cx={x} cy={BASE_Y - 18} r="5.5" fill="#FFD600" />
+      ))}
+    </svg>
+
+    <p class="eyebrow">404</p>
+    <h1 class="headline">This page hasn't<br>been built yet.</h1>
+    <p class="sub">
+      Give us 72 hours — we'll rivet something together.<br>
+      In the meantime, check out what we <em>have</em> built already.
+    </p>
+    <div class="cta-row">
+      <a href="/" class="cta-primary">See the system →</a>
+      <a href="/gallery" class="cta-secondary">View gallery</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /* ─── Logo SVG ─── */
+  .logo-svg {
+    width: min(340px, 78vw);
+    height: auto;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ─── Shared hidden start ─── */
+  .foundation, .panel, .detail { opacity: 0; }
+  .wave-path, .wall-l, .wall-r, .roof-l, .roof-r { opacity: 0; }
+  .dot { opacity: 0; transform-origin: center; transform-box: fill-box; }
+
+  /* ─── Foundation ─── */
+  .foundation { animation: fadeUp 0.4s 0.1s ease-out forwards; }
+
+  /* ─── Panels ─── */
+  .panel { animation: fadeUp 0.3s ease-out forwards;
+           animation-delay: calc(0.5s + var(--pi) * 0.04s); }
+
+  /* ─── Wave ─── */
+  .wave-path {
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    animation: drawStroke 0.8s 0.95s ease-in-out forwards;
+  }
+
+  /* ─── Walls ─── */
+  .wall-l {
+    stroke-dasharray: 190;
+    stroke-dashoffset: 190;
+    animation: drawStroke 0.4s 0.65s ease-out forwards;
+  }
+  .wall-r {
+    stroke-dasharray: 190;
+    stroke-dashoffset: 190;
+    animation: drawStroke 0.4s 0.75s ease-out forwards;
+  }
+
+  /* ─── Roof ─── */
+  .roof-l {
+    stroke-dasharray: 245;
+    stroke-dashoffset: 245;
+    animation: drawStroke 0.45s 1.0s ease-out forwards;
+  }
+  .roof-r {
+    stroke-dasharray: 245;
+    stroke-dashoffset: 245;
+    animation: drawStroke 0.45s 1.1s ease-out forwards;
+  }
+
+  /* ─── Details ─── */
+  .detail { animation: fadeUp 0.35s 1.3s ease-out forwards; }
+
+  /* ─── Dots pop in ─── */
+  .dot {
+    animation: popDot 0.32s ease-out forwards;
+    animation-delay: calc(1.7s + var(--di) * 0.07s);
+  }
+  .dot-r2 {
+    animation-delay: calc(3.6s + var(--di) * 0.07s);
+  }
+
+  /* ─── Keyframes ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes drawStroke {
+    from { opacity: 1; stroke-dashoffset: inherit; }
+    to   { opacity: 1; stroke-dashoffset: 0; }
+  }
+  @keyframes popDot {
+    0%   { opacity: 0; transform: scale(0); }
+    55%  { opacity: 1; transform: scale(1.5); }
+    80%  { transform: scale(0.88); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ─── Text ─── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6B6B6B;
+    margin-bottom: 1rem;
+  }
+  .headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 7vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: #0A0A0A;
+    margin-bottom: 1.5rem;
+  }
+  .sub {
+    font-size: clamp(0.88rem, 2vw, 1.05rem);
+    color: #6B6B6B;
+    line-height: 1.7;
+    max-width: 36ch;
+    margin-bottom: 2.5rem;
+  }
+  .sub em { color: #0A0A0A; font-style: normal; font-weight: 600; }
+
+  /* ─── CTAs ─── */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cta-primary {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #0A0A0A;
+    border-bottom: 2.5px solid #FFD600;
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .cta-primary:hover { opacity: 0.55; }
+  .cta-secondary {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #6B6B6B;
+    transition: color 0.2s;
+  }
+  .cta-secondary:hover { color: #0A0A0A; }
+</style>
