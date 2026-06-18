@@ -58,13 +58,14 @@ import BrandLogo from './BrandLogo.astro';
         -->
         <form
           id="contact-form"
+          name="contact"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
           class="space-y-6"
           novalidate
         >
-          <!-- Replace YOUR_ACCESS_KEY with the key from web3forms.com/create -->
-          <input type="hidden" name="access_key" value="6b2fa17b-323d-4080-8275-383ed735b1e8" />
-          <input type="hidden" name="subject" value="New message from laminapop.com" />
-          <input type="hidden" name="from_name" value="Lamina POP Website" />
+          <input type="hidden" name="form-name" value="contact" />
+          <input type="hidden" name="bot-field" class="hidden" />
 
           <div>
             <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="name" data-i18n="t">
@@ -192,13 +193,12 @@ import BrandLogo from './BrandLogo.astro';
         btn.style.opacity = '0.5';
         status.classList.add('hidden');
         try {
-          const res = await fetch('https://api.web3forms.com/submit', {
+          const res = await fetch('/', {
             method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form)).toString(),
           });
-          const data = await res.json();
-          if (data.success) {
+          if (res.ok) {
             status.textContent = '✓ Enviado';
             status.classList.remove('hidden');
             form.reset();
