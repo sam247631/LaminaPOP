@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import LangToggle from '../components/LangToggle.astro';
+
+// Sorted by dominant colour hue (warm browns → olive greens → cool greys → blues)
+const images = [
+  '0073','0039','0028','0052','0055','0063','0059','0077','0054','0091',
+  '0044','0011','0080','0013','0012','0035','0050','0057','0058','0046',
+  '0074','0014','0056','0018','0004','0029','0051','0090','0064','0078',
+  '0042','0027','0002','0006','0020','0075','0047','0081','0030','0033',
+  '0068','0026','0086','0036','0083','0003','0082','0061','0009','0010',
+  '0079','0041','0076','0048','0094','0034','0037','0085','0062','0005',
+  '0072','0049','0016','0017','0007','0070','0092','0025','0001','0022',
+  '0067','0019','0023','0021','0015','0089','0045','0060','0071','0043',
+  '0040','0038','0087','0065','0008','0093','0032','0053','0088','0084',
+  '0066','0024','0031','0069',
+];
+---
+
+<Base title="Gallery — Lamina POP">
+  <Nav />
+  <LangToggle />
+
+  <main class="min-h-screen bg-ink pt-[52px]">
+
+    <!-- Header -->
+    <div class="mx-auto max-w-[1400px] px-6 py-16">
+      <p class="eyebrow mb-4 text-paper/35" data-i18n="t">
+        <span data-lang="es">Galería</span>
+        <span data-lang="en" class="hidden">Gallery</span>
+      </p>
+      <h1 class="h-display text-[clamp(2.4rem,5vw,5rem)] leading-[0.95] text-paper" data-i18n="t">
+        <span data-lang="es">Proyectos<br><span class="text-pop">en imágenes</span></span>
+        <span data-lang="en" class="hidden">Projects<br><span class="text-pop">in pictures</span></span>
+      </h1>
+    </div>
+
+    <!-- Masonry grid -->
+    <div class="masonry px-4 pb-24 md:px-6">
+      {images.map((n, i) => (
+        <div class="masonry-item group">
+          <img
+            src={`/gallery/${n}.jpg`}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class="block w-full transition-opacity duration-500 group-hover:opacity-80"
+            onerror="this.closest('.masonry-item').style.display='none'"
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Footer line -->
+    <div class="border-t border-paper/10 px-6 py-8 text-center">
+      <a
+        href="/"
+        class="text-[10px] font-semibold uppercase tracking-[0.18em] text-paper/30 transition-colors hover:text-pop"
+        data-i18n="t"
+      >
+        <span data-lang="es">← Volver al inicio</span>
+        <span data-lang="en" class="hidden">← Back to home</span>
+      </a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .masonry {
+    columns: 1;
+    column-gap: 6px;
+  }
+  @media (min-width: 640px) {
+    .masonry { columns: 2; }
+  }
+  @media (min-width: 1024px) {
+    .masonry { columns: 3; }
+  }
+  @media (min-width: 1400px) {
+    .masonry { columns: 4; }
+  }
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+</style>
