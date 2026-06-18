@@ -3,6 +3,7 @@ const links = [
   { href: '#crisis',   es: 'Problema',  en: 'Problem'  },
   { href: '#solution', es: 'Solución',  en: 'Solution' },
   { href: '#projects', es: 'Proyectos', en: 'Projects' },
+  { href: '/gallery',  es: 'Galería',   en: 'Gallery'  },
   { href: '#contact',  es: 'Contacto',  en: 'Contact'  },
 ];
 ---
@@ -42,7 +43,7 @@ const links = [
         <li>
           <a
             href={l.href}
-            data-target={l.href.slice(1)}
+            data-target={l.href.startsWith('#') ? l.href.slice(1) : undefined}
             data-i18n="t"
             class="nav-link group relative py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted transition-colors duration-200 hover:text-ink [&.is-active]:text-ink"
           >
