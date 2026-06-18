@@ -1,11 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 
-// BrandLogo geometry — matches BrandLogo.astro exactly
+// BrandLogo geometry — clip the PNG to the exact logo shape
 const LX = 58, RX = 442;
 const TY = 90, BY = 412;
 const CYCLES = 5, AMP = 36;
-const SW = 12;
 
 function waveR(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
   const W = (x1 - x0) / cycles;
@@ -19,7 +18,6 @@ function waveR(baseY: number, x0: number, x1: number, cycles: number, amp: numbe
   }
   return d;
 }
-
 function waveL(baseY: number, x0: number, x1: number, cycles: number, amp: number) {
   const W = (x0 - x1) / cycles;
   const k = (4 / 3) * amp;
@@ -37,47 +35,50 @@ const shapePath = waveR(TY, LX, RX, CYCLES, AMP)
   + ` L${RX},${BY}`
   + waveL(BY, RX, LX, CYCLES, AMP)
   + ' Z';
-
-const CX = 188, CY = 218, CR = 60;
-const DL = 283, DR = 363, DT = 248;
-const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
 ---
 
 <Base title="404 — Lamina POP">
   <div class="page">
 
-    <svg class="logo-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+    <!--
+      The PNG is clipped to the exact logo shape path.
+      An animated rect mask then reveals it from top to bottom,
+      creating the effect of the logo being "built".
+    -->
+    <svg class="logo-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
 
-      <!-- Outer corrugated shape — stroke only, drawn first -->
-      <path
-        id="anim-shape"
-        d={shapePath}
-        fill="none"
-        stroke="#0A0A0A"
-        stroke-width={SW}
-        stroke-linejoin="round"
-        stroke-linecap="round"
-      />
+        <!-- Clips image to the exact logo boundary -->
+        <clipPath id="logo-clip">
+          <path d={shapePath} />
+        </clipPath>
 
-      <!-- Circle / porthole -->
-      <circle
-        id="anim-circle"
-        cx={CX} cy={CY} r={CR}
-        fill="none"
-        stroke="#0A0A0A"
-        stroke-width={SW}
-      />
+        <!-- Reveal mask: rect grows from top to bottom -->
+        <mask id="reveal-mask">
+          <rect id="reveal-rect" x="0" y="0" width="500" height="0" fill="white">
+            <animate
+              attributeName="height"
+              from="0" to="500"
+              dur="1.6s"
+              begin="0.15s"
+              fill="freeze"
+              calcMode="spline"
+              keyTimes="0;1"
+              keySplines="0.4 0 0.2 1"
+            />
+          </rect>
+        </mask>
 
-      <!-- Door -->
-      <path
-        id="anim-door"
-        d={doorPath}
-        fill="none"
-        stroke="#0A0A0A"
-        stroke-width={SW}
-        stroke-linecap="square"
-        stroke-linejoin="miter"
-      />
+      </defs>
+
+      <!-- Logo image: clipped to shape, then revealed top-to-bottom -->
+      <g clip-path="url(#logo-clip)" mask="url(#reveal-mask)">
+        <image
+          href="/logo-404.png"
+          x="0" y="0" width="500" height="500"
+          preserveAspectRatio="xMidYMid meet"
+        />
+      </g>
     </svg>
 
     <p class="eyebrow">404</p>
@@ -105,19 +106,12 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
   }
 
   .logo-svg {
-    width: min(300px, 70vw);
+    width: min(300px, 68vw);
     height: auto;
     margin-bottom: 2.5rem;
   }
 
-  /* Start hidden — JS sets dasharray/offset after measuring real path length */
-  #anim-shape, #anim-circle, #anim-door { opacity: 0; }
-
-  @keyframes drawIn {
-    to { stroke-dashoffset: 0; opacity: 1; }
-  }
-
-  /* ─── Text ─── */
+  /* Text fades in after logo finishes revealing */
   .eyebrow {
     font-size: 11px;
     font-weight: 600;
@@ -126,7 +120,7 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     color: #6B6B6B;
     margin-bottom: 1rem;
     opacity: 0;
-    animation: fadeUp 0.4s 2.2s ease-out forwards;
+    animation: fadeUp 0.4s 2.0s ease-out forwards;
   }
   .headline {
     font-family: 'Space Grotesk', sans-serif;
@@ -137,7 +131,7 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     color: #0A0A0A;
     margin-bottom: 1.5rem;
     opacity: 0;
-    animation: fadeUp 0.45s 2.4s ease-out forwards;
+    animation: fadeUp 0.45s 2.2s ease-out forwards;
   }
   .sub {
     font-size: clamp(0.88rem, 2vw, 1.05rem);
@@ -146,9 +140,10 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     max-width: 36ch;
     margin-bottom: 2.5rem;
     opacity: 0;
-    animation: fadeUp 0.4s 2.6s ease-out forwards;
+    animation: fadeUp 0.4s 2.4s ease-out forwards;
   }
   .sub em { color: #0A0A0A; font-style: normal; font-weight: 600; }
+
   .cta-row {
     display: flex;
     align-items: center;
@@ -156,7 +151,7 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     flex-wrap: wrap;
     justify-content: center;
     opacity: 0;
-    animation: fadeUp 0.4s 2.8s ease-out forwards;
+    animation: fadeUp 0.4s 2.6s ease-out forwards;
   }
 
   @keyframes fadeUp {
@@ -164,7 +159,6 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ─── CTAs ─── */
   .cta-primary {
     font-size: 0.75rem;
     font-weight: 700;
@@ -177,6 +171,7 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
     transition: opacity 0.2s;
   }
   .cta-primary:hover { opacity: 0.55; }
+
   .cta-secondary {
     font-size: 0.75rem;
     font-weight: 600;
@@ -188,24 +183,3 @@ const doorPath = `M${DL},${BY} L${DL},${DT} L${DR},${DT} L${DR},${BY}`;
   }
   .cta-secondary:hover { color: #0A0A0A; }
 </style>
-
-<script is:inline>
-  // Measure real path lengths then kick off the stroke-draw animation
-  window.addEventListener('DOMContentLoaded', function () {
-    var shape  = document.getElementById('anim-shape');
-    var circle = document.getElementById('anim-circle');
-    var door   = document.getElementById('anim-door');
-
-    function animatePath(el, delay, duration) {
-      var len = el.getTotalLength ? el.getTotalLength() : 2000;
-      el.style.strokeDasharray  = len;
-      el.style.strokeDashoffset = len;
-      el.style.opacity = '1';
-      el.style.animation = 'drawIn ' + duration + 's ' + delay + 's ease-in-out forwards';
-    }
-
-    animatePath(shape,  0.1, 1.4);
-    animatePath(circle, 1.3, 0.6);
-    animatePath(door,   1.8, 0.5);
-  });
-</script>
