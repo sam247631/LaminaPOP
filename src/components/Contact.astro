@@ -58,34 +58,24 @@ import BrandLogo from './BrandLogo.astro';
         -->
         <form
           id="contact-form"
-          action="https://formspree.io/swezey47@gmail.com"
-          method="POST"
           class="space-y-6"
           novalidate
         >
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div>
-              <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="name" data-i18n="t">
-                <span data-lang="es">Nombre</span>
-                <span data-lang="en" class="hidden">Name</span>
-              </label>
-              <input
-                id="name" name="name" type="text" required
-                class="w-full border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
-                placeholder="—"
-              />
-            </div>
-            <div>
-              <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="email" data-i18n="t">
-                <span data-lang="es">Correo electrónico</span>
-                <span data-lang="en" class="hidden">Email</span>
-              </label>
-              <input
-                id="email" name="email" type="email" required
-                class="w-full border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
-                placeholder="—"
-              />
-            </div>
+          <!-- Replace YOUR_ACCESS_KEY with the key from web3forms.com/create -->
+          <input type="hidden" name="access_key" value="6b2fa17b-323d-4080-8275-383ed735b1e8" />
+          <input type="hidden" name="subject" value="New message from laminapop.com" />
+          <input type="hidden" name="from_name" value="Lamina POP Website" />
+
+          <div>
+            <label class="mb-2 block text-xs font-semibold uppercase tracking-widest text-paper/40" for="name" data-i18n="t">
+              <span data-lang="es">Nombre</span>
+              <span data-lang="en" class="hidden">Name</span>
+            </label>
+            <input
+              id="name" name="name" type="text" required
+              class="w-full border-b border-paper/20 bg-transparent py-3 text-paper placeholder-paper/25 outline-none transition-colors focus:border-pop"
+              placeholder="—"
+            />
           </div>
 
           <div>
@@ -200,13 +190,15 @@ import BrandLogo from './BrandLogo.astro';
         e.preventDefault();
         btn.setAttribute('disabled', 'true');
         btn.style.opacity = '0.5';
+        status.classList.add('hidden');
         try {
-          const res = await fetch(form.action, {
+          const res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             body: new FormData(form),
             headers: { Accept: 'application/json' },
           });
-          if (res.ok) {
+          const data = await res.json();
+          if (data.success) {
             status.textContent = '✓ Enviado';
             status.classList.remove('hidden');
             form.reset();
