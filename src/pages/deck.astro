@@ -10,749 +10,889 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink: #0A0A0A;
-      --paper: #FFFFFF;
-      --pop: #FFD600;
-      --muted: #6B6B6B;
-      --line: #E5E5E5;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      line-height: 1.5;
-    }
-
-    /* ── Slide base ── */
-    .slide {
-      min-height: 100svh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem 2rem;
-    }
-
-    .inner {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    /* ── Typography ── */
-    .display {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-    }
-
-    .eyebrow {
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .eyebrow.light { color: rgba(255,255,255,0.4); }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      border: 1px solid var(--pop);
-      color: var(--pop);
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-    }
-
-    .tag.dim {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* ── Slide 1: Cover ── */
-    #s1 {
-      background: var(--pop);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #s1 .inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    #s1 h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: clamp(4rem, 10vw, 9rem);
-      line-height: 0.88;
-      letter-spacing: -0.04em;
-      color: var(--ink);
-    }
-
-    #s1 .right {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    #s1 .tagline {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.25rem, 2.5vw, 2rem);
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.15;
-    }
-
-    #s1 .meta {
-      font-size: 0.8125rem;
-      color: rgba(0,0,0,0.5);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    #s1 .slide-num {
-      position: absolute;
-      bottom: 2rem;
-      right: 2rem;
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.3);
-    }
-
-    /* ── Slide 2: Mission ── */
-    #s2 { background: var(--ink); color: var(--paper); }
-
-    #s2 .mission-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.75rem, 4vw, 3.5rem);
-      font-weight: 600;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      max-width: 900px;
-    }
-
-    #s2 .mission-text em {
-      font-style: normal;
-      color: var(--pop);
-    }
-
-    #s2 .tags { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 3rem; }
-
-    /* ── Slide 3: Crisis ── */
-    #s3 { padding: 0; position: relative; overflow: hidden; }
-
-    #s3 .crisis-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      filter: brightness(0.35);
-    }
-
-    #s3 .inner {
-      position: relative;
-      z-index: 1;
-      padding: 5rem 2rem;
-      color: var(--paper);
-    }
-
-    #s3 h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 6vw, 5.5rem);
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      max-width: 800px;
-      margin-bottom: 2rem;
-    }
-
-    #s3 h2 mark {
-      background: var(--pop);
-      color: var(--ink);
-      padding: 0 0.15em;
-    }
-
-    #s3 .crisis-body {
-      max-width: 560px;
-      font-size: 1.125rem;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 4rem;
-    }
-
-    #s3 .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      padding-top: 2.5rem;
-    }
-
-    #s3 .stat-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700;
-      color: var(--pop);
-      line-height: 1;
-    }
-
-    #s3 .stat-label {
-      font-size: 0.8125rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 0.5rem;
-    }
-
-    /* ── Slide 4: System ── */
-    #s4 { background: var(--paper); }
-
-    #s4 .system-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-      margin-top: 3rem;
-    }
-
-    #s4 .steps { display: flex; flex-direction: column; gap: 0; }
-
-    #s4 .step {
-      border-top: 1px solid var(--line);
-      padding: 1.75rem 0;
-    }
-
-    #s4 .step:last-child { border-bottom: 1px solid var(--line); }
-
-    #s4 .step-num {
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-
-    #s4 .step h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    #s4 .step p { font-size: 0.9375rem; color: var(--muted); max-width: 380px; }
-
-    #s4 .system-img {
-      width: 100%;
-      border-radius: 2px;
-      display: block;
-    }
-
-    /* ── Slide 5: Why ── */
-    #s5 { background: var(--ink); color: var(--paper); }
-
-    #s5 h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      margin-bottom: 4rem;
-    }
-
-    #s5 h2 span { color: var(--pop); }
-
-    #s5 .why-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    #s5 .why-item {
-      padding: 2.5rem;
-      border-right: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    #s5 .why-item:nth-child(2n) { border-right: none; }
-    #s5 .why-item:nth-child(3),
-    #s5 .why-item:nth-child(4) { border-bottom: none; }
-
-    #s5 .why-label {
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pop);
-      margin-bottom: 1rem;
-    }
-
-    #s5 .why-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 0.75rem;
-    }
-
-    #s5 .why-desc { font-size: 0.9375rem; color: rgba(255,255,255,0.55); }
-
-    /* ── Slide 6: What we build ── */
-    #s6 { background: var(--paper); }
-
-    #s6 h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.25rem, 5vw, 4.5rem);
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      margin-bottom: 3rem;
-    }
-
-    #s6 .build-img {
-      width: 100%;
-      display: block;
-      border-radius: 2px;
-      margin-bottom: 3rem;
-    }
-
-    #s6 .build-types {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      border-top: 1px solid var(--line);
-      padding-top: 2rem;
-    }
-
-    #s6 .build-type {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    #s6 .build-type span {
-      display: block;
-      width: 2rem;
-      height: 2px;
-      background: var(--pop);
-      margin-bottom: 0.75rem;
-    }
-
-    /* ── Slide 7: Traction ── */
-    #s7 { background: var(--pop); }
-
-    #s7 h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.25rem, 5vw, 4rem);
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-      margin-bottom: 4rem;
-    }
-
-    #s7 .traction-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-    }
-
-    #s7 .t-item { border-top: 2px solid rgba(0,0,0,0.2); padding-top: 1.5rem; }
-
-    #s7 .t-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    #s7 .t-label {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: rgba(0,0,0,0.55);
-      margin-top: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    #s7 .partner-row {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    #s7 .partner-label {
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.45);
-    }
-
-    #s7 .partner-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    /* ── Slide 8: Closing ── */
-    #s8 { padding: 0; position: relative; overflow: hidden; }
-
-    #s8 .closing-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      filter: brightness(0.25);
-    }
-
-    #s8 .inner {
-      position: relative;
-      z-index: 1;
-      padding: 5rem 2rem;
-      color: var(--paper);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 100svh;
-    }
-
-    #s8 h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 700;
-      line-height: 0.92;
-      letter-spacing: -0.04em;
-      max-width: 800px;
-    }
-
-    #s8 h2 em {
-      font-style: normal;
-      color: var(--pop);
-    }
-
-    #s8 .closing-footer {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      padding-top: 2rem;
-    }
-
-    #s8 .contact-email {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--pop);
-      text-decoration: none;
-    }
-
-    #s8 .contact-email:hover { text-decoration: underline; }
-
-    #s8 .contact-web {
-      font-size: 0.9375rem;
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* ── Nav dots ── */
-    .nav-dots {
-      position: fixed;
-      right: 1.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      z-index: 100;
-    }
-
-    .nav-dots a {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.25);
-      display: block;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .nav-dots a.active,
-    .nav-dots a:hover { background: var(--ink); transform: scale(1.5); }
-
-    .nav-dots.light a { background: rgba(255,255,255,0.3); }
-    .nav-dots.light a.active,
-    .nav-dots.light a:hover { background: var(--pop); }
-
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      #s1 .inner { grid-template-columns: 1fr; gap: 2rem; }
-      #s4 .system-grid { grid-template-columns: 1fr; }
-      #s5 .why-grid { grid-template-columns: 1fr; }
-      #s5 .why-item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
-      #s5 .why-item:last-child { border-bottom: none !important; }
-      #s6 .build-types { grid-template-columns: repeat(2, 1fr); }
-      #s7 .traction-grid { grid-template-columns: repeat(2, 1fr); }
-      #s3 .stats-row { grid-template-columns: 1fr; gap: 1.5rem; }
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Nav dots -->
+  <div id="progress-bar"></div>
+
   <nav class="nav-dots" id="navdots" aria-label="Slide navigation">
-    <a href="#s1" title="Cover"></a>
-    <a href="#s2" title="Mission"></a>
-    <a href="#s3" title="The Crisis"></a>
-    <a href="#s4" title="Our System"></a>
-    <a href="#s5" title="Why Lamina POP"></a>
-    <a href="#s6" title="What We Build"></a>
-    <a href="#s7" title="Traction"></a>
-    <a href="#s8" title="Contact"></a>
+    <a href="#s1" title="The Thesis"></a>
+    <a href="#s2" title="The Problem"></a>
+    <a href="#s3" title="Technology"></a>
+    <a href="#s4" title="Speed & Scale"></a>
+    <a href="#s5" title="Human Impact"></a>
+    <a href="#s6" title="Traction"></a>
+    <a href="#s7" title="Business Model"></a>
+    <a href="#s8" title="The Ask"></a>
+    <a href="#s9" title="Contact"></a>
   </nav>
 
-  <!-- ── Slide 1: Cover ── -->
-  <section class="slide" id="s1">
-    <div class="inner">
+  <!-- ── S1: The Thesis ── -->
+  <section class="slide s-pop" id="s1">
+    <div class="inner s1-grid">
       <div>
-        <h1>LAMINA<br>POP</h1>
+        <h1 class="s1-title" data-a>LAMINA<br>POP</h1>
       </div>
-      <div class="right">
-        <p class="tagline">We build dignified,<br>safe, and accessible<br>housing.</p>
-        <p class="meta">Investor Deck · 2025</p>
+      <div class="s1-right">
+        <p class="eyebrow" data-a style="--d:0.15s">01 — The Thesis</p>
+        <p class="s1-tagline" data-a style="--d:0.3s">Redefining Structural Infrastructure<br>for Emerging Markets.</p>
+        <p class="s1-meta" data-a style="--d:0.45s">Investor Deck · 2026</p>
       </div>
     </div>
-    <span class="slide-num">01 / 08</span>
+    <span class="slide-num">01 / 09</span>
   </section>
 
-  <!-- ── Slide 2: Mission ── -->
-  <section class="slide" id="s2">
+  <!-- ── S2: The Core Problem ── -->
+  <section class="slide s-dark" id="s2">
     <div class="inner">
-      <p class="eyebrow light">02 — Mission</p>
-      <p class="mission-text">
-        Our mission is to increase access to <em>low-cost, dignified shelter worldwide</em>. Our patented construction system produces safer, healthier, and more accessible housing at a fraction of the cost and time of current solutions.
-      </p>
-      <div class="tags">
-        <span class="tag">Impact investment</span>
-        <span class="tag dim">Strategic partnerships</span>
-        <span class="tag dim">Community projects</span>
+      <p class="eyebrow eyebrow-light" data-a>02 — The Core Problem</p>
+      <h2 data-a style="--d:0.12s">The Shelter<br>and Debt Trap</h2>
+      <p class="lead lead-muted" data-a style="--d:0.24s">In emerging markets, families are forced to choose between two unsustainable paths:</p>
+      <div class="two-col" data-a style="--d:0.38s">
+        <div class="prob-card">
+          <div class="prob-num">01</div>
+          <h3 class="prob-title">Hazardous Shelter</h3>
+          <p>Living in substandard dirt-floor structures that cause chronic illness and trap families in cycles of poor health.</p>
+        </div>
+        <div class="prob-card">
+          <div class="prob-num">02</div>
+          <h3 class="prob-title">Debt Trap</h3>
+          <p>Taking on exploitative microfinance loans with crushing 30%+ compounding interest to build traditional concrete masonry.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 3: The Crisis ── -->
-  <section class="slide" id="s3">
-    <img src="/deck/crisis.png" alt="Guatemala hillside community" class="crisis-photo" />
+  <!-- ── S3: Technology Solution ── -->
+  <section class="slide s-paper" id="s3">
     <div class="inner">
-      <p class="eyebrow light">03 — The Problem</p>
-      <h2><mark>2.2 million</mark> people in Guatemala live in inadequate shelter.</h2>
-      <p class="crisis-body">
-        That hinders their wellbeing and severely limits their potential. Globally, the scale is even larger — and growing.
-      </p>
-      <div class="stats-row">
-        <div>
-          <div class="stat-val">1.6B</div>
-          <div class="stat-label">without dignified housing globally</div>
+      <p class="eyebrow" data-a>03 — The Technology Solution</p>
+      <h2 data-a style="--d:0.12s">Waveform<br>Geometry</h2>
+      <div class="tech-grid">
+        <div class="tech-left">
+          <p class="lead" data-a style="--d:0.22s">A patented architectural technology that turns lightweight, globally accessible sheet metal into strong, load-bearing structures.</p>
+          <ul class="feat-list" data-a style="--d:0.34s">
+            <li>
+              <span class="feat-title">3-in-1 Envelope</span>
+              <span class="feat-desc">Parallel galvanized steel sheets are vertically riveted to serve as wall, roof, and frame simultaneously.</span>
+            </li>
+            <li>
+              <span class="feat-title">Zero Lumber or Masonry</span>
+              <span class="feat-desc">Eliminates the need for traditional structural wood or concrete block infrastructure.</span>
+            </li>
+            <li>
+              <span class="feat-title">Built for Extremes</span>
+              <span class="feat-desc">Seismically flexible and wind-resistant. Standing for over 15 years in tropical, earthquake-prone regions with zero structural failures.</span>
+            </li>
+          </ul>
         </div>
-        <div>
-          <div class="stat-val">300M</div>
-          <div class="stat-label">children without safe shelter</div>
-        </div>
-        <div>
-          <div class="stat-val">3B</div>
-          <div class="stat-label">will need affordable housing by 2030</div>
+        <div data-a style="--d:0.46s">
+          <img src="/deck/laminas.png" alt="Lamina POP waveform steel sheets" class="tech-img" />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 4: Our System ── -->
-  <section class="slide" id="s4">
+  <!-- ── S4: Speed and Scale ── -->
+  <section class="slide s-img" id="s4">
+    <img src="/deck/speed.jpg" alt="Lamina POP construction team" class="slide-bg" />
+    <div class="slide-overlay"></div>
     <div class="inner">
-      <p class="eyebrow">04 — Our System</p>
-      <h2 class="display" style="font-size: clamp(2.25rem,5vw,4.5rem); margin-bottom: 0;">
-        One house. <span style="background: var(--pop); padding: 0 0.1em;">Two materials.</span> Days to build.
-      </h2>
-      <div class="system-grid">
-        <ol class="steps">
-          <li class="step">
-            <div class="step-num">01</div>
-            <h3>The Sheet</h3>
-            <p>Zinc or galvanized steel — available in any country, stocked in any rural hardware store.</p>
-          </li>
-          <li class="step">
-            <div class="step-num">02</div>
-            <h3>The Fold</h3>
-            <p>The sheet folds into a wave — like an accordion — turning into a light, resistant structural membrane.</p>
-          </li>
-          <li class="step">
-            <div class="step-num">03</div>
-            <h3>The POP Rivet</h3>
-            <p>Joins the folds without welding or specialized labor. A drill and an arm: the community builds its own house.</p>
-          </li>
-          <li class="step">
-            <div class="step-num">04</div>
-            <h3>The Assembly</h3>
-            <p>Light foundations, folded walls, sheet roof. Houses standing in days — not months.</p>
-          </li>
-        </ol>
-        <div>
-          <img src="/deck/system.png" alt="Lamina POP system diagram" class="system-img" />
+      <p class="eyebrow" data-a>04 — Speed and Scale</p>
+      <h2 data-a style="--d:0.12s">7 to 14<br>Days</h2>
+      <p class="lead" data-a style="--d:0.22s">The time it takes a 3-person team using basic hand tools to assemble a complete, flat-packed Lamina POP home.</p>
+      <div class="speed-row" data-a style="--d:0.34s">
+        <div class="speed-stat">
+          <div class="speed-label">Logistics</div>
+          <div class="speed-val">Resilient</div>
+          <p>Flat-pack shipping for remote, low-infrastructure areas where concrete trucks cannot pass.</p>
+        </div>
+        <div class="speed-stat">
+          <div class="speed-label">Cost Per Unit</div>
+          <div class="speed-val">$4,200–<br>$5,000</div>
+          <p>Roughly half the price of regional masonry alternatives.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 5: Why Lamina POP ── -->
-  <section class="slide" id="s5">
+  <!-- ── S5: Human Impact ── -->
+  <section class="slide s-img" id="s5">
+    <img src="/deck/impact.jpg" alt="Lamina POP family home" class="slide-bg" />
+    <div class="slide-overlay s5-overlay"></div>
     <div class="inner">
-      <p class="eyebrow light">05 — Why Lamina POP?</p>
-      <h2>Built to <span>outperform</span><br>every alternative.</h2>
-      <div class="why-grid">
-        <div class="why-item">
-          <div class="why-label">Price</div>
-          <div class="why-val">34%</div>
-          <div class="why-desc">cheaper than the current leading low-cost housing solution</div>
+      <p class="eyebrow" data-a>05 — The Human Impact</p>
+      <h2 data-a style="--d:0.12s">The Structural<br>Surplus</h2>
+      <p class="lead" data-a style="--d:0.22s">Moving a family out of substandard shelter into a Lamina POP home immediately transforms their household economics:</p>
+      <div class="impact-row" data-a style="--d:0.34s">
+        <div class="impact-stat">
+          <div class="impact-val">−44%</div>
+          <div class="impact-desc">Reduction in school and work absenteeism</div>
         </div>
-        <div class="why-item">
-          <div class="why-label">Time</div>
-          <div class="why-val">4 days</div>
-          <div class="why-desc">to build a complete Lamina POP home from the ground up</div>
-        </div>
-        <div class="why-item">
-          <div class="why-label">Access</div>
-          <div class="why-val">Anywhere</div>
-          <div class="why-desc">prefabricated and easily transported to hard-to-reach regions</div>
-        </div>
-        <div class="why-item">
-          <div class="why-label">Health</div>
-          <div class="why-val">Safe</div>
-          <div class="why-desc">eco-friendly, bright, cool, and well-ventilated by design</div>
+        <div class="impact-divider"></div>
+        <div class="impact-stat">
+          <div class="impact-val">+17%</div>
+          <div class="impact-desc">Structural increase in available household financial capital by permanently cutting emergency medical expenses</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 6: What We Build ── -->
-  <section class="slide" id="s6">
+  <!-- ── S6: Market Traction ── -->
+  <section class="slide s-img" id="s6">
+    <img src="/deck/traction.jpg" alt="Lamina POP project community" class="slide-bg" />
+    <div class="slide-overlay"></div>
     <div class="inner">
-      <p class="eyebrow">06 — What We Build</p>
-      <h2>One system.<br>Every structure.</h2>
-      <img src="/deck/buildings.png" alt="Social housing, commercial buildings, rural schools, luxury homes" class="build-img" />
-      <div class="build-types">
-        <div class="build-type"><span></span>Social Housing</div>
-        <div class="build-type"><span></span>Rural Schools</div>
-        <div class="build-type"><span></span>Commercial Buildings</div>
-        <div class="build-type"><span></span>Luxury Homes</div>
+      <p class="eyebrow" data-a>06 — Market Traction</p>
+      <h2 data-a style="--d:0.12s">Proven<br>Validation</h2>
+      <div class="traction-grid" data-a style="--d:0.26s">
+        <div class="traction-card">
+          <div class="traction-val">15+</div>
+          <div class="traction-key">Permanent Structures Built</div>
+          <p>Homes, warehouses, and institutional schools standing across Central America.</p>
+        </div>
+        <div class="traction-card">
+          <div class="traction-val">$75K</div>
+          <div class="traction-key">LTM Revenue</div>
+          <p>Achieved during our lean, capital-efficient, high-margin pilot R&D phase.</p>
+        </div>
+        <div class="traction-card">
+          <div class="traction-val">✓</div>
+          <div class="traction-key">Habitat for Humanity</div>
+          <p>Active deployment pipelines in partnership with one of the world's leading housing NGOs.</p>
+        </div>
+        <div class="traction-card">
+          <div class="traction-val">3×</div>
+          <div class="traction-key">Global Recognition</div>
+          <p>Backed by SantanderX, the Autodesk Foundation, and incubated at Cambridge Judge Business School.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 7: Traction ── -->
-  <section class="slide" id="s7">
+  <!-- ── S7: Commercial Engine ── -->
+  <section class="slide s-dark" id="s7">
     <div class="inner">
-      <p class="eyebrow" style="color: rgba(0,0,0,0.45);">07 — Traction</p>
-      <h2>20 years of<br>proven impact.</h2>
-      <div class="traction-grid">
-        <div class="t-item">
-          <div class="t-val">52</div>
-          <div class="t-label">Structures built</div>
+      <p class="eyebrow eyebrow-light" data-a>07 — The Commercial Engine</p>
+      <h2 data-a style="--d:0.12s">The Hybrid<br>Business Model</h2>
+      <p class="lead lead-muted" data-a style="--d:0.22s">We balance three distinct customer streams to maintain a self-sustaining enterprise:</p>
+      <div class="model-grid" data-a style="--d:0.36s">
+        <div class="model-card">
+          <div class="model-tag">B2B Commercial</div>
+          <p>High-design cabins and utility structures for eco-resorts and industrial clients at full market rate, generating a ~20% margin.</p>
         </div>
-        <div class="t-item">
-          <div class="t-val">300+</div>
-          <div class="t-label">People benefited</div>
+        <div class="model-card">
+          <div class="model-tag">Mid-Market Direct</div>
+          <p>Affordable housing solutions for private lower-middle-income buyers seeking an accessible path to dignified shelter.</p>
         </div>
-        <div class="t-item">
-          <div class="t-val">40%</div>
-          <div class="t-label">Less cost vs conventional</div>
+        <div class="model-card">
+          <div class="model-tag">Institutional Tenders</div>
+          <p>Bulk, high-volume social housing infrastructure alongside corporate CSR programs and municipal budgets.</p>
         </div>
-        <div class="t-item">
-          <div class="t-val">2004</div>
-          <div class="t-label">Year founded</div>
-        </div>
-      </div>
-      <div class="partner-row">
-        <span class="partner-label">Strategic partner</span>
-        <span style="width: 2rem; height: 1px; background: rgba(0,0,0,0.2);"></span>
-        <span class="partner-name">Autodesk Technology Impact</span>
       </div>
     </div>
   </section>
 
-  <!-- ── Slide 8: Closing ── -->
-  <section class="slide" id="s8">
-    <img src="/deck/closing.png" alt="Children in Lamina POP home" class="closing-photo" />
+  <!-- ── S8: The Ask ── -->
+  <section class="slide s-pop" id="s8">
     <div class="inner">
-      <div>
-        <p class="eyebrow light">08 — Let's Talk</p>
-        <h2>Shall we<br>build <em>something</em><br>together?</h2>
-      </div>
-      <div class="closing-footer">
-        <div>
-          <a href="mailto:info@laminapop.com" class="contact-email">info@laminapop.com</a>
-          <p class="contact-web" style="margin-top: 0.5rem;">www.laminapop.com</p>
+      <p class="eyebrow" data-a>08 — The Ask & Use of Funds</p>
+      <h2 class="ink" data-a style="--d:0.12s">Scaling<br>Manufacturing</h2>
+      <p class="lead ink-muted" data-a style="--d:0.22s">We are raising strategic capital to transition from our proven pilot phase into a centralized prefabrication facility.</p>
+      <div class="ask-grid" data-a style="--d:0.36s">
+        <div class="ask-card">
+          <div class="ask-pct">40%</div>
+          <div class="ask-label">Factory Optimization</div>
+          <p>Upgrading tooling to cut on-site assembly time from 14 days down to 7 days.</p>
         </div>
-        <div style="text-align: right;">
-          <p style="font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3);">
-            © 2004–2025 Lamina POP
-          </p>
+        <div class="ask-card">
+          <div class="ask-pct">30%</div>
+          <div class="ask-label">Direct Bulk Procurement</div>
+          <p>Securing steel directly from mills to reduce per-unit costs by 12–18%.</p>
+        </div>
+        <div class="ask-card">
+          <div class="ask-pct">20%</div>
+          <div class="ask-label">Key Operational Team</div>
+          <p>Expanding full-time local management, data governance, and manufacturing logistics staff.</p>
+        </div>
+        <div class="ask-card">
+          <div class="ask-pct">10%</div>
+          <div class="ask-label">Institutional Certifications</div>
+          <p>Finalizing approved status with national public housing subsidy frameworks.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <script>
-    // Nav dot highlighting
-    const dots = document.querySelectorAll('.nav-dots a');
-    const slides = document.querySelectorAll('section[id]');
-    const navEl = document.getElementById('navdots');
+  <!-- ── S9: Contact ── -->
+  <section class="slide s-dark" id="s9">
+    <div class="inner">
+      <p class="eyebrow eyebrow-light" data-a>09 — Contact</p>
+      <h2 class="closing-h2" data-a style="--d:0.12s">Build the Future<br>With <em class="pop-em">Us.</em></h2>
+      <p class="calc-callout" data-a style="--d:0.22s">Try our free <a href="https://www.laminapop.com/calculator" class="calc-link">construction cost calculator</a> — designed to put the system in anyone's hands, anywhere in the world.</p>
+      <div class="contact-block" data-a style="--d:0.38s">
+        <div class="contact-row">
+          <span class="c-label">CEO</span>
+          <span class="c-val">Sebastian Swezey</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Email</span>
+          <a href="mailto:swezey47@gmail.com" class="c-link">swezey47@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Web</span>
+          <a href="https://www.laminapop.com" class="c-link">www.laminapop.com</a>
+        </div>
+      </div>
+      <p class="c-copy" data-a style="--d:0.5s">© 2004–2026 Lamina POP</p>
+    </div>
+  </section>
 
-    const darkSlides = new Set(['s2', 's5', 's8']);
-    const yellowSlides = new Set(['s1', 's7']);
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id;
-        dots.forEach(d => d.classList.remove('active'));
-        const active = document.querySelector(`.nav-dots a[href="#${id}"]`);
-        if (active) active.classList.add('active');
-
-        // Flip dot color based on slide bg
-        if (darkSlides.has(id) || id === 's3') {
-          navEl.classList.add('light');
-        } else {
-          navEl.classList.remove('light');
-        }
-      });
-    }, { threshold: 0.5 });
-
-    slides.forEach(s => observer.observe(s));
-  </script>
 </body>
 </html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:   #0A0A0A;
+    --paper: #FFFFFF;
+    --pop:   #FFD600;
+    --muted: #6B6B6B;
+    --line:  #E5E5E5;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100%;
+  }
+
+  body {
+    font-family: Inter, sans-serif;
+    background: var(--ink);
+    color: var(--ink);
+    line-height: 1.55;
+    height: 100%;
+  }
+
+  /* ── progress bar ── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--pop);
+    width: 0;
+    transition: width 0.5s ease;
+    z-index: 200;
+  }
+
+  /* ── nav dots ── */
+  .nav-dots {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    z-index: 100;
+  }
+  .nav-dots a {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.22);
+    display: block;
+    transition: background 0.25s, transform 0.25s;
+  }
+  .nav-dots a.active,
+  .nav-dots a:hover {
+    background: var(--ink);
+    transform: scale(1.6);
+  }
+  .nav-dots.on-dark a { background: rgba(255,255,255,0.28); }
+  .nav-dots.on-dark a.active,
+  .nav-dots.on-dark a:hover {
+    background: var(--pop);
+    transform: scale(1.6);
+  }
+
+  /* ── slide base ── */
+  .slide {
+    scroll-snap-align: start;
+    min-height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 2rem;
+    position: relative;
+  }
+  .s-pop   { background: var(--pop); }
+  .s-dark  { background: var(--ink); color: var(--paper); }
+  .s-paper { background: var(--paper); }
+
+  .inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── type ── */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .eyebrow-light { color: rgba(255,255,255,0.38); }
+
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+    color: inherit;
+  }
+  .s-dark h2 { color: var(--paper); }
+
+  .lead {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 3rem;
+    line-height: 1.65;
+  }
+  .lead-muted { color: rgba(255,255,255,0.48); }
+  .ink-muted  { color: rgba(10,10,10,0.5); }
+  .ink        { color: var(--ink); }
+
+  /* ── entrance animations ── */
+  [data-a] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+    transition-delay: var(--d, 0s);
+  }
+  .is-visible [data-a] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── S1: Cover ── */
+  .s1-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .s1-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 700;
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .s1-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .s1-tagline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .s1-meta {
+    font-size: 0.8125rem;
+    color: rgba(0,0,0,0.45);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .slide-num {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.3);
+  }
+
+  /* ── S2: Problem ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .prob-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 2.5rem;
+  }
+  .prob-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--pop);
+    margin-bottom: 1.25rem;
+  }
+  .prob-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.875rem;
+  }
+  .prob-card p {
+    font-size: 0.9375rem;
+    color: rgba(255,255,255,0.52);
+    line-height: 1.65;
+  }
+
+  /* ── image-background slides ── */
+  .s-img {
+    position: relative;
+    overflow: hidden;
+    color: var(--paper);
+  }
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.6) 100%);
+    z-index: 1;
+  }
+  .s5-overlay {
+    background: linear-gradient(160deg, rgba(10,10,10,0.9) 0%, rgba(180,100,0,0.45) 100%);
+  }
+  .s-img .inner { position: relative; z-index: 2; }
+  .s-img .eyebrow { color: rgba(255,255,255,0.4); }
+  .s-img h2 { color: var(--paper); }
+  .s-img .lead { color: rgba(255,255,255,0.62); }
+  .s-img .feat-list li { border-color: rgba(255,255,255,0.12); }
+  .s-img .feat-title { color: var(--paper); }
+  .s-img .feat-desc { color: rgba(255,255,255,0.55); }
+  .s-img .speed-stat { border-top-color: rgba(255,255,255,0.14); }
+  .s-img .speed-val { color: var(--paper); }
+  .s-img .speed-stat p { color: rgba(255,255,255,0.5); }
+  .s-img .impact-val { color: var(--pop); }
+  .s-img .impact-desc { color: rgba(255,255,255,0.62); }
+  .s-img .impact-divider { background: rgba(255,255,255,0.15); }
+  .s-img .traction-grid { border-color: rgba(255,255,255,0.12); }
+  .s-img .traction-card { border-color: rgba(255,255,255,0.12); }
+  .s-img .traction-val { color: var(--pop); }
+  .s-img .traction-key { color: rgba(255,255,255,0.4); }
+  .s-img .traction-card p { color: rgba(255,255,255,0.55); }
+
+  /* ── S3: Technology ── */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .tech-left { display: flex; flex-direction: column; }
+  .feat-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .feat-list li {
+    border-top: 1px solid var(--line);
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .feat-list li:last-child { border-bottom: 1px solid var(--line); }
+  .feat-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .feat-desc {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .s4-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .s4-left { display: flex; flex-direction: column; }
+  .s4-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .speed-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* ── S4: Speed ── */
+  .speed-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .speed-stat {
+    border-top: 2px solid rgba(255,255,255,0.14);
+    padding-top: 1.75rem;
+  }
+  .speed-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pop);
+    margin-bottom: 0.75rem;
+  }
+  .speed-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+  .speed-stat p {
+    font-size: 0.9375rem;
+    color: rgba(255,255,255,0.48);
+    line-height: 1.65;
+  }
+
+  .s5-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .s5-left { display: flex; flex-direction: column; }
+  .s5-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .impact-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* ── S5: Impact ── */
+  .impact-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 2.5rem;
+  }
+  .impact-divider {
+    width: 1px;
+    background: rgba(0,0,0,0.18);
+    align-self: stretch;
+    margin-top: 0.5rem;
+  }
+  .impact-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .impact-desc {
+    font-size: 0.9375rem;
+    color: rgba(0,0,0,0.52);
+    line-height: 1.65;
+  }
+
+  .s6-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .s6-left { display: flex; flex-direction: column; }
+  .s6-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .traction-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* ── S6: Traction ── */
+  .traction-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid var(--line);
+  }
+  .traction-card {
+    padding: 2.5rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .traction-card:nth-child(2n) { border-right: none; }
+  .traction-card:nth-child(3),
+  .traction-card:nth-child(4)  { border-bottom: none; }
+  .traction-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .traction-key {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .traction-card p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── S7: Model ── */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .model-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 2.25rem;
+  }
+  .model-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pop);
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .model-card p {
+    font-size: 0.9375rem;
+    color: rgba(255,255,255,0.52);
+    line-height: 1.65;
+  }
+
+  /* ── S8: Ask ── */
+  .ask-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 2px solid rgba(0,0,0,0.14);
+  }
+  .ask-card {
+    padding: 2.25rem;
+    border-right: 1px solid rgba(0,0,0,0.14);
+    border-bottom: 1px solid rgba(0,0,0,0.14);
+  }
+  .ask-card:nth-child(2n) { border-right: none; }
+  .ask-card:nth-child(3),
+  .ask-card:nth-child(4)  { border-bottom: none; }
+  .ask-pct {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .ask-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.48);
+    margin-bottom: 1rem;
+  }
+  .ask-card p {
+    font-size: 0.9375rem;
+    color: rgba(0,0,0,0.52);
+    line-height: 1.65;
+  }
+
+  .calc-callout {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    border-left: 2px solid var(--pop);
+    padding-left: 1.25rem;
+  }
+  .calc-link {
+    color: var(--pop);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .calc-link:hover { text-decoration: underline; }
+
+  /* ── S9: Contact ── */
+  .closing-h2 {
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    margin-bottom: 3.5rem;
+  }
+  .pop-em {
+    font-style: normal;
+    color: var(--pop);
+  }
+  .contact-block {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 4rem;
+  }
+  .contact-row {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+  }
+  .c-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    width: 4rem;
+    flex-shrink: 0;
+  }
+  .c-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--paper);
+  }
+  .c-link {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--pop);
+    text-decoration: none;
+  }
+  .c-link:hover { text-decoration: underline; }
+  .c-copy {
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.18);
+  }
+
+  /* ── image placeholders ── */
+  .img-ph {
+    background: rgba(0,0,0,0.04);
+    border: 2px dashed rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    color: rgba(0,0,0,0.22);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .img-ph-dark {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.18);
+    min-height: 200px;
+  }
+  .img-ph-pop {
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.14);
+    color: rgba(0,0,0,0.28);
+    min-height: 200px;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 768px) {
+    .slide { padding: 4rem 1.5rem; }
+    .s1-grid    { grid-template-columns: 1fr; gap: 2rem; }
+    .two-col    { grid-template-columns: 1fr; }
+    .tech-grid  { grid-template-columns: 1fr; }
+    .s4-grid    { grid-template-columns: 1fr; }
+    .speed-row  { grid-template-columns: 1fr; }
+    .model-grid { grid-template-columns: 1fr; }
+    .s5-grid    { grid-template-columns: 1fr; }
+    .impact-row { grid-template-columns: 1fr; }
+    .impact-divider { display: none; }
+    .s6-grid    { grid-template-columns: 1fr; }
+    .traction-grid { grid-template-columns: 1fr; }
+    .traction-card { border-right: none !important; }
+    .ask-grid { grid-template-columns: 1fr; }
+    .ask-card { border-right: none !important; }
+    .nav-dots { right: 0.75rem; }
+  }
+</style>
+
+<script>
+  const slides  = document.querySelectorAll('.slide');
+  const dots    = document.querySelectorAll('.nav-dots a');
+  const navEl   = document.getElementById('navdots');
+  const bar     = document.getElementById('progress-bar');
+  const total   = slides.length;
+  const darkSet = new Set(['s2', 's4', 's5', 's6', 's7', 's9']);
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      const id = entry.target.id;
+      dots.forEach(d => d.classList.remove('active'));
+      const dot = document.querySelector(`.nav-dots a[href="#${id}"]`);
+      if (dot) dot.classList.add('active');
+      navEl.classList.toggle('on-dark', darkSet.has(id));
+      const idx = [...slides].indexOf(entry.target);
+      bar.style.width = `${((idx + 1) / total) * 100}%`;
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => io.observe(s));
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.getElementById('s1').classList.add('is-visible');
+  }));
+</script>
