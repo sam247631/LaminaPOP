@@ -22,16 +22,25 @@
     <span id="lt-en">EN</span>
   </button>
 
+  <!-- PDF download -->
+  <button id="pdf-btn" type="button" aria-label="Download as PDF">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.5 1v7M6.5 8l-2.5-2.5M6.5 8l2.5-2.5M1 10.5h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    PDF
+  </button>
+
   <nav class="nav-dots" id="navdots" aria-label="Slide navigation">
-    <a href="#s1" title="The Thesis"></a>
-    <a href="#s2" title="The Problem"></a>
-    <a href="#s3" title="Technology"></a>
-    <a href="#s4" title="Speed & Scale"></a>
-    <a href="#s5" title="Human Impact"></a>
-    <a href="#s6" title="Traction"></a>
-    <a href="#s7" title="Business Model"></a>
-    <a href="#s8" title="The Ask"></a>
-    <a href="#s9" title="Contact"></a>
+    <a href="#s1"  title="The Thesis"></a>
+    <a href="#s2"  title="The Problem"></a>
+    <a href="#s3"  title="Technology"></a>
+    <a href="#s4"  title="Competitive Advantage"></a>
+    <a href="#s5"  title="Speed & Scale"></a>
+    <a href="#s6"  title="Human Impact"></a>
+    <a href="#s7"  title="Traction"></a>
+    <a href="#s8"  title="Business Model"></a>
+    <a href="#s9"  title="The Ask"></a>
+    <a href="#s10" title="Contact"></a>
   </nav>
 
   <!-- ── S1: The Thesis ── -->
@@ -46,7 +55,7 @@
         <p class="s1-meta" data-a style="--d:0.45s" data-t="s1-meta">Investor Deck · 2026</p>
       </div>
     </div>
-    <span class="slide-num">01 / 09</span>
+    <span class="slide-num">01 / 10</span>
   </section>
 
   <!-- ── S2: The Core Problem ── -->
@@ -100,143 +109,204 @@
     </div>
   </section>
 
-  <!-- ── S4: Speed and Scale ── -->
-  <section class="slide s-img" id="s4">
-    <img src="/deck/speed.jpg" alt="Lamina POP construction team" class="slide-bg" />
-    <div class="slide-overlay"></div>
+  <!-- ── S4: Competitive Advantage (comparison table) ── -->
+  <section class="slide s-paper" id="s4">
     <div class="inner">
-      <p class="eyebrow" data-a data-t="s4-eyebrow">04 — Speed and Scale</p>
-      <h2 data-a style="--d:0.12s" data-t="s4-h2">7 to 14<br>Days</h2>
-      <p class="lead" data-a style="--d:0.22s" data-t="s4-lead">The time it takes a 3-person team using basic hand tools to assemble a complete, flat-packed Lamina POP home.</p>
-      <div class="speed-row" data-a style="--d:0.34s">
-        <div class="speed-stat">
-          <div class="speed-label" data-t="s4-sl1">Logistics</div>
-          <div class="speed-val" data-t="s4-sv1">Resilient</div>
-          <p data-t="s4-sp1">Flat-pack shipping for remote, low-infrastructure areas where concrete trucks cannot pass.</p>
-        </div>
-        <div class="speed-stat">
-          <div class="speed-label" data-t="s4-sl2">Cost Per Unit</div>
-          <div class="speed-val">$4,200–<br>$5,000</div>
-          <p data-t="s4-sp2">Roughly half the price of regional masonry alternatives.</p>
+      <p class="eyebrow" data-a data-t="s4c-eyebrow">04 — The Competitive Advantage</p>
+      <h2 data-a style="--d:0.12s" data-t="s4c-h2">Two Materials.<br>Every Advantage.</h2>
+      <div class="comp-wrap" data-a style="--d:0.28s">
+        <div class="comp-table">
+          <!-- Header row -->
+          <div class="comp-row comp-header-row">
+            <div class="comp-cell comp-row-label"></div>
+            <div class="comp-cell comp-col-us">Lamina POP</div>
+            <div class="comp-cell comp-col-other" data-t="s4c-h-mas">Masonry</div>
+            <div class="comp-cell comp-col-other" data-t="s4c-h-tim">Timber</div>
+          </div>
+          <!-- Row 1 -->
+          <div class="comp-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r1">Cost per m²</div>
+            <div class="comp-cell comp-col-us comp-win">$150–200</div>
+            <div class="comp-cell comp-col-other comp-neutral">$400–600</div>
+            <div class="comp-cell comp-col-other comp-neutral">$280–400</div>
+          </div>
+          <!-- Row 2 -->
+          <div class="comp-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r2">Build time</div>
+            <div class="comp-cell comp-col-us comp-win" data-t="s4c-v2">7–14 days</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-m2">4–8 weeks</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-t2">3–6 weeks</div>
+          </div>
+          <!-- Row 3 -->
+          <div class="comp-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r3">Skilled labour</div>
+            <div class="comp-cell comp-col-us comp-win" data-t="s4c-v3">Not required</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-m3">Required</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-t3">Required</div>
+          </div>
+          <!-- Row 4 -->
+          <div class="comp-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r4">Seismic resistance</div>
+            <div class="comp-cell comp-col-us comp-win" data-t="s4c-v4">High</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-m4">Low</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-t4">Medium</div>
+          </div>
+          <!-- Row 5 -->
+          <div class="comp-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r5">Logistics</div>
+            <div class="comp-cell comp-col-us comp-win" data-t="s4c-v5">Flat-pack</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-m5">Heavy trucks</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-t5">Bulky</div>
+          </div>
+          <!-- Row 6 -->
+          <div class="comp-row comp-last-row">
+            <div class="comp-cell comp-row-label" data-t="s4c-r6">Longevity</div>
+            <div class="comp-cell comp-col-us comp-win" data-t="s4c-v6">15+ years</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-m6">Standard</div>
+            <div class="comp-cell comp-col-other comp-neutral" data-t="s4c-t6">Standard</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── S5: Human Impact ── -->
+  <!-- ── S5: Speed and Scale ── -->
   <section class="slide s-img" id="s5">
-    <img src="/deck/impact.jpg" alt="Lamina POP family home" class="slide-bg" />
-    <div class="slide-overlay s5-overlay"></div>
+    <img src="/deck/speed.jpg" alt="Lamina POP construction team" class="slide-bg" />
+    <div class="slide-overlay"></div>
     <div class="inner">
-      <p class="eyebrow" data-a data-t="s5-eyebrow">05 — The Human Impact</p>
-      <h2 data-a style="--d:0.12s" data-t="s5-h2">The Structural<br>Surplus</h2>
-      <p class="lead" data-a style="--d:0.22s" data-t="s5-lead">Moving a family out of substandard shelter into a Lamina POP home immediately transforms their household economics:</p>
+      <p class="eyebrow" data-a data-t="s5-eyebrow">05 — Speed and Scale</p>
+      <h2 data-a style="--d:0.12s" data-t="s5-h2">7 to 14<br>Days</h2>
+      <p class="lead" data-a style="--d:0.22s" data-t="s5-lead">The time it takes a 3-person team using basic hand tools to assemble a complete, flat-packed Lamina POP home.</p>
+      <div class="speed-row" data-a style="--d:0.34s">
+        <div class="speed-stat">
+          <div class="speed-label" data-t="s5-sl1">Logistics</div>
+          <div class="speed-val" data-t="s5-sv1">Resilient</div>
+          <p data-t="s5-sp1">Flat-pack shipping for remote, low-infrastructure areas where concrete trucks cannot pass.</p>
+        </div>
+        <div class="speed-stat">
+          <div class="speed-label" data-t="s5-sl2">Cost Per Unit</div>
+          <div class="speed-val">$4,200–<br>$5,000</div>
+          <p data-t="s5-sp2">Roughly half the price of regional masonry alternatives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── S6: Human Impact ── -->
+  <section class="slide s-img" id="s6">
+    <img src="/deck/impact.jpg" alt="Lamina POP family home" class="slide-bg" />
+    <div class="slide-overlay s6-overlay"></div>
+    <div class="inner">
+      <p class="eyebrow" data-a data-t="s6-eyebrow">06 — The Human Impact</p>
+      <h2 data-a style="--d:0.12s" data-t="s6-h2">The Structural<br>Surplus</h2>
+      <p class="lead" data-a style="--d:0.22s" data-t="s6-lead">Moving a family out of substandard shelter into a Lamina POP home immediately transforms their household economics:</p>
       <div class="impact-row" data-a style="--d:0.34s">
         <div class="impact-stat">
           <div class="impact-val">−44%</div>
-          <div class="impact-desc" data-t="s5-id1">Reduction in school and work absenteeism</div>
+          <div class="impact-desc" data-t="s6-id1">Reduction in school and work absenteeism</div>
         </div>
         <div class="impact-divider"></div>
         <div class="impact-stat">
           <div class="impact-val">+17%</div>
-          <div class="impact-desc" data-t="s5-id2">Structural increase in available household financial capital by permanently cutting emergency medical expenses</div>
+          <div class="impact-desc" data-t="s6-id2">Structural increase in available household financial capital by permanently cutting emergency medical expenses</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── S6: Market Traction ── -->
-  <section class="slide s-img" id="s6">
+  <!-- ── S7: Market Traction ── -->
+  <section class="slide s-img" id="s7">
     <img src="/deck/traction.jpg" alt="Lamina POP project community" class="slide-bg" />
     <div class="slide-overlay"></div>
     <div class="inner">
-      <p class="eyebrow" data-a data-t="s6-eyebrow">06 — Market Traction</p>
-      <h2 data-a style="--d:0.12s" data-t="s6-h2">Proven<br>Validation</h2>
+      <p class="eyebrow" data-a data-t="s7-eyebrow">07 — Market Traction</p>
+      <h2 data-a style="--d:0.12s" data-t="s7-h2">Proven<br>Validation</h2>
       <div class="traction-grid" data-a style="--d:0.26s">
         <div class="traction-card">
           <div class="traction-val">15+</div>
-          <div class="traction-key" data-t="s6-tk1">Permanent Structures Built</div>
-          <p data-t="s6-tp1">Homes, warehouses, and institutional schools standing across Central America.</p>
+          <div class="traction-key" data-t="s7-tk1">Permanent Structures Built</div>
+          <p data-t="s7-tp1">Homes, warehouses, and institutional schools standing across Central America.</p>
         </div>
         <div class="traction-card">
           <div class="traction-val">$75K</div>
-          <div class="traction-key" data-t="s6-tk2">LTM Revenue</div>
-          <p data-t="s6-tp2">Achieved during our lean, capital-efficient, high-margin pilot R&D phase.</p>
+          <div class="traction-key" data-t="s7-tk2">LTM Revenue</div>
+          <p data-t="s7-tp2">Achieved during our lean, capital-efficient, high-margin pilot R&D phase.</p>
         </div>
         <div class="traction-card">
           <div class="traction-val">✓</div>
-          <div class="traction-key" data-t="s6-tk3">Habitat for Humanity</div>
-          <p data-t="s6-tp3">Active deployment pipelines in partnership with one of the world's leading housing NGOs.</p>
+          <div class="traction-key" data-t="s7-tk3">Habitat for Humanity</div>
+          <p data-t="s7-tp3">Active deployment pipelines in partnership with one of the world's leading housing NGOs.</p>
         </div>
         <div class="traction-card">
           <div class="traction-val">3×</div>
-          <div class="traction-key" data-t="s6-tk4">Global Recognition</div>
-          <p data-t="s6-tp4">Backed by SantanderX, the Autodesk Foundation, and incubated at Cambridge Judge Business School.</p>
+          <div class="traction-key" data-t="s7-tk4">Global Recognition</div>
+          <p data-t="s7-tp4">Backed by SantanderX, the Autodesk Foundation, and incubated at Cambridge Judge Business School.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── S7: Commercial Engine ── -->
-  <section class="slide s-dark" id="s7">
+  <!-- ── S8: Commercial Engine ── -->
+  <section class="slide s-dark" id="s8">
     <div class="inner">
-      <p class="eyebrow eyebrow-light" data-a data-t="s7-eyebrow">07 — The Commercial Engine</p>
-      <h2 data-a style="--d:0.12s" data-t="s7-h2">The Hybrid<br>Business Model</h2>
-      <p class="lead lead-muted" data-a style="--d:0.22s" data-t="s7-lead">We balance three distinct customer streams to maintain a self-sustaining enterprise:</p>
+      <p class="eyebrow eyebrow-light" data-a data-t="s8-eyebrow">08 — The Commercial Engine</p>
+      <h2 data-a style="--d:0.12s" data-t="s8-h2">The Hybrid<br>Business Model</h2>
+      <p class="lead lead-muted" data-a style="--d:0.22s" data-t="s8-lead">We balance three distinct customer streams to maintain a self-sustaining enterprise:</p>
       <div class="model-grid" data-a style="--d:0.36s">
         <div class="model-card">
-          <div class="model-tag" data-t="s7-mt1">B2B Commercial</div>
-          <p data-t="s7-mp1">High-design cabins and utility structures for eco-resorts and industrial clients at full market rate, generating a ~20% margin.</p>
+          <div class="model-tag" data-t="s8-mt1">B2B Commercial</div>
+          <p data-t="s8-mp1">High-design cabins and utility structures for eco-resorts and industrial clients at full market rate, generating a ~20% margin.</p>
         </div>
         <div class="model-card">
-          <div class="model-tag" data-t="s7-mt2">Mid-Market Direct</div>
-          <p data-t="s7-mp2">Affordable housing solutions for private lower-middle-income buyers seeking an accessible path to dignified shelter.</p>
+          <div class="model-tag" data-t="s8-mt2">Mid-Market Direct</div>
+          <p data-t="s8-mp2">Affordable housing solutions for private lower-middle-income buyers seeking an accessible path to dignified shelter.</p>
         </div>
         <div class="model-card">
-          <div class="model-tag" data-t="s7-mt3">Institutional Tenders</div>
-          <p data-t="s7-mp3">Bulk, high-volume social housing infrastructure alongside corporate CSR programs and municipal budgets.</p>
+          <div class="model-tag" data-t="s8-mt3">Institutional Tenders</div>
+          <p data-t="s8-mp3">Bulk, high-volume social housing infrastructure alongside corporate CSR programs and municipal budgets.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── S8: The Ask ── -->
-  <section class="slide s-pop" id="s8">
+  <!-- ── S9: The Ask ── -->
+  <section class="slide s-pop" id="s9">
     <div class="inner">
-      <p class="eyebrow" data-a data-t="s8-eyebrow">08 — The Ask & Use of Funds</p>
-      <h2 class="ink" data-a style="--d:0.12s" data-t="s8-h2">Scaling<br>Manufacturing</h2>
-      <p class="lead ink-muted" data-a style="--d:0.22s" data-t="s8-lead">We are raising strategic capital to transition from our proven pilot phase into a centralized prefabrication facility.</p>
+      <p class="eyebrow" data-a data-t="s9-eyebrow">09 — The Ask & Use of Funds</p>
+      <h2 class="ink" data-a style="--d:0.12s" data-t="s9-h2">Scaling<br>Manufacturing</h2>
+      <p class="lead ink-muted" data-a style="--d:0.22s" data-t="s9-lead">We are raising strategic capital to transition from our proven pilot phase into a centralized prefabrication facility.</p>
       <div class="ask-grid" data-a style="--d:0.36s">
         <div class="ask-card">
           <div class="ask-pct">40%</div>
-          <div class="ask-label" data-t="s8-al1">Factory Optimization</div>
-          <p data-t="s8-ap1">Upgrading tooling to cut on-site assembly time from 14 days down to 7 days.</p>
+          <div class="ask-label" data-t="s9-al1">Factory Optimization</div>
+          <p data-t="s9-ap1">Upgrading tooling to cut on-site assembly time from 14 days down to 7 days.</p>
         </div>
         <div class="ask-card">
           <div class="ask-pct">30%</div>
-          <div class="ask-label" data-t="s8-al2">Direct Bulk Procurement</div>
-          <p data-t="s8-ap2">Securing steel directly from mills to reduce per-unit costs by 12–18%.</p>
+          <div class="ask-label" data-t="s9-al2">Direct Bulk Procurement</div>
+          <p data-t="s9-ap2">Securing steel directly from mills to reduce per-unit costs by 12–18%.</p>
         </div>
         <div class="ask-card">
           <div class="ask-pct">20%</div>
-          <div class="ask-label" data-t="s8-al3">Key Operational Team</div>
-          <p data-t="s8-ap3">Expanding full-time local management, data governance, and manufacturing logistics staff.</p>
+          <div class="ask-label" data-t="s9-al3">Key Operational Team</div>
+          <p data-t="s9-ap3">Expanding full-time local management, data governance, and manufacturing logistics staff.</p>
         </div>
         <div class="ask-card">
           <div class="ask-pct">10%</div>
-          <div class="ask-label" data-t="s8-al4">Institutional Certifications</div>
-          <p data-t="s8-ap4">Finalizing approved status with national public housing subsidy frameworks.</p>
+          <div class="ask-label" data-t="s9-al4">Institutional Certifications</div>
+          <p data-t="s9-ap4">Finalizing approved status with national public housing subsidy frameworks.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── S9: Contact ── -->
-  <section class="slide s-dark" id="s9">
+  <!-- ── S10: Contact ── -->
+  <section class="slide s-dark" id="s10">
     <div class="inner">
-      <p class="eyebrow eyebrow-light" data-a data-t="s9-eyebrow">09 — Contact</p>
-      <h2 class="closing-h2" data-a style="--d:0.12s" data-t="s9-h2">Build the Future<br>With <em class="pop-em">Us.</em></h2>
-      <p class="calc-callout" data-a style="--d:0.22s" data-t="s9-calc">Try our free <a href="https://www.laminapop.com/calculator" class="calc-link">construction cost calculator</a> — designed to put the system in anyone's hands, anywhere in the world.</p>
+      <p class="eyebrow eyebrow-light" data-a data-t="s10-eyebrow">10 — Contact</p>
+      <h2 class="closing-h2" data-a style="--d:0.12s" data-t="s10-h2">Build the Future<br>With <em class="pop-em">Us.</em></h2>
+      <p class="calc-callout" data-a style="--d:0.22s" data-t="s10-calc">Try our free <a href="https://www.laminapop.com/calculator" class="calc-link">construction cost calculator</a> — designed to put the system in anyone's hands, anywhere in the world.</p>
       <div class="contact-block" data-a style="--d:0.38s">
         <div class="contact-row">
           <span class="c-label">CEO</span>
@@ -295,15 +365,15 @@
     z-index: 200;
   }
 
-  /* ── language toggle ── */
-  #lang-toggle {
+  /* ── UI buttons (lang toggle + PDF) ── */
+  #lang-toggle,
+  #pdf-btn {
     position: fixed;
     top: 1.25rem;
-    left: 1.5rem;
     z-index: 150;
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.3rem;
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.18);
     backdrop-filter: blur(10px);
@@ -319,21 +389,27 @@
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
   }
-  #lang-toggle:hover {
+  #lang-toggle:hover,
+  #pdf-btn:hover {
     background: rgba(255,255,255,0.2);
     border-color: rgba(255,255,255,0.35);
   }
+  #lang-toggle { left: 1.5rem; }
+  #pdf-btn     { left: 6.5rem; }
+
   #lang-toggle .lt-sep { opacity: 0.35; }
   #lt-es, #lt-en { transition: opacity 0.2s; }
   #lt-es.dim, #lt-en.dim { opacity: 0.3; }
 
-  /* on light slides, invert the toggle */
-  body.on-light #lang-toggle {
+  /* adapt both buttons on light slides */
+  body.on-light #lang-toggle,
+  body.on-light #pdf-btn {
     background: rgba(0,0,0,0.08);
     border-color: rgba(0,0,0,0.15);
     color: rgba(0,0,0,0.8);
   }
-  body.on-light #lang-toggle:hover {
+  body.on-light #lang-toggle:hover,
+  body.on-light #pdf-btn:hover {
     background: rgba(0,0,0,0.14);
     border-color: rgba(0,0,0,0.28);
   }
@@ -531,16 +607,13 @@
     background: linear-gradient(160deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.6) 100%);
     z-index: 1;
   }
-  .s5-overlay {
+  .s6-overlay {
     background: linear-gradient(160deg, rgba(10,10,10,0.9) 0%, rgba(180,100,0,0.45) 100%);
   }
   .s-img .inner { position: relative; z-index: 2; }
   .s-img .eyebrow { color: rgba(255,255,255,0.4); }
   .s-img h2 { color: var(--paper); }
   .s-img .lead { color: rgba(255,255,255,0.62); }
-  .s-img .feat-list li { border-color: rgba(255,255,255,0.12); }
-  .s-img .feat-title { color: var(--paper); }
-  .s-img .feat-desc { color: rgba(255,255,255,0.55); }
   .s-img .speed-stat { border-top-color: rgba(255,255,255,0.14); }
   .s-img .speed-val { color: var(--paper); }
   .s-img .speed-stat p { color: rgba(255,255,255,0.5); }
@@ -561,6 +634,11 @@
     align-items: start;
   }
   .tech-left { display: flex; flex-direction: column; }
+  .tech-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
   .feat-list {
     list-style: none;
     display: flex;
@@ -586,26 +664,67 @@
     line-height: 1.65;
   }
 
-  .s4-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
+  /* ── S4: Comparison table ── */
+  .comp-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .s4-left { display: flex; flex-direction: column; }
-  .s4-right {
+  .comp-table {
+    width: 100%;
+    min-width: 540px;
+    border: 1px solid var(--line);
+  }
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+  .comp-last-row { border-bottom: none; }
+  .comp-header-row {
+    border-bottom: 2px solid var(--ink);
+  }
+  .comp-cell {
+    padding: 1rem 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  .comp-row-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
     display: flex;
     align-items: center;
-    justify-content: center;
+    border-right: 1px solid var(--line);
   }
-  .speed-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 2px;
+  .comp-col-us {
+    background: var(--pop);
+    font-weight: 600;
+    color: var(--ink);
+    border-right: 1px solid rgba(0,0,0,0.1);
   }
+  .comp-header-row .comp-col-us {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .comp-header-row .comp-col-other {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .comp-col-other { border-right: 1px solid var(--line); }
+  .comp-col-other:last-child { border-right: none; }
+  .comp-win  { }
+  .comp-neutral { color: var(--muted); }
 
-  /* ── S4: Speed ── */
+  /* ── S5: Speed ── */
   .speed-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -638,26 +757,7 @@
     line-height: 1.65;
   }
 
-  .s5-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-  .s5-left { display: flex; flex-direction: column; }
-  .s5-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .impact-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 2px;
-  }
-
-  /* ── S5: Impact ── */
+  /* ── S6: Impact ── */
   .impact-row {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -685,26 +785,7 @@
     line-height: 1.65;
   }
 
-  .s6-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-  .s6-left { display: flex; flex-direction: column; }
-  .s6-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .traction-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 2px;
-  }
-
-  /* ── S6: Traction ── */
+  /* ── S7: Traction ── */
   .traction-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -740,7 +821,7 @@
     line-height: 1.65;
   }
 
-  /* ── S7: Model ── */
+  /* ── S8: Model ── */
   .model-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -766,7 +847,7 @@
     line-height: 1.65;
   }
 
-  /* ── S8: Ask ── */
+  /* ── S9: Ask ── */
   .ask-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -802,6 +883,7 @@
     line-height: 1.65;
   }
 
+  /* ── S10: Contact ── */
   .calc-callout {
     font-size: 1rem;
     color: rgba(255,255,255,0.55);
@@ -817,8 +899,6 @@
     font-weight: 600;
   }
   .calc-link:hover { text-decoration: underline; }
-
-  /* ── S9: Contact ── */
   .closing-h2 {
     font-size: clamp(3.5rem, 8vw, 7.5rem);
     margin-bottom: 3.5rem;
@@ -870,63 +950,68 @@
     color: rgba(255,255,255,0.18);
   }
 
-  /* ── image placeholders ── */
-  .img-ph {
-    background: rgba(0,0,0,0.04);
-    border: 2px dashed rgba(0,0,0,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 320px;
-    color: rgba(0,0,0,0.22);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-  .img-ph-dark {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.18);
-    min-height: 200px;
-  }
-  .img-ph-pop {
-    background: rgba(0,0,0,0.06);
-    border-color: rgba(0,0,0,0.14);
-    color: rgba(0,0,0,0.28);
-    min-height: 200px;
-  }
-
   /* ── responsive ── */
   @media (max-width: 768px) {
     .slide { padding: 4rem 1.5rem; }
+    #pdf-btn { left: auto; right: 1.5rem; top: 1.25rem; }
     .s1-grid    { grid-template-columns: 1fr; gap: 2rem; }
     .two-col    { grid-template-columns: 1fr; }
     .tech-grid  { grid-template-columns: 1fr; }
-    .s4-grid    { grid-template-columns: 1fr; }
     .speed-row  { grid-template-columns: 1fr; }
     .model-grid { grid-template-columns: 1fr; }
-    .s5-grid    { grid-template-columns: 1fr; }
     .impact-row { grid-template-columns: 1fr; }
     .impact-divider { display: none; }
-    .s6-grid    { grid-template-columns: 1fr; }
     .traction-grid { grid-template-columns: 1fr; }
     .traction-card { border-right: none !important; }
     .ask-grid { grid-template-columns: 1fr; }
     .ask-card { border-right: none !important; }
     .nav-dots { right: 0.75rem; }
   }
+
+  /* ── print / PDF ── */
+  @media print {
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    #progress-bar,
+    #lang-toggle,
+    #pdf-btn,
+    .nav-dots { display: none !important; }
+
+    html {
+      scroll-snap-type: none;
+      height: auto;
+      overflow: visible;
+    }
+    body { height: auto; }
+
+    .slide {
+      scroll-snap-align: none;
+      height: 100vh;
+      min-height: unset;
+      page-break-after: always;
+      break-after: page;
+      overflow: hidden;
+    }
+
+    /* show all content regardless of scroll position */
+    [data-a] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
-  // ── Slide observer ────────────────────────────────────────────────────────
-  const slides  = document.querySelectorAll('.slide');
+  // ── Slide state ───────────────────────────────────────────────────────────
+  const slides  = Array.from(document.querySelectorAll('.slide'));
   const dots    = document.querySelectorAll('.nav-dots a');
   const navEl   = document.getElementById('navdots');
   const bar     = document.getElementById('progress-bar');
   const total   = slides.length;
-  const darkSet = new Set(['s2', 's4', 's5', 's6', 's7', 's9']);
-  const lightSet = new Set(['s1', 's3', 's8']);
+  const darkSet  = new Set(['s2', 's5', 's6', 's7', 's8', 's10']);
+  const lightSet = new Set(['s1', 's3', 's4', 's9']);
+  let currentSlideIdx = 0;
 
   const io = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -938,8 +1023,8 @@
       if (dot) dot.classList.add('active');
       navEl.classList.toggle('on-dark', darkSet.has(id));
       document.body.classList.toggle('on-light', lightSet.has(id));
-      const idx = [...slides].indexOf(entry.target);
-      bar.style.width = `${((idx + 1) / total) * 100}%`;
+      currentSlideIdx = slides.indexOf(entry.target);
+      bar.style.width = `${((currentSlideIdx + 1) / total) * 100}%`;
     });
   }, { threshold: 0.5 });
 
@@ -952,6 +1037,42 @@
       document.body.classList.add('on-light');
     }
   }));
+
+  // ── Navigate between slides ───────────────────────────────────────────────
+  function navigateSlide(dir) {
+    const nextIdx = Math.max(0, Math.min(slides.length - 1, currentSlideIdx + dir));
+    slides[nextIdx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Keyboard navigation ───────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown'].includes(e.key)) {
+      e.preventDefault();
+      navigateSlide(1);
+    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault();
+      navigateSlide(-1);
+    }
+  });
+
+  // ── Touch swipe navigation ────────────────────────────────────────────────
+  let touchStartY = 0;
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dy) < 50 && Math.abs(dx) < 50) return;
+    if (Math.abs(dy) >= Math.abs(dx)) {
+      navigateSlide(dy > 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
+  // ── PDF download ──────────────────────────────────────────────────────────
+  document.getElementById('pdf-btn').addEventListener('click', () => window.print());
 
   // ── Translations ──────────────────────────────────────────────────────────
   const T = {
@@ -978,58 +1099,85 @@
       's3-f3-title': 'Built for Extremes',
       's3-f3-desc':  'Seismically flexible and wind-resistant. Standing for over 15 years in tropical, earthquake-prone regions with zero structural failures.',
 
-      's4-eyebrow':  '04 — Speed and Scale',
-      's4-h2':       '7 to 14<br>Days',
-      's4-lead':     'The time it takes a 3-person team using basic hand tools to assemble a complete, flat-packed Lamina POP home.',
-      's4-sl1':      'Logistics',
-      's4-sv1':      'Resilient',
-      's4-sp1':      'Flat-pack shipping for remote, low-infrastructure areas where concrete trucks cannot pass.',
-      's4-sl2':      'Cost Per Unit',
-      's4-sp2':      'Roughly half the price of regional masonry alternatives.',
+      's4c-eyebrow': '04 — The Competitive Advantage',
+      's4c-h2':      'Two Materials.<br>Every Advantage.',
+      's4c-h-mas':   'Masonry',
+      's4c-h-tim':   'Timber',
+      's4c-r1':      'Cost per m²',
+      's4c-r2':      'Build time',
+      's4c-r3':      'Skilled labour',
+      's4c-r4':      'Seismic resistance',
+      's4c-r5':      'Logistics',
+      's4c-r6':      'Longevity',
+      's4c-v2':      '7–14 days',
+      's4c-v3':      'Not required',
+      's4c-v4':      'High',
+      's4c-v5':      'Flat-pack',
+      's4c-v6':      '15+ years',
+      's4c-m2':      '4–8 weeks',
+      's4c-m3':      'Required',
+      's4c-m4':      'Low',
+      's4c-m5':      'Heavy trucks',
+      's4c-m6':      'Standard',
+      's4c-t2':      '3–6 weeks',
+      's4c-t3':      'Required',
+      's4c-t4':      'Medium',
+      's4c-t5':      'Bulky',
+      's4c-t6':      'Standard',
 
-      's5-eyebrow':  '05 — The Human Impact',
-      's5-h2':       'The Structural<br>Surplus',
-      's5-lead':     'Moving a family out of substandard shelter into a Lamina POP home immediately transforms their household economics:',
-      's5-id1':      'Reduction in school and work absenteeism',
-      's5-id2':      'Structural increase in available household financial capital by permanently cutting emergency medical expenses',
+      's5-eyebrow':  '05 — Speed and Scale',
+      's5-h2':       '7 to 14<br>Days',
+      's5-lead':     'The time it takes a 3-person team using basic hand tools to assemble a complete, flat-packed Lamina POP home.',
+      's5-sl1':      'Logistics',
+      's5-sv1':      'Resilient',
+      's5-sp1':      'Flat-pack shipping for remote, low-infrastructure areas where concrete trucks cannot pass.',
+      's5-sl2':      'Cost Per Unit',
+      's5-sp2':      'Roughly half the price of regional masonry alternatives.',
 
-      's6-eyebrow':  '06 — Market Traction',
-      's6-h2':       'Proven<br>Validation',
-      's6-tk1':      'Permanent Structures Built',
-      's6-tp1':      'Homes, warehouses, and institutional schools standing across Central America.',
-      's6-tk2':      'LTM Revenue',
-      's6-tp2':      'Achieved during our lean, capital-efficient, high-margin pilot R&D phase.',
-      's6-tk3':      'Habitat for Humanity',
-      's6-tp3':      'Active deployment pipelines in partnership with one of the world\'s leading housing NGOs.',
-      's6-tk4':      'Global Recognition',
-      's6-tp4':      'Backed by SantanderX, the Autodesk Foundation, and incubated at Cambridge Judge Business School.',
+      's6-eyebrow':  '06 — The Human Impact',
+      's6-h2':       'The Structural<br>Surplus',
+      's6-lead':     'Moving a family out of substandard shelter into a Lamina POP home immediately transforms their household economics:',
+      's6-id1':      'Reduction in school and work absenteeism',
+      's6-id2':      'Structural increase in available household financial capital by permanently cutting emergency medical expenses',
 
-      's7-eyebrow':  '07 — The Commercial Engine',
-      's7-h2':       'The Hybrid<br>Business Model',
-      's7-lead':     'We balance three distinct customer streams to maintain a self-sustaining enterprise:',
-      's7-mt1':      'B2B Commercial',
-      's7-mp1':      'High-design cabins and utility structures for eco-resorts and industrial clients at full market rate, generating a ~20% margin.',
-      's7-mt2':      'Mid-Market Direct',
-      's7-mp2':      'Affordable housing solutions for private lower-middle-income buyers seeking an accessible path to dignified shelter.',
-      's7-mt3':      'Institutional Tenders',
-      's7-mp3':      'Bulk, high-volume social housing infrastructure alongside corporate CSR programs and municipal budgets.',
+      's7-eyebrow':  '07 — Market Traction',
+      's7-h2':       'Proven<br>Validation',
+      's7-tk1':      'Permanent Structures Built',
+      's7-tp1':      'Homes, warehouses, and institutional schools standing across Central America.',
+      's7-tk2':      'LTM Revenue',
+      's7-tp2':      'Achieved during our lean, capital-efficient, high-margin pilot R&D phase.',
+      's7-tk3':      'Habitat for Humanity',
+      's7-tp3':      'Active deployment pipelines in partnership with one of the world\'s leading housing NGOs.',
+      's7-tk4':      'Global Recognition',
+      's7-tp4':      'Backed by SantanderX, the Autodesk Foundation, and incubated at Cambridge Judge Business School.',
 
-      's8-eyebrow':  '08 — The Ask & Use of Funds',
-      's8-h2':       'Scaling<br>Manufacturing',
-      's8-lead':     'We are raising strategic capital to transition from our proven pilot phase into a centralized prefabrication facility.',
-      's8-al1':      'Factory Optimization',
-      's8-ap1':      'Upgrading tooling to cut on-site assembly time from 14 days down to 7 days.',
-      's8-al2':      'Direct Bulk Procurement',
-      's8-ap2':      'Securing steel directly from mills to reduce per-unit costs by 12–18%.',
-      's8-al3':      'Key Operational Team',
-      's8-ap3':      'Expanding full-time local management, data governance, and manufacturing logistics staff.',
-      's8-al4':      'Institutional Certifications',
-      's8-ap4':      'Finalizing approved status with national public housing subsidy frameworks.',
+      's8-eyebrow':  '08 — The Commercial Engine',
+      's8-h2':       'The Hybrid<br>Business Model',
+      's8-lead':     'We balance three distinct customer streams to maintain a self-sustaining enterprise:',
+      's8-mt1':      'B2B Commercial',
+      's8-mp1':      'High-design cabins and utility structures for eco-resorts and industrial clients at full market rate, generating a ~20% margin.',
+      's8-mt2':      'Mid-Market Direct',
+      's8-mp2':      'Affordable housing solutions for private lower-middle-income buyers seeking an accessible path to dignified shelter.',
+      's8-mt3':      'Institutional Tenders',
+      's8-mp3':      'Bulk, high-volume social housing infrastructure alongside corporate CSR programs and municipal budgets.',
 
-      's9-eyebrow':  '09 — Contact',
-      's9-h2':       'Build the Future<br>With <em class="pop-em">Us.</em>',
-      's9-calc':     'Try our free <a href="https://www.laminapop.com/calculator" class="calc-link">construction cost calculator</a> — designed to put the system in anyone\'s hands, anywhere in the world.',
+      's9-eyebrow':  '09 — The Ask & Use of Funds',
+      's9-h2':       'Scaling<br>Manufacturing',
+      's9-lead':     'We are raising strategic capital to transition from our proven pilot phase into a centralized prefabrication facility.',
+      's9-al1':      'Factory Optimization',
+      's9-ap1':      'Upgrading tooling to cut on-site assembly time from 14 days down to 7 days.',
+      's9-al2':      'Direct Bulk Procurement',
+      's9-ap2':      'Securing steel directly from mills to reduce per-unit costs by 12–18%.',
+      's9-al3':      'Key Operational Team',
+      's9-ap3':      'Expanding full-time local management, data governance, and manufacturing logistics staff.',
+      's9-al4':      'Institutional Certifications',
+      's9-ap4':      'Finalizing approved status with national public housing subsidy frameworks.',
+
+      's10-eyebrow': '10 — Contact',
+      's10-h2':      'Build the Future<br>With <em class="pop-em">Us.</em>',
+      's10-calc':    'Try our free <a href="https://www.laminapop.com/calculator" class="calc-link">construction cost calculator</a> — designed to put the system in anyone\'s hands, anywhere in the world.',
     },
+
     es: {
       's1-eyebrow':  '01 — La Tesis',
       's1-tagline':  'Redefiniendo la Infraestructura Estructural<br>para Mercados Emergentes.',
@@ -1053,57 +1201,83 @@
       's3-f3-title': 'Construido para Extremos',
       's3-f3-desc':  'Flexible sísmicamente y resistente al viento. En pie por más de 15 años en regiones tropicales sísmicas con cero fallas estructurales.',
 
-      's4-eyebrow':  '04 — Velocidad y Escala',
-      's4-h2':       '7 a 14<br>Días',
-      's4-lead':     'El tiempo que tarda un equipo de 3 personas con herramientas básicas en ensamblar una vivienda Lamina POP completa.',
-      's4-sl1':      'Logística',
-      's4-sv1':      'Resiliente',
-      's4-sp1':      'Envío plano para zonas remotas de baja infraestructura donde los camiones de concreto no pueden pasar.',
-      's4-sl2':      'Costo por Unidad',
-      's4-sp2':      'Aproximadamente la mitad del precio de las alternativas de mampostería regionales.',
+      's4c-eyebrow': '04 — La Ventaja Competitiva',
+      's4c-h2':      'Dos Materiales.<br>Todas las Ventajas.',
+      's4c-h-mas':   'Mampostería',
+      's4c-h-tim':   'Madera',
+      's4c-r1':      'Costo por m²',
+      's4c-r2':      'Tiempo de construcción',
+      's4c-r3':      'Mano de obra',
+      's4c-r4':      'Resistencia sísmica',
+      's4c-r5':      'Logística',
+      's4c-r6':      'Longevidad',
+      's4c-v2':      '7–14 días',
+      's4c-v3':      'No requerida',
+      's4c-v4':      'Alta',
+      's4c-v5':      'Paquete plano',
+      's4c-v6':      '15+ años',
+      's4c-m2':      '4–8 semanas',
+      's4c-m3':      'Requerida',
+      's4c-m4':      'Baja',
+      's4c-m5':      'Camiones pesados',
+      's4c-m6':      'Estándar',
+      's4c-t2':      '3–6 semanas',
+      's4c-t3':      'Requerida',
+      's4c-t4':      'Media',
+      's4c-t5':      'Voluminosa',
+      's4c-t6':      'Estándar',
 
-      's5-eyebrow':  '05 — El Impacto Humano',
-      's5-h2':       'El Excedente<br>Estructural',
-      's5-lead':     'Trasladar a una familia de un refugio precario a una vivienda Lamina POP transforma inmediatamente su economía doméstica:',
-      's5-id1':      'Reducción del ausentismo escolar y laboral',
-      's5-id2':      'Aumento estructural del capital financiero familiar disponible al eliminar permanentemente los gastos médicos de emergencia',
+      's5-eyebrow':  '05 — Velocidad y Escala',
+      's5-h2':       '7 a 14<br>Días',
+      's5-lead':     'El tiempo que tarda un equipo de 3 personas con herramientas básicas en ensamblar una vivienda Lamina POP completa.',
+      's5-sl1':      'Logística',
+      's5-sv1':      'Resiliente',
+      's5-sp1':      'Envío plano para zonas remotas de baja infraestructura donde los camiones de concreto no pueden pasar.',
+      's5-sl2':      'Costo por Unidad',
+      's5-sp2':      'Aproximadamente la mitad del precio de las alternativas de mampostería regionales.',
 
-      's6-eyebrow':  '06 — Tracción en el Mercado',
-      's6-h2':       'Validación<br>Comprobada',
-      's6-tk1':      'Estructuras Permanentes Construidas',
-      's6-tp1':      'Viviendas, bodegas y escuelas institucionales en pie en toda Centroamérica.',
-      's6-tk2':      'Ingresos LTM',
-      's6-tp2':      'Logrado durante nuestra fase piloto de I+D eficiente en capital y alto margen.',
-      's6-tk3':      'Hábitat para la Humanidad',
-      's6-tp3':      'Flujos de implementación activos en asociación con una de las ONG de vivienda líderes del mundo.',
-      's6-tk4':      'Reconocimiento Global',
-      's6-tp4':      'Respaldado por SantanderX, la Fundación Autodesk, e incubado en Cambridge Judge Business School.',
+      's6-eyebrow':  '06 — El Impacto Humano',
+      's6-h2':       'El Excedente<br>Estructural',
+      's6-lead':     'Trasladar a una familia de un refugio precario a una vivienda Lamina POP transforma inmediatamente su economía doméstica:',
+      's6-id1':      'Reducción del ausentismo escolar y laboral',
+      's6-id2':      'Aumento estructural del capital financiero familiar disponible al eliminar permanentemente los gastos médicos de emergencia',
 
-      's7-eyebrow':  '07 — El Motor Comercial',
-      's7-h2':       'El Modelo de<br>Negocio Híbrido',
-      's7-lead':     'Equilibramos tres flujos de clientes distintos para mantener una empresa autosuficiente:',
-      's7-mt1':      'Comercial B2B',
-      's7-mp1':      'Cabañas de alto diseño y estructuras utilitarias para eco-resorts y clientes industriales a precio de mercado, generando un margen del ~20%.',
-      's7-mt2':      'Directo Mercado Medio',
-      's7-mp2':      'Soluciones de vivienda asequible para compradores privados de ingresos medios-bajos que buscan un camino accesible a un refugio digno.',
-      's7-mt3':      'Licitaciones Institucionales',
-      's7-mp3':      'Infraestructura de vivienda social de alto volumen junto con programas de RSE corporativa y presupuestos municipales.',
+      's7-eyebrow':  '07 — Tracción en el Mercado',
+      's7-h2':       'Validación<br>Comprobada',
+      's7-tk1':      'Estructuras Permanentes Construidas',
+      's7-tp1':      'Viviendas, bodegas y escuelas institucionales en pie en toda Centroamérica.',
+      's7-tk2':      'Ingresos LTM',
+      's7-tp2':      'Logrado durante nuestra fase piloto de I+D eficiente en capital y alto margen.',
+      's7-tk3':      'Hábitat para la Humanidad',
+      's7-tp3':      'Flujos de implementación activos en asociación con una de las ONG de vivienda líderes del mundo.',
+      's7-tk4':      'Reconocimiento Global',
+      's7-tp4':      'Respaldado por SantanderX, la Fundación Autodesk, e incubado en Cambridge Judge Business School.',
 
-      's8-eyebrow':  '08 — La Solicitud y Uso de Fondos',
-      's8-h2':       'Escalando la<br>Fabricación',
-      's8-lead':     'Estamos recaudando capital estratégico para pasar de nuestra fase piloto comprobada a una instalación de prefabricación centralizada.',
-      's8-al1':      'Optimización de Fábrica',
-      's8-ap1':      'Modernizar herramientas para reducir el tiempo de ensamblaje en sitio de 14 a 7 días.',
-      's8-al2':      'Compra Directa al Por Mayor',
-      's8-ap2':      'Asegurar acero directamente de las fundidoras para reducir los costos por unidad en un 12–18%.',
-      's8-al3':      'Equipo Operativo Clave',
-      's8-ap3':      'Expandir la gestión local a tiempo completo, gobernanza de datos y personal de logística de fabricación.',
-      's8-al4':      'Certificaciones Institucionales',
-      's8-ap4':      'Finalizar el estatus aprobado con los marcos nacionales de subsidio de vivienda pública.',
+      's8-eyebrow':  '08 — El Motor Comercial',
+      's8-h2':       'El Modelo de<br>Negocio Híbrido',
+      's8-lead':     'Equilibramos tres flujos de clientes distintos para mantener una empresa autosuficiente:',
+      's8-mt1':      'Comercial B2B',
+      's8-mp1':      'Cabañas de alto diseño y estructuras utilitarias para eco-resorts y clientes industriales a precio de mercado, generando un margen del ~20%.',
+      's8-mt2':      'Directo Mercado Medio',
+      's8-mp2':      'Soluciones de vivienda asequible para compradores privados de ingresos medios-bajos que buscan un camino accesible a un refugio digno.',
+      's8-mt3':      'Licitaciones Institucionales',
+      's8-mp3':      'Infraestructura de vivienda social de alto volumen junto con programas de RSE corporativa y presupuestos municipales.',
 
-      's9-eyebrow':  '09 — Contacto',
-      's9-h2':       'Construye el Futuro<br>Con <em class="pop-em">Nosotros.</em>',
-      's9-calc':     'Prueba nuestra <a href="https://www.laminapop.com/calculator" class="calc-link">calculadora de costos de construcción</a> gratuita — diseñada para poner el sistema al alcance de cualquiera, en cualquier parte del mundo.',
+      's9-eyebrow':  '09 — La Solicitud y Uso de Fondos',
+      's9-h2':       'Escalando la<br>Fabricación',
+      's9-lead':     'Estamos recaudando capital estratégico para pasar de nuestra fase piloto comprobada a una instalación de prefabricación centralizada.',
+      's9-al1':      'Optimización de Fábrica',
+      's9-ap1':      'Modernizar herramientas para reducir el tiempo de ensamblaje en sitio de 14 a 7 días.',
+      's9-al2':      'Compra Directa al Por Mayor',
+      's9-ap2':      'Asegurar acero directamente de las fundidoras para reducir los costos por unidad en un 12–18%.',
+      's9-al3':      'Equipo Operativo Clave',
+      's9-ap3':      'Expandir la gestión local a tiempo completo, gobernanza de datos y personal de logística de fabricación.',
+      's9-al4':      'Certificaciones Institucionales',
+      's9-ap4':      'Finalizar el estatus aprobado con los marcos nacionales de subsidio de vivienda pública.',
+
+      's10-eyebrow': '10 — Contacto',
+      's10-h2':      'Construye el Futuro<br>Con <em class="pop-em">Nosotros.</em>',
+      's10-calc':    'Prueba nuestra <a href="https://www.laminapop.com/calculator" class="calc-link">calculadora de costos de construcción</a> gratuita — diseñada para poner el sistema al alcance de cualquiera, en cualquier parte del mundo.',
     },
   };
 
