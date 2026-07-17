@@ -1,10 +1,104 @@
 ---
 import Base from '../layouts/Base.astro';
 
-const steps = Array.from({ length: 18 }, (_, i) => ({
-  n: String(i + 1).padStart(2, '0'),
-  img: `/guide/${String(i + 1).padStart(2, '0')}.png`,
-}));
+const steps = [
+  {
+    n: '01',
+    title: 'Your floor plan',
+    desc: 'Begin with a clear layout. Every wall length drives the material list. Use the calculator to generate yours.',
+    dynamic: 'plan',
+  },
+  {
+    n: '02',
+    title: 'Level the ground',
+    desc: 'Clear vegetation and compact the soil. Use a spirit level — a flat base is the foundation of everything.',
+  },
+  {
+    n: '03',
+    title: 'Mark the corners',
+    desc: 'Drive stakes at each corner of the floor plan. Run string lines between them to define the wall line.',
+  },
+  {
+    n: '04',
+    title: 'Pour the footings',
+    desc: 'Dig a shallow trench along the string lines and pour a concrete strip footing. Allow 24 h to cure.',
+  },
+  {
+    n: '05',
+    title: 'Install floor U-blocks',
+    desc: 'Lay the bottom U-channel along the footing perimeter. This channel receives the base of every panel.',
+  },
+  {
+    n: '06',
+    title: 'Connect corner channels',
+    desc: 'At each corner, mitre or overlap the U-block sections and fasten with two rivets per joint.',
+  },
+  {
+    n: '07',
+    title: 'The corrugated panel',
+    desc: 'Each panel is one standard corrugated sheet folded into a standing wave. No cutting or welding needed.',
+  },
+  {
+    n: '08',
+    title: 'Insert the first panel',
+    desc: 'Slide the panel base into the floor U-channel. Hold plumb. The wave geometry keeps it rigid on its own.',
+  },
+  {
+    n: '09',
+    title: 'Rivet to the channel',
+    desc: 'Drive two POP rivets through the panel foot and the U-block flange — one on each face. Repeat every panel.',
+  },
+  {
+    n: '10',
+    title: 'Overlap the next panel',
+    desc: 'Each new panel overlaps the previous by one corrugation (≈10 cm). The interlock is structural.',
+  },
+  {
+    n: '11',
+    title: 'Rivet the overlap',
+    desc: 'Rivet the overlapping crest at mid-height and at the top. This stitches the wall into a single membrane.',
+  },
+  {
+    n: '12',
+    title: 'Continue around the perimeter',
+    desc: 'Work panel by panel around all four walls. The count matches your material list exactly.',
+    dynamic: 'panels',
+  },
+  {
+    n: '13',
+    title: 'Cap with top U-block',
+    desc: 'Slide the top U-channel over the panel tops. This ties the wall ring together and provides the roof seat.',
+  },
+  {
+    n: '14',
+    title: 'Install roof purlins',
+    desc: 'Span lightweight purlins (timber or steel) across the top channel from wall to wall.',
+  },
+  {
+    n: '15',
+    title: 'Lay the roof sheets',
+    desc: 'Place corrugated roof sheets perpendicular to the purlins with a 15 cm overhang on each side.',
+  },
+  {
+    n: '16',
+    title: 'Rivet the roof',
+    desc: 'Rivet each roof sheet to every purlin it crosses. Use ridge-cap sheets at the apex.',
+  },
+  {
+    n: '17',
+    title: 'Frame the door & windows',
+    desc: 'Cut the panel at the opening, slide in the steel sub-frame, and rivet it to the adjacent panels.',
+  },
+  {
+    n: '18',
+    title: 'Move in',
+    desc: 'From first panel to move-in: 72 hours. Two materials. Zero skilled labour. One dignified home.',
+    dynamic: 'finish',
+  },
+];
+
+// SVG building blocks (reused across illustrations)
+// These are rendered server-side — JS updates dynamic steps client-side
 ---
 
 <Base title="Build Guide — Lamina POP">
@@ -17,7 +111,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     style="width:0; transition:none;"
   ></div>
 
-  <!-- ── Top bar: back link + live step counter ─────────────── -->
+  <!-- ── Top bar ─────────────────────────────────────────────── -->
   <div class="fixed inset-x-0 top-0 z-40 flex h-[52px] items-center justify-between px-5 mix-blend-multiply">
     <a
       href="/"
@@ -73,7 +167,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
             <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFD600] text-[9px] font-bold">2</span>
             <span id="mat-rivet-text">POP rivets</span>
           </li>
-          <li id="mat-ub-item" class="hidden flex items-center gap-2.5">
+          <li id="mat-ub-item" class="hidden items-center gap-2.5">
             <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFD600] text-[9px] font-bold">3</span>
             <span id="mat-ub-text">U-blocks</span>
           </li>
@@ -98,7 +192,6 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
       18 steps · 72 hours
     </p>
 
-    <!-- Scroll cue -->
     <div id="cov-scroll" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
       <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/20">Begin</span>
       <div class="h-10 w-px bg-[#0A0A0A]/10"></div>
@@ -118,20 +211,444 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
             {s.n}
           </span>
           <span class="step-bar mt-3 hidden h-[2.5px] w-7 bg-[#FFD600] md:block"></span>
-          <!-- mobile: inline yellow dash -->
           <span class="step-bar h-[2px] w-6 bg-[#FFD600] md:hidden"></span>
         </div>
 
-        <!-- Image -->
-        <div class="step-img-wrap overflow-hidden bg-[#F9F9F9]">
-          <img
-            src={s.img}
-            alt={`Step ${s.n}`}
-            loading="lazy"
-            decoding="async"
-            class="step-img block w-full object-contain"
-            style="max-height: 72vh;"
-          />
+        <!-- Illustration + description -->
+        <div>
+          <div class="step-img-wrap overflow-hidden bg-[#F7F7F7]">
+            <div class="step-img flex w-full items-center justify-center p-10" style="min-height:280px" data-dyn={s.dynamic || ''}>
+              {s.n === '01' && (
+                <svg id="svg-step-01" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Top-down floor plan — generic rectangle with door gap */}
+                  <rect x="38" y="28" width="164" height="124" stroke="#0A0A0A" stroke-width="2.5" stroke-linejoin="round"/>
+                  {/* Door gap left wall */}
+                  <line x1="38" y1="28" x2="38" y2="95" stroke="white" stroke-width="5"/>
+                  <line x1="38" y1="28" x2="38" y2="95" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"/>
+                  <line x1="38" y1="115" x2="38" y2="152" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"/>
+                  {/* Door arc */}
+                  <path d="M38 95 Q56 95 56 115" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2.5" fill="none"/>
+                  {/* Centre cross-hairs */}
+                  <line x1="120" y1="28" x2="120" y2="152" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.35"/>
+                  <line x1="38" y1="90" x2="202" y2="90" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.35"/>
+                  {/* Dimension — horizontal */}
+                  <line x1="38" y1="168" x2="202" y2="168" stroke="#0A0A0A" stroke-width="1"/>
+                  <line x1="38" y1="164" x2="38" y2="172" stroke="#0A0A0A" stroke-width="1"/>
+                  <line x1="202" y1="164" x2="202" y2="172" stroke="#0A0A0A" stroke-width="1"/>
+                  {/* Dimension — vertical */}
+                  <line x1="218" y1="28" x2="218" y2="152" stroke="#0A0A0A" stroke-width="1"/>
+                  <line x1="214" y1="28" x2="222" y2="28" stroke="#0A0A0A" stroke-width="1"/>
+                  <line x1="214" y1="152" x2="222" y2="152" stroke="#0A0A0A" stroke-width="1"/>
+                </svg>
+              )}
+              {s.n === '02' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Ground line */}
+                  <line x1="20" y1="120" x2="220" y2="120" stroke="#0A0A0A" stroke-width="2"/>
+                  {/* Ground hatching */}
+                  {[30,50,70,90,110,130,150,170,190,210].map(x => (
+                    <line x1={x} y1="120" x2={x - 12} y2="138" stroke="#0A0A0A" stroke-width="1" opacity="0.4"/>
+                  ))}
+                  {/* Spirit level body */}
+                  <rect x="55" y="98" width="130" height="18" rx="3" stroke="#0A0A0A" stroke-width="1.8"/>
+                  {/* Bubble vial */}
+                  <rect x="96" y="102" width="48" height="10" rx="5" stroke="#0A0A0A" stroke-width="1.2" fill="rgba(255,214,0,0.18)"/>
+                  {/* Bubble centre */}
+                  <circle cx="120" cy="107" r="4" fill="#FFD600" stroke="#0A0A0A" stroke-width="1"/>
+                  {/* Level tick marks */}
+                  <line x1="114" y1="102" x2="114" y2="112" stroke="#0A0A0A" stroke-width="0.8" opacity="0.5"/>
+                  <line x1="126" y1="102" x2="126" y2="112" stroke="#0A0A0A" stroke-width="0.8" opacity="0.5"/>
+                  {/* End handles */}
+                  <rect x="42" y="103" width="14" height="8" rx="1.5" stroke="#0A0A0A" stroke-width="1.2"/>
+                  <rect x="184" y="103" width="14" height="8" rx="1.5" stroke="#0A0A0A" stroke-width="1.2"/>
+                </svg>
+              )}
+              {s.n === '03' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Top-down plan outline */}
+                  <rect x="45" y="35" width="150" height="110" stroke="#0A0A0A" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.45"/>
+                  {/* Stakes at corners */}
+                  {([[45,35],[195,35],[45,145],[195,145]] as [number,number][]).map(([x,y]) => (
+                    <>
+                      <circle cx={x} cy={y} r="5" fill="#FFD600" stroke="#0A0A0A" stroke-width="1.5"/>
+                      <line x1={x} y1={y + 5} x2={x} y2={y + 18} stroke="#0A0A0A" stroke-width="1.5"/>
+                    </>
+                  ))}
+                  {/* String lines */}
+                  <line x1="45" y1="35" x2="195" y2="35" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2"/>
+                  <line x1="195" y1="35" x2="195" y2="145" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2"/>
+                  <line x1="195" y1="145" x2="45" y2="145" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2"/>
+                  <line x1="45" y1="145" x2="45" y2="35" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2"/>
+                </svg>
+              )}
+              {s.n === '04' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Soil cross-section label line */}
+                  <line x1="20" y1="95" x2="220" y2="95" stroke="#0A0A0A" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3"/>
+                  {/* Ground surface */}
+                  <line x1="20" y1="80" x2="220" y2="80" stroke="#0A0A0A" stroke-width="2"/>
+                  {/* Ground hatching */}
+                  {[30,55,80,105,130,155,180,205].map(x => (
+                    <line x1={x} y1="80" x2={x - 14} y2="100" stroke="#0A0A0A" stroke-width="1" opacity="0.35"/>
+                  ))}
+                  {/* Footing trench */}
+                  <path d="M75 80 L75 130 L165 130 L165 80" stroke="#0A0A0A" stroke-width="2" fill="white"/>
+                  {/* Concrete fill — cross-hatch */}
+                  <rect x="75" y="80" width="90" height="50" fill="rgba(0,0,0,0.04)"/>
+                  {[80,92,104,116,128,140,152,162].map(x => (
+                    <line x1={x} y1="80" x2={x - 40} y2="130" stroke="#0A0A0A" stroke-width="0.8" opacity="0.25"/>
+                  ))}
+                  {/* Top of footing */}
+                  <line x1="75" y1="80" x2="165" y2="80" stroke="#FFD600" stroke-width="3"/>
+                  {/* Depth arrow */}
+                  <line x1="178" y1="80" x2="178" y2="130" stroke="#0A0A0A" stroke-width="1"/>
+                  <path d="M174 80 L182 80 M174 130 L182 130" stroke="#0A0A0A" stroke-width="1"/>
+                </svg>
+              )}
+              {s.n === '05' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Top-down perimeter with U-blocks */}
+                  {/* Outer wall rect */}
+                  <rect x="35" y="30" width="170" height="120" stroke="#0A0A0A" stroke-width="5" fill="none" stroke-linejoin="round"/>
+                  {/* Inner edge */}
+                  <rect x="43" y="38" width="154" height="104" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="3 2" opacity="0.3" fill="none"/>
+                  {/* U-block segments along bottom wall — yellow fill */}
+                  {[35,60,85,110,135,160,185].map(x => (
+                    <rect x={x} y="142" width="22" height="8" fill="#FFD600" stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* U-block along top */}
+                  {[35,60,85,110,135,160,185].map(x => (
+                    <rect x={x} y="30" width="22" height="8" fill="#FFD600" stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* U-block left */}
+                  {[30,52,74,96,118,140].map(y => (
+                    <rect x="27" y={y} width="8" height="22" fill="#FFD600" stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* U-block right */}
+                  {[30,52,74,96,118,140].map(y => (
+                    <rect x="205" y={y} width="8" height="22" fill="#FFD600" stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                </svg>
+              )}
+              {s.n === '06' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Corner U-block connection — top-down detail */}
+                  {/* Horizontal channel */}
+                  <rect x="30" y="84" width="120" height="12" stroke="#0A0A0A" stroke-width="1.8" fill="rgba(255,214,0,0.15)"/>
+                  <line x1="30" y1="90" x2="150" y2="90" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="3 2" opacity="0.4"/>
+                  {/* Vertical channel */}
+                  <rect x="114" y="30" width="12" height="120" stroke="#0A0A0A" stroke-width="1.8" fill="rgba(255,214,0,0.15)"/>
+                  <line x1="120" y1="30" x2="120" y2="150" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="3 2" opacity="0.4"/>
+                  {/* Corner block highlight */}
+                  <rect x="114" y="84" width="12" height="12" fill="#FFD600" stroke="#0A0A0A" stroke-width="1.8"/>
+                  {/* Rivets */}
+                  <circle cx="105" cy="90" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="120" cy="76" r="2.5" fill="#0A0A0A"/>
+                  {/* Cut lines showing mitre */}
+                  <line x1="114" y1="84" x2="126" y2="96" stroke="#0A0A0A" stroke-width="1.2" opacity="0.5"/>
+                </svg>
+              )}
+              {s.n === '07' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Corrugated sheet — profile / side view */}
+                  {/* Wave path: 6 full corrugations */}
+                  <path
+                    d="M20,130 C28,130 28,50 36,50 C44,50 44,130 52,130 C60,130 60,50 68,50 C76,50 76,130 84,130 C92,130 92,50 100,50 C108,50 108,130 116,130 C124,130 124,50 132,50 C140,50 140,130 148,130 C156,130 156,50 164,50 C172,50 172,130 180,130 C188,130 188,50 196,50 C204,50 204,130 212,130 C220,130 220,50 228,50"
+                    stroke="#0A0A0A" stroke-width="2.5" fill="none"
+                  />
+                  {/* Top flat cap */}
+                  <line x1="20" y1="50" x2="20" y2="130" stroke="#0A0A0A" stroke-width="2"/>
+                  {/* Baseline */}
+                  <line x1="18" y1="130" x2="228" y2="130" stroke="#0A0A0A" stroke-width="1" opacity="0.3"/>
+                  {/* Dimension arrows — width */}
+                  <line x1="20" y1="155" x2="228" y2="155" stroke="#0A0A0A" stroke-width="1"/>
+                  <path d="M20 151 L20 159 M228 151 L228 159" stroke="#0A0A0A" stroke-width="1"/>
+                  {/* Height arrow */}
+                  <line x1="12" y1="50" x2="12" y2="130" stroke="#0A0A0A" stroke-width="1"/>
+                  <path d="M8 50 L16 50 M8 130 L16 130" stroke="#0A0A0A" stroke-width="1"/>
+                  {/* "0.81 m" label position hint — yellow dot at crest */}
+                  <circle cx="36" cy="50" r="3" fill="#FFD600"/>
+                  <circle cx="100" cy="50" r="3" fill="#FFD600"/>
+                  <circle cx="164" cy="50" r="3" fill="#FFD600"/>
+                </svg>
+              )}
+              {s.n === '08' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Elevation view: panel inserted into floor U-block */}
+                  {/* Ground / footing */}
+                  <rect x="30" y="148" width="180" height="16" fill="#F0F0F0" stroke="#0A0A0A" stroke-width="1.5"/>
+                  {/* U-block on footing */}
+                  <path d="M80 148 L80 132 L96 132 L96 120 L144 120 L144 132 L160 132 L160 148" stroke="#0A0A0A" stroke-width="2" fill="rgba(255,214,0,0.2)"/>
+                  {/* Panel (corrugated outline) going into channel */}
+                  <rect x="96" y="30" width="48" height="90" stroke="#0A0A0A" stroke-width="2"/>
+                  {/* Wave lines inside panel rect */}
+                  {[104,112,120,128,136].map(x => (
+                    <line x1={x} y1="30" x2={x} y2="120" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.4"/>
+                  ))}
+                  {/* Arrow showing direction */}
+                  <path d="M120 18 L120 27" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M114 22 L120 30 L126 22" stroke="#0A0A0A" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+                  {/* Highlight: panel base in channel */}
+                  <line x1="96" y1="120" x2="144" y2="120" stroke="#FFD600" stroke-width="3"/>
+                </svg>
+              )}
+              {s.n === '09' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Close-up: rivet through panel + U-block flange */}
+                  {/* U-block flange (side cross-section) */}
+                  <rect x="70" y="110" width="100" height="14" stroke="#0A0A0A" stroke-width="2" fill="rgba(255,214,0,0.2)"/>
+                  {/* Panel foot */}
+                  <rect x="90" y="70" width="60" height="42" stroke="#0A0A0A" stroke-width="2"/>
+                  {/* Rivet shaft */}
+                  <line x1="120" y1="40" x2="120" y2="124" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+                  {/* Rivet head (top) */}
+                  <ellipse cx="120" cy="40" rx="8" ry="5" fill="#0A0A0A"/>
+                  {/* Rivet mandrel dot */}
+                  <circle cx="120" cy="40" r="2" fill="white"/>
+                  {/* Rivet set (tool) */}
+                  <rect x="108" y="14" width="24" height="22" rx="3" stroke="#0A0A0A" stroke-width="2"/>
+                  <line x1="120" y1="14" x2="120" y2="36" stroke="#0A0A0A" stroke-width="3"/>
+                  {/* Force arrows */}
+                  <path d="M108 8 L108 16" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M132 8 L132 16" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M104 8 L108 14 L112 8" stroke="#0A0A0A" stroke-width="1" fill="none"/>
+                  <path d="M128 8 L132 14 L136 8" stroke="#0A0A0A" stroke-width="1" fill="none"/>
+                  {/* Rivet mandrel break highlight */}
+                  <circle cx="120" cy="124" r="5" fill="#FFD600" stroke="#0A0A0A" stroke-width="1.5"/>
+                </svg>
+              )}
+              {s.n === '10' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Top view: two panels overlapping by one corrugation */}
+                  {/* Panel A */}
+                  <rect x="30" y="50" width="110" height="80" stroke="#0A0A0A" stroke-width="2"/>
+                  {[45,60,75,90,105,120].map(x => (
+                    <line x1={x} y1="50" x2={x} y2="130" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.4"/>
+                  ))}
+                  {/* Panel B — overlaps A by one corrugation (~15px) */}
+                  <rect x="125" y="50" width="110" height="80" stroke="#0A0A0A" stroke-width="2" fill="rgba(255,255,255,0.8)"/>
+                  {[140,155,170,185,200,215,225].map(x => (
+                    x <= 235 && <line x1={x} y1="50" x2={x} y2="130" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.4"/>
+                  ))}
+                  {/* Overlap zone */}
+                  <rect x="125" y="50" width="15" height="80" fill="rgba(255,214,0,0.35)" stroke="none"/>
+                  {/* Overlap arrows */}
+                  <path d="M125 28 L140 28" stroke="#0A0A0A" stroke-width="1.5"/>
+                  <path d="M125 24 L125 32" stroke="#0A0A0A" stroke-width="1.2"/>
+                  <path d="M140 24 L140 32" stroke="#0A0A0A" stroke-width="1.2"/>
+                  {/* "≈10 cm" zone label */}
+                  <line x1="132" y1="22" x2="132" y2="36" stroke="#0A0A0A" stroke-width="0.7" opacity="0.4"/>
+                </svg>
+              )}
+              {s.n === '11' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Elevation: two panels stitched with rivets at overlap */}
+                  {/* Panel A */}
+                  <rect x="25" y="30" width="95" height="130" stroke="#0A0A0A" stroke-width="2"/>
+                  {[40,55,70,85,100].map(x => (
+                    <line x1={x} y1="30" x2={x} y2="160" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.35"/>
+                  ))}
+                  {/* Panel B — overlapping */}
+                  <rect x="105" y="30" width="95" height="130" stroke="#0A0A0A" stroke-width="2" fill="rgba(255,255,255,0.9)"/>
+                  {[120,135,150,165,180,195].map(x => (
+                    <line x1={x} y1="30" x2={x} y2="160" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.35"/>
+                  ))}
+                  {/* Overlap strip */}
+                  <rect x="105" y="30" width="15" height="130" fill="rgba(255,214,0,0.2)" stroke="none"/>
+                  {/* Rivets along overlap — mid and top */}
+                  <circle cx="112" cy="65" r="4" fill="#0A0A0A"/>
+                  <circle cx="112" cy="95" r="4" fill="#0A0A0A"/>
+                  <circle cx="112" cy="125" r="4" fill="#0A0A0A"/>
+                  {/* Circle + arrow at rivet */}
+                  <circle cx="112" cy="95" r="9" stroke="#FFD600" stroke-width="1.5" fill="none"/>
+                </svg>
+              )}
+              {s.n === '12' && (
+                <svg id="svg-step-12" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Top view — panels going around all 4 walls */}
+                  {/* Bottom wall panels */}
+                  {[35,55,75,95,115,135,155,175].map((x, i) => (
+                    <rect x={x} y="148" width="18" height="12" fill={i % 2 === 0 ? "rgba(255,214,0,0.4)" : "rgba(0,0,0,0.06)"} stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* Top wall panels */}
+                  {[35,55,75,95,115,135,155,175].map((x, i) => (
+                    <rect x={x} y="20" width="18" height="12" fill={i % 2 === 0 ? "rgba(255,214,0,0.4)" : "rgba(0,0,0,0.06)"} stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* Left wall panels */}
+                  {[35,57,79,101,123,145].map((y, i) => (
+                    <rect x="20" y={y} width="12" height="18" fill={i % 2 === 0 ? "rgba(255,214,0,0.4)" : "rgba(0,0,0,0.06)"} stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* Right wall panels */}
+                  {[35,57,79,101,123,145].map((y, i) => (
+                    <rect x="208" y={y} width="12" height="18" fill={i % 2 === 0 ? "rgba(255,214,0,0.4)" : "rgba(0,0,0,0.06)"} stroke="#0A0A0A" stroke-width="1"/>
+                  ))}
+                  {/* Inner floor area */}
+                  <rect x="32" y="32" width="176" height="116" stroke="#0A0A0A" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.2" fill="none"/>
+                  {/* Panel count badge — updated by JS */}
+                  <rect x="88" y="72" width="64" height="36" rx="4" fill="white" stroke="#EBEBEB" stroke-width="1.5"/>
+                  <text x="120" y="88" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="14" font-weight="700" fill="#0A0A0A" id="svg-panel-count">— pnls</text>
+                  <text x="120" y="102" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#0A0A0A" opacity="0.4">panels</text>
+                </svg>
+              )}
+              {s.n === '13' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Elevation: top U-block being slid onto panel tops */}
+                  {/* Wall (elevation) */}
+                  <rect x="30" y="50" width="180" height="100" stroke="#0A0A0A" stroke-width="1.8"/>
+                  {/* Panel wave lines */}
+                  {[45,60,75,90,105,120,135,150,165,180,195].map(x => (
+                    <line x1={x} y1="50" x2={x} y2="150" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.3"/>
+                  ))}
+                  {/* Top U-block channel hovering above with arrow */}
+                  <path d="M20 25 L20 38 L220 38 L220 25" stroke="#0A0A0A" stroke-width="2.5" fill="rgba(255,214,0,0.25)"/>
+                  <line x1="20" y1="31" x2="220" y2="31" stroke="#0A0A0A" stroke-width="0.7" opacity="0.4"/>
+                  {/* Arrows showing it slides down */}
+                  {[60,120,180].map(x => (
+                    <>
+                      <line x1={x} y1="40" x2={x} y2="48" stroke="#0A0A0A" stroke-width="1.5"/>
+                      <path d={`M${x-4} 45 L${x} 50 L${x+4} 45`} stroke="#0A0A0A" stroke-width="1.2" fill="none"/>
+                    </>
+                  ))}
+                  {/* Bottom U-block */}
+                  <path d="M20 150 L20 162 L220 162 L220 150" stroke="#0A0A0A" stroke-width="2" fill="rgba(255,214,0,0.15)"/>
+                </svg>
+              )}
+              {s.n === '14' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Simple isometric: two walls with beam spanning */}
+                  {/* Left wall face */}
+                  <path d="M20 140 L20 60 L60 30 L60 110 Z" stroke="#0A0A0A" stroke-width="1.8" fill="rgba(0,0,0,0.04)"/>
+                  {/* Right wall face */}
+                  <path d="M20 140 L180 140 L220 110 L60 110 Z" stroke="#0A0A0A" stroke-width="1.8" fill="rgba(0,0,0,0.02)"/>
+                  {/* Top of left wall */}
+                  <path d="M20 60 L180 60 L220 30 L60 30 Z" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="4 3" opacity="0.3" fill="none"/>
+                  {/* Beam 1 */}
+                  <path d="M45 60 L85 110" stroke="#0A0A0A" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M53 60 L93 110" stroke="white" stroke-width="2"/>
+                  {/* Beam 2 */}
+                  <path d="M110 60 L150 110" stroke="#0A0A0A" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M118 60 L158 110" stroke="white" stroke-width="2"/>
+                  {/* Beam 3 */}
+                  <path d="M170 60 L210 110" stroke="#0A0A0A" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M178 60 L218 110" stroke="white" stroke-width="2"/>
+                  {/* Highlight: top U-block */}
+                  <path d="M20 60 L180 60" stroke="#FFD600" stroke-width="2.5"/>
+                </svg>
+              )}
+              {s.n === '15' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Elevation: roof sheets laid at pitch */}
+                  {/* Wall (simplified) */}
+                  <rect x="25" y="100" width="190" height="55" stroke="#0A0A0A" stroke-width="1.5" fill="rgba(0,0,0,0.03)"/>
+                  {/* Roof pitch */}
+                  <path d="M25 100 L120 30 L215 100" stroke="#0A0A0A" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                  {/* Roof panels — left slope */}
+                  {[0,15,30,45,60,75,90,105].map(offset => {
+                    const x1 = 25 + offset * 0.83;
+                    const y1 = 100 - offset * 0.63;
+                    const x2 = x1 + 12;
+                    const y2 = y1 - 9;
+                    return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#0A0A0A" stroke-width="1.2" opacity="0.5"/>;
+                  })}
+                  {/* Roof panels — right slope */}
+                  {[0,15,30,45,60,75,90,105].map(offset => {
+                    const x1 = 215 - offset * 0.83;
+                    const y1 = 100 - offset * 0.63;
+                    const x2 = x1 - 12;
+                    const y2 = y1 - 9;
+                    return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#0A0A0A" stroke-width="1.2" opacity="0.5"/>;
+                  })}
+                  {/* Ridge highlight */}
+                  <line x1="115" y1="30" x2="125" y2="30" stroke="#FFD600" stroke-width="4" stroke-linecap="round"/>
+                  {/* Overhang indicator */}
+                  <line x1="25" y1="100" x2="14" y2="108" stroke="#0A0A0A" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+                </svg>
+              )}
+              {s.n === '16' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Close-up: riveting roof sheet to purlin */}
+                  {/* Purlin cross-section (rectangle) */}
+                  <rect x="60" y="100" width="120" height="20" stroke="#0A0A0A" stroke-width="2" fill="rgba(0,0,0,0.06)"/>
+                  {/* Roof sheet on top */}
+                  <path d="M30,80 C43,80 43,60 56,60 C69,60 69,80 82,80 C95,80 95,60 108,60 C121,60 121,80 134,80 C147,80 147,60 160,60 C173,60 173,80 186,80 C199,80 199,60 212,60" stroke="#0A0A0A" stroke-width="2.5" fill="none"/>
+                  <line x1="30" y1="80" x2="212" y2="80" stroke="#0A0A0A" stroke-width="0.7" opacity="0.25"/>
+                  {/* Sheet base line */}
+                  <line x1="30" y1="100" x2="212" y2="100" stroke="#0A0A0A" stroke-width="1.5" opacity="0.5"/>
+                  {/* Rivet at crest */}
+                  <line x1="120" y1="50" x2="120" y2="118" stroke="#0A0A0A" stroke-width="2.5"/>
+                  <ellipse cx="120" cy="50" rx="7" ry="4" fill="#0A0A0A"/>
+                  <circle cx="120" cy="50" r="1.5" fill="white"/>
+                  {/* Rivet gun */}
+                  <path d="M100 32 L140 32 L140 48 L100 48 Z" stroke="#0A0A0A" stroke-width="1.8" fill="white"/>
+                  <rect x="114" y="26" width="12" height="8" rx="2" stroke="#0A0A0A" stroke-width="1.5" fill="white"/>
+                  {/* Highlight dot */}
+                  <circle cx="120" cy="118" r="5" fill="#FFD600" stroke="#0A0A0A" stroke-width="1.5"/>
+                </svg>
+              )}
+              {s.n === '17' && (
+                <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Elevation: wall with door opening + frame */}
+                  {/* Full wall */}
+                  <rect x="20" y="20" width="200" height="145" stroke="#0A0A0A" stroke-width="1.5" fill="rgba(0,0,0,0.02)"/>
+                  {/* Panel lines */}
+                  {[35,50,65,80,175,190,205].map(x => (
+                    <line x1={x} y1="20" x2={x} y2="165" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.3"/>
+                  ))}
+                  {/* Door opening cutout (white) */}
+                  <rect x="100" y="65" width="60" height="100" fill="white" stroke="#0A0A0A" stroke-width="2.5"/>
+                  {/* Door sub-frame */}
+                  <rect x="96" y="61" width="68" height="104" stroke="#FFD600" stroke-width="3" fill="none"/>
+                  {/* Door panel lines */}
+                  <line x1="130" y1="65" x2="130" y2="165" stroke="#0A0A0A" stroke-width="0.8" opacity="0.3"/>
+                  <line x1="115" y1="115" x2="145" y2="115" stroke="#0A0A0A" stroke-width="0.8" opacity="0.3"/>
+                  {/* Hinge marks */}
+                  <rect x="100" y="80" width="5" height="8" fill="#0A0A0A" rx="1"/>
+                  <rect x="100" y="130" width="5" height="8" fill="#0A0A0A" rx="1"/>
+                  {/* Frame rivets */}
+                  <circle cx="96" cy="75" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="96" cy="105" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="96" cy="135" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="164" cy="75" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="164" cy="105" r="2.5" fill="#0A0A0A"/>
+                  <circle cx="164" cy="135" r="2.5" fill="#0A0A0A"/>
+                </svg>
+              )}
+              {s.n === '18' && (
+                <svg id="svg-step-18" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
+                  {/* Simple house silhouette — front elevation */}
+                  {/* Walls */}
+                  <rect x="30" y="80" width="180" height="95" stroke="#0A0A0A" stroke-width="2.5"/>
+                  {/* Roof */}
+                  <path d="M18 80 L120 12 L222 80" stroke="#0A0A0A" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                  {/* Corrugated wall lines */}
+                  {[50,70,90,110,130,150,170,190].map(x => (
+                    <line x1={x} y1="80" x2={x} y2="175" stroke="#0A0A0A" stroke-width="0.7" stroke-dasharray="5 3" opacity="0.2"/>
+                  ))}
+                  {/* Door */}
+                  <rect x="96" y="120" width="48" height="55" stroke="#0A0A0A" stroke-width="1.8" fill="white"/>
+                  <line x1="120" y1="120" x2="120" y2="175" stroke="#0A0A0A" stroke-width="0.8" opacity="0.3"/>
+                  {/* Window left */}
+                  <rect x="42" y="100" width="34" height="28" stroke="#0A0A0A" stroke-width="1.5" fill="rgba(255,214,0,0.15)"/>
+                  <line x1="59" y1="100" x2="59" y2="128" stroke="#0A0A0A" stroke-width="0.8" opacity="0.4"/>
+                  <line x1="42" y1="114" x2="76" y2="114" stroke="#0A0A0A" stroke-width="0.8" opacity="0.4"/>
+                  {/* Window right */}
+                  <rect x="164" y="100" width="34" height="28" stroke="#0A0A0A" stroke-width="1.5" fill="rgba(255,214,0,0.15)"/>
+                  <line x1="181" y1="100" x2="181" y2="128" stroke="#0A0A0A" stroke-width="0.8" opacity="0.4"/>
+                  <line x1="164" y1="114" x2="198" y2="114" stroke="#0A0A0A" stroke-width="0.8" opacity="0.4"/>
+                  {/* Roof corrugations */}
+                  {[40,60,80,100,120].map(x => (
+                    <line x1={x + 10} y1={80 - (x + 10 - 30) * 0.6} x2={x} y2={80 - x * 0.63 + 18} stroke="#0A0A0A" stroke-width="0.6" opacity="0.2"/>
+                  ))}
+                  {/* Checkmark */}
+                  <circle cx="195" cy="30" r="18" fill="#FFD600"/>
+                  <path d="M186 30 L193 37 L205 22" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              )}
+            </div>
+          </div>
+          <p class="step-desc mt-5 max-w-[52ch] text-sm font-medium leading-relaxed text-[#0A0A0A]/55">
+            {s.desc}
+          </p>
         </div>
       </article>
     ))}
@@ -142,7 +659,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     <p class="fin-el mb-6 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0A0A0A]/40">
       Complete · 18 / 18
     </p>
-    <h2 class="fin-el font-['Space_Grotesk'] text-[clamp(3.5rem,10vw,9rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[#0A0A0A]">
+    <h2 id="fin-title" class="fin-el font-['Space_Grotesk'] text-[clamp(3.5rem,10vw,9rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[#0A0A0A]">
       Your home<br>is ready.
     </h2>
     <p class="fin-el mt-8 max-w-xs text-base font-semibold text-[#0A0A0A]/50">
@@ -163,7 +680,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  // ── Progress bar ────────────────────────────────────────────
+  // ── Progress bar ─────────────────────────────────────────────
   const progressBar = document.getElementById('g-progress')!;
   ScrollTrigger.create({
     start: 0,
@@ -173,7 +690,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     },
   });
 
-  // ── Cover entrance ───────────────────────────────────────────
+  // ── Cover entrance ────────────────────────────────────────────
   gsap.timeline({ defaults: { ease: 'expo.out' } })
     .from('#cov-eye',    { y: 14,  opacity: 0, duration: 0.7 }, 0.05)
     .from('#cov-title',  { y: 50,  opacity: 0, duration: 1.1 }, 0.1)
@@ -181,7 +698,6 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     .from('#cov-count',  { y: 14,  opacity: 0, duration: 0.7 }, 0.52)
     .from('#cov-scroll', { opacity: 0, duration: 0.5 }, 0.88);
 
-  // Scroll cue fades out as cover exits
   gsap.to('#cov-scroll', {
     opacity: 0,
     scrollTrigger: {
@@ -192,7 +708,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     },
   });
 
-  // ── Live step counter ────────────────────────────────────────
+  // ── Live step counter ─────────────────────────────────────────
   const counterEl  = document.getElementById('g-counter')!;
   const counterNum = document.getElementById('g-counter-num')!;
   document.querySelectorAll<HTMLElement>('.guide-step').forEach((step) => {
@@ -210,7 +726,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     });
   });
 
-  // ── Per-step reveal animations ───────────────────────────────
+  // ── Per-step reveal animations ────────────────────────────────
   document.querySelectorAll<HTMLElement>('.guide-step').forEach((step) => {
     const num     = step.querySelector<HTMLElement>('.step-num')!;
     const bars    = step.querySelectorAll<HTMLElement>('.step-bar');
@@ -225,7 +741,6 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
       },
     });
 
-    // 1. Step number stamps in
     tl.from(num, {
       opacity: 0,
       scale: 1.22,
@@ -233,7 +748,6 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
       duration: 0.4,
       ease: 'back.out(2)',
     })
-    // 2. Yellow bar sweeps from left
     .from(bars, {
       scaleX: 0,
       transformOrigin: 'left center',
@@ -241,22 +755,26 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
       ease: 'expo.out',
       stagger: 0,
     }, '-=0.05')
-    // 3. Image wipes up from the bottom (curtain reveal)
     .fromTo(
       imgWrap,
       { clipPath: 'inset(100% 0 0 0)' },
       { clipPath: 'inset(0% 0 0 0)', duration: 0.9, ease: 'power3.out' },
       '-=0.2'
     )
-    // 4. Image zooms very slightly to natural size for depth
     .from(img, {
-      scale: 1.06,
+      scale: 1.04,
       duration: 0.9,
       ease: 'power3.out',
-    }, '<');
+    }, '<')
+    .from(step.querySelector('.step-desc'), {
+      opacity: 0,
+      y: 10,
+      duration: 0.6,
+      ease: 'expo.out',
+    }, '-=0.4');
   });
 
-  // ── Completion section reveal ────────────────────────────────
+  // ── Completion section reveal ─────────────────────────────────
   gsap.from('#g-finish .fin-el', {
     y: 28,
     opacity: 0,
@@ -270,13 +788,13 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
     },
   });
 
-  // ── Calculator state bridge ──────────────────────────────────
+  // ── Calculator state bridge ───────────────────────────────────
   try {
     const raw = localStorage.getItem('lamina-guide-state');
     if (raw) {
       const s = JSON.parse(raw);
 
-      // Update material quantities
+      // Material quantities
       const sheetEl = document.getElementById('mat-sheet-text');
       if (sheetEl && s.lam) sheetEl.textContent = `${s.lam} sheets (${s.selH}ft)`;
 
@@ -291,7 +809,7 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
         ubItem.classList.add('flex');
       }
 
-      // Update count line with real dimensions
+      // Count line
       const parts: string[] = [];
       if (s.panels) parts.push(`${s.panels} panels`);
       if (s.totWallLen > 0) parts.push(`${s.totWallLen.toFixed(1)}m walls`);
@@ -300,7 +818,11 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
       const covCount = document.getElementById('cov-count');
       if (covCount && parts.length) covCount.textContent = parts.join(' · ');
 
-      // Show floor plan image
+      // Step 12 SVG — panel count badge
+      const panelCountEl = document.getElementById('svg-panel-count');
+      if (panelCountEl && s.panels) panelCountEl.textContent = `${s.panels}`;
+
+      // Floor plan image in cover
       if (s.img2Durl) {
         const planImg = document.getElementById('g-plan-img') as HTMLImageElement | null;
         const planPreview = document.getElementById('g-plan-preview');
@@ -308,24 +830,29 @@ const steps = Array.from({ length: 18 }, (_, i) => ({
         if (planImg && planPreview) {
           planImg.src = s.img2Durl;
           planPreview.classList.remove('hidden');
-          // animate it in like the other cover elements
           gsap.from(planPreview, { y: 24, opacity: 0, duration: 0.8, ease: 'expo.out', delay: 0.45 });
-          if (planDims) {
-            const dimParts: string[] = [];
-            if (s.totWallLen > 0) dimParts.push(`${s.totWallLen.toFixed(1)}m perimeter`);
-            if (s.area > 0.5) dimParts.push(`${s.area.toFixed(0)} m² approx. floor area`);
-            if (s.doorsCount) dimParts.push(`${s.doorsCount} door${s.doorsCount > 1 ? 's' : ''}`);
-            if (s.winsCount) dimParts.push(`${s.winsCount} window${s.winsCount > 1 ? 's' : ''}`);
-            if (s.projectName) dimParts.unshift(s.projectName);
-            planDims.textContent = dimParts.join(' · ');
+
+          // Also replace step 01 SVG with the floor plan image
+          const step01Img = document.querySelector('[data-step="01"] .step-img') as HTMLElement | null;
+          if (step01Img) {
+            step01Img.innerHTML = `<img src="${s.img2Durl}" alt="Your floor plan" class="w-full object-contain" style="max-height:60vh" />`;
           }
+        }
+        if (planDims) {
+          const dimParts: string[] = [];
+          if (s.projectName) dimParts.push(s.projectName);
+          if (s.totWallLen > 0) dimParts.push(`${s.totWallLen.toFixed(1)}m perimeter`);
+          if (s.area > 0.5) dimParts.push(`${s.area.toFixed(0)} m²`);
+          if (s.doorsCount) dimParts.push(`${s.doorsCount} door${s.doorsCount > 1 ? 's' : ''}`);
+          if (s.winsCount) dimParts.push(`${s.winsCount} window${s.winsCount > 1 ? 's' : ''}`);
+          planDims.textContent = dimParts.join(' · ');
         }
       }
 
-      // Update completion section
-      const finTitle = document.querySelector('#g-finish h2');
+      // Completion section
+      const finTitle = document.getElementById('fin-title');
       if (finTitle && s.projectName) {
-        finTitle.innerHTML = `${s.projectName}<br><span class="text-[#0A0A0A]/50">is ready.</span>`;
+        finTitle.innerHTML = `${s.projectName}<br><span style="opacity:.5">is ready.</span>`;
       }
     }
   } catch (_) {}
