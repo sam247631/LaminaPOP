@@ -486,6 +486,9 @@ footer{text-align:center;padding:.8rem;font-size:10px;color:var(--text-dim);opac
     <button class="hbtn pdf" onclick="openModal('pdf')">
       <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><rect x="2" y="1" width="9" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 4h5M4 6.5h5M4 9h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>PDF
     </button>
+    <button class="hbtn" onclick="openGuide()" style="border-color:#e8b000;color:#7a5c00;background:rgba(255,214,0,.18)">
+      <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="1.5" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 4.5h5M4 6.5h5M4 8.5h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Build Guide
+    </button>
   </div>
 </header>
 
@@ -1683,6 +1686,53 @@ tr:nth-child(even) td{background:#fafafa}
   showToast('📄 Opening print dialog…');
   // Clean up blob URL after use
   iframe.onload=()=>{ setTimeout(()=>URL.revokeObjectURL(url),5000); };
+}
+
+// ══════════════════════════════════════════════════════════════════
+// BUILD GUIDE  — saves current plan + materials to localStorage
+//               then navigates to /test
+// ══════════════════════════════════════════════════════════════════
+function openGuide(){
+  const walLen=gv('wall-length'), rp=gv('rp'), ubp=gv('ubprice'), ubl=UBLOCK_L();
+  const rpp=getRPP();
+  const walls2d=elements.filter(e=>e.type==='line'||e.type==='curve');
+  const doors2d=elements.filter(e=>e.type==='door');
+  const wins2d=elements.filter(e=>e.type==='window');
+  const totWallLen=walls2d.reduce((s,el)=>s+elLength(el),0);
+  const totDoorLen=doors2d.reduce((s,el)=>s+elLength(el),0);
+  const totWinLen=wins2d.reduce((s,el)=>s+elLength(el),0);
+  const netLen=Math.max(0,totWallLen-totDoorLen-totWinLen)||walLen;
+  const panels=Math.ceil(netLen/EFF), lam=panels*2,
+        ub=Math.ceil(netLen/ubl), riv=panels*rpp;
+  const stats=computeStats();
+
+  // Capture 2D canvas at fitted view
+  let img2Durl='';
+  if(cv && cv.width>0 && elements.length){
+    const savedVx=vx,savedVy=vy,savedVs=vs;
+    fitView(); render();
+    const oc=document.createElement('canvas');
+    oc.width=cv.width; oc.height=cv.height;
+    const oc2=oc.getContext('2d');
+    oc2.fillStyle='#f9f7f4'; oc2.fillRect(0,0,oc.width,oc.height);
+    oc2.drawImage(cv,0,0);
+    img2Durl=oc.toDataURL('image/png');
+    vx=savedVx; vy=savedVy; vs=savedVs;
+    render();
+  }
+
+  const guideData={
+    panels, lam, ub, riv, selH,
+    totWallLen, netLen,
+    area: stats.area,
+    doorsCount: doors2d.length,
+    winsCount: wins2d.length,
+    img2Durl,
+    projectName: document.getElementById('cl-project')?.value.trim()||'',
+    savedAt: new Date().toISOString(),
+  };
+  try{ localStorage.setItem('lamina-guide-state', JSON.stringify(guideData)); }catch(e){}
+  window.location.href='/test';
 }
 
 // ══════════════════════════════════════════════════════════════════

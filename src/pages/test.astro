@@ -1,0 +1,332 @@
+---
+import Base from '../layouts/Base.astro';
+
+const steps = Array.from({ length: 18 }, (_, i) => ({
+  n: String(i + 1).padStart(2, '0'),
+  img: `/guide/${String(i + 1).padStart(2, '0')}.png`,
+}));
+---
+
+<Base title="Build Guide — Lamina POP">
+
+  <!-- ── Yellow scroll progress bar ────────────────────────── -->
+  <div
+    id="g-progress"
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-x-0 top-0 z-50 h-[3px] bg-[#FFD600]"
+    style="width:0; transition:none;"
+  ></div>
+
+  <!-- ── Top bar: back link + live step counter ─────────────── -->
+  <div class="fixed inset-x-0 top-0 z-40 flex h-[52px] items-center justify-between px-5 mix-blend-multiply">
+    <a
+      href="/"
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0A0A0A]/30 transition-colors hover:text-[#0A0A0A]"
+    >
+      ← Lamina POP
+    </a>
+    <span id="g-counter" class="hidden text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0A0A0A]/30 md:block">
+      Step
+      <span id="g-counter-num" class="mx-1 font-['Space_Grotesk'] text-sm font-bold text-[#0A0A0A]">—</span>
+      / 18
+    </span>
+  </div>
+
+  <!-- ── Cover ──────────────────────────────────────────────── -->
+  <section
+    id="g-cover"
+    class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-8 py-32 text-center"
+  >
+    <p id="cov-eye" class="mb-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0A0A0A]/30">
+      Assembly Guide
+    </p>
+
+    <h1
+      id="cov-title"
+      class="font-['Space_Grotesk'] text-[clamp(5rem,22vw,20rem)] font-bold leading-[0.86] tracking-[-0.04em] text-[#0A0A0A]"
+    >
+      LAMINA<br>
+      <span class="relative inline-block">
+        POP
+        <span aria-hidden="true" class="absolute -bottom-2 left-0 right-0 -z-10 h-4 bg-[#FFD600]"></span>
+      </span>
+    </h1>
+
+    <!-- Floor plan preview (shown when calculator data is loaded) -->
+    <div id="g-plan-preview" class="mt-12 hidden w-full max-w-xl">
+      <div class="border border-[#EBEBEB] bg-[#F9F9F9] p-2">
+        <img id="g-plan-img" src="" alt="Your floor plan" class="block w-full object-contain" style="max-height:38vh" />
+      </div>
+      <p id="g-plan-dims" class="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/30"></p>
+    </div>
+
+    <!-- Materials + tools -->
+    <div id="cov-meta" class="mt-12 grid grid-cols-2 gap-3 text-left sm:gap-6">
+      <div class="border border-[#EBEBEB] px-5 py-5">
+        <p class="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/30">Materials</p>
+        <ul class="space-y-2.5 text-sm font-semibold text-[#0A0A0A]">
+          <li class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFD600] text-[9px] font-bold">1</span>
+            <span id="mat-sheet-text">Corrugated sheet</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFD600] text-[9px] font-bold">2</span>
+            <span id="mat-rivet-text">POP rivets</span>
+          </li>
+          <li id="mat-ub-item" class="hidden flex items-center gap-2.5">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFD600] text-[9px] font-bold">3</span>
+            <span id="mat-ub-text">U-blocks</span>
+          </li>
+        </ul>
+      </div>
+      <div class="border border-[#EBEBEB] px-5 py-5">
+        <p class="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/30">Tools</p>
+        <ul class="space-y-2.5 text-sm font-semibold text-[#0A0A0A]">
+          <li class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#EBEBEB] text-[9px] font-bold text-[#0A0A0A]/40">A</span>
+            Drill
+          </li>
+          <li class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#EBEBEB] text-[9px] font-bold text-[#0A0A0A]/40">B</span>
+            Rivet gun
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p id="cov-count" class="mt-14 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0A0A0A]/20">
+      18 steps · 72 hours
+    </p>
+
+    <!-- Scroll cue -->
+    <div id="cov-scroll" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/20">Begin</span>
+      <div class="h-10 w-px bg-[#0A0A0A]/10"></div>
+    </div>
+  </section>
+
+  <!-- ── Steps ──────────────────────────────────────────────── -->
+  <div id="g-steps" class="bg-white">
+    {steps.map((s) => (
+      <article
+        class="guide-step grid grid-cols-1 items-start gap-8 border-t border-[#F0F0F0] px-6 py-14 md:grid-cols-[100px_1fr] md:gap-16 md:px-16 md:py-20"
+        data-step={s.n}
+      >
+        <!-- Step badge -->
+        <div class="step-badge flex items-center gap-4 md:flex-col md:items-start md:gap-0">
+          <span class="step-num font-['Space_Grotesk'] text-[3rem] font-bold leading-none tracking-tight text-[#0A0A0A] md:text-[4.5rem]">
+            {s.n}
+          </span>
+          <span class="step-bar mt-3 hidden h-[2.5px] w-7 bg-[#FFD600] md:block"></span>
+          <!-- mobile: inline yellow dash -->
+          <span class="step-bar h-[2px] w-6 bg-[#FFD600] md:hidden"></span>
+        </div>
+
+        <!-- Image -->
+        <div class="step-img-wrap overflow-hidden bg-[#F9F9F9]">
+          <img
+            src={s.img}
+            alt={`Step ${s.n}`}
+            loading="lazy"
+            decoding="async"
+            class="step-img block w-full object-contain"
+            style="max-height: 72vh;"
+          />
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- ── Completion ─────────────────────────────────────────── -->
+  <section id="g-finish" class="flex min-h-[65vh] flex-col items-center justify-center bg-[#FFD600] px-8 py-24 text-center">
+    <p class="fin-el mb-6 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0A0A0A]/40">
+      Complete · 18 / 18
+    </p>
+    <h2 class="fin-el font-['Space_Grotesk'] text-[clamp(3.5rem,10vw,9rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[#0A0A0A]">
+      Your home<br>is ready.
+    </h2>
+    <p class="fin-el mt-8 max-w-xs text-base font-semibold text-[#0A0A0A]/50">
+      72 hours. Two materials.<br>Zero skilled labour.
+    </p>
+    <a
+      href="/"
+      class="fin-el mt-12 inline-flex items-center gap-2 border-b-2 border-[#0A0A0A]/20 pb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#0A0A0A]/50 transition-all hover:border-[#0A0A0A] hover:text-[#0A0A0A]"
+    >
+      Learn more about Lamina POP →
+    </a>
+  </section>
+
+</Base>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── Progress bar ────────────────────────────────────────────
+  const progressBar = document.getElementById('g-progress')!;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate: (self) => {
+      progressBar.style.width = `${self.progress * 100}%`;
+    },
+  });
+
+  // ── Cover entrance ───────────────────────────────────────────
+  gsap.timeline({ defaults: { ease: 'expo.out' } })
+    .from('#cov-eye',    { y: 14,  opacity: 0, duration: 0.7 }, 0.05)
+    .from('#cov-title',  { y: 50,  opacity: 0, duration: 1.1 }, 0.1)
+    .from('#cov-meta',   { y: 24,  opacity: 0, duration: 0.8 }, 0.38)
+    .from('#cov-count',  { y: 14,  opacity: 0, duration: 0.7 }, 0.52)
+    .from('#cov-scroll', { opacity: 0, duration: 0.5 }, 0.88);
+
+  // Scroll cue fades out as cover exits
+  gsap.to('#cov-scroll', {
+    opacity: 0,
+    scrollTrigger: {
+      trigger: '#g-cover',
+      start: 'center top',
+      end: 'bottom top',
+      scrub: true,
+    },
+  });
+
+  // ── Live step counter ────────────────────────────────────────
+  const counterEl  = document.getElementById('g-counter')!;
+  const counterNum = document.getElementById('g-counter-num')!;
+  document.querySelectorAll<HTMLElement>('.guide-step').forEach((step) => {
+    ScrollTrigger.create({
+      trigger: step,
+      start: 'top 55%',
+      onEnter() {
+        counterNum.textContent = step.dataset.step!;
+        counterEl.classList.remove('hidden');
+        counterEl.classList.add('md:block');
+      },
+      onEnterBack() {
+        counterNum.textContent = step.dataset.step!;
+      },
+    });
+  });
+
+  // ── Per-step reveal animations ───────────────────────────────
+  document.querySelectorAll<HTMLElement>('.guide-step').forEach((step) => {
+    const num     = step.querySelector<HTMLElement>('.step-num')!;
+    const bars    = step.querySelectorAll<HTMLElement>('.step-bar');
+    const imgWrap = step.querySelector<HTMLElement>('.step-img-wrap')!;
+    const img     = step.querySelector<HTMLElement>('.step-img')!;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: step,
+        start: 'top 84%',
+        once: true,
+      },
+    });
+
+    // 1. Step number stamps in
+    tl.from(num, {
+      opacity: 0,
+      scale: 1.22,
+      y: -8,
+      duration: 0.4,
+      ease: 'back.out(2)',
+    })
+    // 2. Yellow bar sweeps from left
+    .from(bars, {
+      scaleX: 0,
+      transformOrigin: 'left center',
+      duration: 0.38,
+      ease: 'expo.out',
+      stagger: 0,
+    }, '-=0.05')
+    // 3. Image wipes up from the bottom (curtain reveal)
+    .fromTo(
+      imgWrap,
+      { clipPath: 'inset(100% 0 0 0)' },
+      { clipPath: 'inset(0% 0 0 0)', duration: 0.9, ease: 'power3.out' },
+      '-=0.2'
+    )
+    // 4. Image zooms very slightly to natural size for depth
+    .from(img, {
+      scale: 1.06,
+      duration: 0.9,
+      ease: 'power3.out',
+    }, '<');
+  });
+
+  // ── Completion section reveal ────────────────────────────────
+  gsap.from('#g-finish .fin-el', {
+    y: 28,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'expo.out',
+    stagger: 0.1,
+    scrollTrigger: {
+      trigger: '#g-finish',
+      start: 'top 78%',
+      once: true,
+    },
+  });
+
+  // ── Calculator state bridge ──────────────────────────────────
+  try {
+    const raw = localStorage.getItem('lamina-guide-state');
+    if (raw) {
+      const s = JSON.parse(raw);
+
+      // Update material quantities
+      const sheetEl = document.getElementById('mat-sheet-text');
+      if (sheetEl && s.lam) sheetEl.textContent = `${s.lam} sheets (${s.selH}ft)`;
+
+      const rivetEl = document.getElementById('mat-rivet-text');
+      if (rivetEl && s.riv) rivetEl.textContent = `${s.riv} POP rivets`;
+
+      const ubItem = document.getElementById('mat-ub-item');
+      const ubText = document.getElementById('mat-ub-text');
+      if (ubItem && ubText && s.ub) {
+        ubText.textContent = `${s.ub} U-blocks`;
+        ubItem.classList.remove('hidden');
+        ubItem.classList.add('flex');
+      }
+
+      // Update count line with real dimensions
+      const parts: string[] = [];
+      if (s.panels) parts.push(`${s.panels} panels`);
+      if (s.totWallLen > 0) parts.push(`${s.totWallLen.toFixed(1)}m walls`);
+      if (s.area > 0.5) parts.push(`${s.area.toFixed(0)}m² floor`);
+      parts.push('72 hours');
+      const covCount = document.getElementById('cov-count');
+      if (covCount && parts.length) covCount.textContent = parts.join(' · ');
+
+      // Show floor plan image
+      if (s.img2Durl) {
+        const planImg = document.getElementById('g-plan-img') as HTMLImageElement | null;
+        const planPreview = document.getElementById('g-plan-preview');
+        const planDims = document.getElementById('g-plan-dims');
+        if (planImg && planPreview) {
+          planImg.src = s.img2Durl;
+          planPreview.classList.remove('hidden');
+          // animate it in like the other cover elements
+          gsap.from(planPreview, { y: 24, opacity: 0, duration: 0.8, ease: 'expo.out', delay: 0.45 });
+          if (planDims) {
+            const dimParts: string[] = [];
+            if (s.totWallLen > 0) dimParts.push(`${s.totWallLen.toFixed(1)}m perimeter`);
+            if (s.area > 0.5) dimParts.push(`${s.area.toFixed(0)} m² approx. floor area`);
+            if (s.doorsCount) dimParts.push(`${s.doorsCount} door${s.doorsCount > 1 ? 's' : ''}`);
+            if (s.winsCount) dimParts.push(`${s.winsCount} window${s.winsCount > 1 ? 's' : ''}`);
+            if (s.projectName) dimParts.unshift(s.projectName);
+            planDims.textContent = dimParts.join(' · ');
+          }
+        }
+      }
+
+      // Update completion section
+      const finTitle = document.querySelector('#g-finish h2');
+      if (finTitle && s.projectName) {
+        finTitle.innerHTML = `${s.projectName}<br><span class="text-[#0A0A0A]/50">is ready.</span>`;
+      }
+    }
+  } catch (_) {}
+</script>
