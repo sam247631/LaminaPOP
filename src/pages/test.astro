@@ -1,5 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+// For each step, check if a custom image exists in public/guide/
+// Supported extensions in priority order
+const EXT = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+function stepImg(n: string): string | null {
+  for (const ext of EXT) {
+    if (existsSync(join(process.cwd(), 'public', 'guide', `${n}.${ext}`))) {
+      return `/guide/${n}.${ext}`;
+    }
+  }
+  return null;
+}
 
 const steps = [
   {
@@ -97,8 +111,8 @@ const steps = [
   },
 ];
 
-// SVG building blocks (reused across illustrations)
-// These are rendered server-side — JS updates dynamic steps client-side
+// Attach custom image path (if one exists in public/guide/) to each step
+const stepsWithImg = steps.map(s => ({ ...s, img: stepImg(s.n) }));
 ---
 
 <Base title="Build Guide — Lamina POP">
@@ -200,7 +214,7 @@ const steps = [
 
   <!-- ── Steps ──────────────────────────────────────────────── -->
   <div id="g-steps" class="bg-white">
-    {steps.map((s) => (
+    {stepsWithImg.map((s) => (
       <article
         class="guide-step grid grid-cols-1 items-start gap-8 border-t border-[#F0F0F0] px-6 py-14 md:grid-cols-[100px_1fr] md:gap-16 md:px-16 md:py-20"
         data-step={s.n}
@@ -217,6 +231,16 @@ const steps = [
         <!-- Illustration + description -->
         <div>
           <div class="step-img-wrap overflow-hidden bg-[#F7F7F7]">
+            {s.img ? (
+              <img
+                src={s.img}
+                alt={s.title}
+                class="step-img block w-full object-contain"
+                style="max-height:72vh"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
             <div class="step-img flex w-full items-center justify-center p-10" style="min-height:280px" data-dyn={s.dynamic || ''}>
               {s.n === '01' && (
                 <svg id="svg-step-01" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[320px]">
@@ -645,6 +669,7 @@ const steps = [
                 </svg>
               )}
             </div>
+            )}
           </div>
           <p class="step-desc mt-5 max-w-[52ch] text-sm font-medium leading-relaxed text-[#0A0A0A]/55">
             {s.desc}
